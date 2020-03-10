@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-// import api from "./api";
 
 const useAxios = url => {
   const [data, setData] = useState([]);
@@ -21,14 +20,15 @@ const useAxios = url => {
   return { data, isLoading };
 };
 
-// const useJson = url => {
-//   const [data, setData] = useState([]);
-//   const [isLoading, setIsloading] = useState(true);
-//   useEffect(() => {
-//     setData(api[url]);
-//     setIsloading(false);
-//   }, [url]);
-//   return { data, isLoading };
-// };
+export const post = ({ object, url }) => {
+  // const [isWaiting, setIsWaiting] = useState(true);
+
+  axios({
+    method: "post",
+    url: "http://localhost:5000/" + url,
+    data: { datasetId: 1, instanceId: 1 }
+  });
+  console.log(object);
+};
 
 export { useAxios as useFetch };
