@@ -20,15 +20,4 @@ const useAxios = url => {
   return { data, isLoading };
 };
 
-export const post = ({ object, url }) => {
-  // const [isWaiting, setIsWaiting] = useState(true);
-
-  axios({
-    method: "post",
-    url: "http://localhost:5000/" + url,
-    data: { datasetId: 1, instanceId: 1 }
-  });
-  console.log(object);
-};
-
 export { useAxios as useFetch };

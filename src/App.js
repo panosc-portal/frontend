@@ -21,7 +21,12 @@ const App = () => {
       datasetId: draggableId,
       instanceId: destination.droppableId
     };
-    axios.post("http://localhost:5000/" + url, data);
+    axios.post(
+      process.env.REACT_APP_BACKEND
+        ? process.env.REACT_APP_BACKEND + url
+        : "http://localhost:5000/" + url,
+      data
+    );
   };
   return (
     <>

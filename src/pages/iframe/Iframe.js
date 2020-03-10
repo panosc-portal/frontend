@@ -4,7 +4,14 @@ import styles from "./Iframe.module.scss";
 
 const Iframe = props => (
   <div className={styles.container}>
-    <iframe title="yo" src="http://localhost:8888/lab"></iframe>
+    <iframe
+      title="yo"
+      src={
+        process.env.REACT_APP_DEV_JUPYTER
+          ? process.env.REACT_APP_DEV_JUPYTER
+          : "http://localhost:8888/lab"
+      }
+    ></iframe>
   </div>
 );
 
