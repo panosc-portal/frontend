@@ -1,25 +1,29 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Switch, Route } from "react-router-dom";
-import Datasets from "./components/datasets";
-import Dataset from "./components/dataset";
-import Menu from "./components/menu";
-import Footer from "./components/footer";
+import { ThemeContext } from "./context/ThemeContext";
+import DocumentsPage from "./pages/DocumentsPage";
+import DocumentPage from "./pages/DocumentPage";
+import NavBar from "./components/Navbar";
+import Iframe from "./pages/iframe/Iframe";
+import GlobalStyle from "./GlobalStyle";
 
 const App = () => {
+  const { darkTheme } = useContext(ThemeContext);
   return (
     <>
-      <nav>
-        <Menu />
-      </nav>
+      <GlobalStyle dark={darkTheme} />
+      <NavBar />
       <main>
         <Switch>
-          <Route exact path="/" component={Datasets} />
-          <Route exact path="/dataset/:number" component={Dataset} />
+          <Route exact path="/" component={DocumentsPage} />
+          <Route exact path="/documents" component={DocumentsPage} />
+          <Route path="/documents/:document" component={DocumentPage} />
+          <Route exact path="/profile" component={DocumentsPage} />
+          <Route exact path="/settings" component={DocumentsPage} />
+          <Route exact path="/logout" component={DocumentsPage} />
+          <Route path="/instance/:instance" component={Iframe} />
         </Switch>
       </main>
-      <footer>
-        <Footer />
-      </footer>
     </>
   );
 };

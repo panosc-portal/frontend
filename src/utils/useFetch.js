@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-// import api from "./api";
 
 const useAxios = url => {
   const [data, setData] = useState([]);
@@ -20,15 +19,5 @@ const useAxios = url => {
   }, [url]);
   return { data, isLoading };
 };
-
-// const useJson = url => {
-//   const [data, setData] = useState([]);
-//   const [isLoading, setIsloading] = useState(true);
-//   useEffect(() => {
-//     setData(api[url]);
-//     setIsloading(false);
-//   }, [url]);
-//   return { data, isLoading };
-// };
 
 export { useAxios as useFetch };
