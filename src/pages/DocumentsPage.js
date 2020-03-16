@@ -4,6 +4,7 @@ import { H1 } from "../components/Commons";
 import DocumentList from "../components/DocumentList";
 import Instances from "../components/Instances";
 import SearchQuery from "../components/SearchQuery";
+import { DragDropContext } from "react-beautiful-dnd";
 
 const DocumentsPage = () => (
   <Layout>
@@ -11,14 +12,16 @@ const DocumentsPage = () => (
       <H1>Search Query</H1>
       <SearchQuery />
     </Search>
-    <Environments>
-      <H1>Environments</H1>
-      <Instances />
-    </Environments>
-    <Documents>
-      <H1>Documents</H1>
-      <DocumentList />
-    </Documents>
+    <DragDropContext>
+      <Environments>
+        <H1>Environments</H1>
+        <Instances />
+      </Environments>
+      <Documents>
+        <H1>Documents</H1>
+        <DocumentList />
+      </Documents>
+    </DragDropContext>
   </Layout>
 );
 

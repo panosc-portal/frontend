@@ -5,17 +5,23 @@ import styled from "styled-components";
 import logo from "../icons/logoc.svg";
 import { FiUser, FiLogOut, FiX } from "react-icons/fi";
 import ThemeSwitcher from "./ThemeSwitcher";
-import { Draggable, Droppable } from "react-beautiful-dnd";
+import { withRouter } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = props => {
   const { tabs, closeTab } = useContext(TabContext);
+
   return (
     <NavbarContainer>
       <NavLinkHome exact to={"/"}>
         <img src={logo} alt="Home" />
       </NavLinkHome>
       {tabs.map(tab => (
-        <NavLinkTabContainer key={tab.id}>
+        <NavLinkTabContainer
+          key={tab.id}
+          active={
+            props.location.pathname === "/instance/" + tab.id ? true : false
+          }
+        >
           <NavLinkTab to={"/instance/" + tab.id}>{tab.name}</NavLinkTab>
           <FiX onClick={() => closeTab(tab)} />
         </NavLinkTabContainer>
@@ -32,7 +38,7 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default withRouter(Navbar);
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -73,6 +79,8 @@ const NavLinkTabContainer = styled.div`
   svg:hover {
     color: var(--color-link-hover);
   }
+  background-color: ${props =>
+    props.active ? "var(--color-bg-0)" : "var(--color-bg-1)"};
 `;
 
 const NavLinkTab = styled(NavLink)`

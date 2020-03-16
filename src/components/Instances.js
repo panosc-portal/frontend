@@ -3,7 +3,7 @@ import { useFetch } from "../utils/useFetch";
 import Loading from "./Loading";
 import { TabContext } from "../context/TabContext";
 import styled from "styled-components";
-import { NoUl } from "./Commons";
+import { NoUl, H3 } from "./Commons";
 import { Droppable } from "react-beautiful-dnd";
 
 const Instance = ({ instance, provided }) => {
@@ -13,7 +13,7 @@ const Instance = ({ instance, provided }) => {
   const { openTab } = useContext(TabContext);
   return (
     <div>
-      <h3 onClick={() => openTab(instance)}>{instance.name}</h3>
+      <H3 onClick={() => openTab(instance)}>{instance.name}</H3>
       <div>{instance.description}</div>
       <b>Flavour:</b>
       <div>
@@ -25,6 +25,7 @@ const Instance = ({ instance, provided }) => {
       ) : (
         <>
           <b>Datasets:</b>
+
           <NoUl>
             {data.map(di => (
               <li key={di.id}>
@@ -39,11 +40,10 @@ const Instance = ({ instance, provided }) => {
   );
 };
 
-const Instances = () => {
+const Instances = props => {
   const { data, isLoading } = useFetch("instances?_expand=flavour&userId=1");
   const { tabs } = useContext(TabContext);
   const tabIds = tabs.map(i => i.id).reduce((acc, item) => [...acc, item], []);
-
   return (
     <NoUl>
       {isLoading ? (
