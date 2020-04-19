@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import moment from "moment"
 import { NoUl, Div, Img, H2 } from "./Commons";
 
 const Document = ({ document }) => (
@@ -12,11 +13,11 @@ const Document = ({ document }) => (
       <Meta>Type</Meta>
       <Meta>{document.type}</Meta>
       <Meta>Started</Meta>
-      <Meta>{document.startDate}</Meta>
+      <Meta>{moment(document.startDate).format("L")}</Meta>
       <Meta>Ended</Meta>
-      <Meta>{document.endDate}</Meta>
+      <Meta>{moment(document.endDate).format("L")}</Meta>
       <Meta>Released</Meta>
-      <Meta>{document.releaseDate}</Meta>
+      <Meta>{moment(document.releaseDate).format("L")}</Meta>
       <Meta>Citation</Meta>
       <Meta>{document.citation}</Meta>
       <Image src={document.img} />
