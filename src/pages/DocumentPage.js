@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFetch } from "../utils";
 import styled from "styled-components";
 import { H1, H2 } from "../components/Commons";
@@ -12,11 +12,12 @@ const DocumentPage = props => {
   const { data, isLoading } = useFetch(
     "documents/" + props.match.params.document
   );
+  const [dropDataset, setDropDataset] = useState()
   const onDragEnd = result => {
     const { draggableId, destination } = result;
-    console.log(
-      `Add dataset ${draggableId} to environment ${destination.droppableId}`
-    );
+    const dataset = data.datasets.find(d => d._id === draggableId)
+    dataset.destinationId = destination.droppableId
+    setDropDataset(dataset)
   };
   return (
     <>
@@ -29,12 +30,12 @@ const DocumentPage = props => {
             {isLoading ? (
               <Loading />
             ) : (
-              <Datasets datasets={data.datasets} documentId={data.id} />
+              <Datasets datasets={data.datasets} />
             )}
           </DatasetSection>
           <Environments>
             <H2>Environments</H2>
-            <Instances />
+            <Instances dropDataset={dropDataset} />
           </Environments>
         </DragDropContext>
       </Layout>
