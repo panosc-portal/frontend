@@ -7,20 +7,26 @@ import Datasets from "../components/Datasets";
 import Instances from "../components/Instances";
 import Loading from "../components/Loading";
 import { DragDropContext } from "react-beautiful-dnd";
+import useApi from "../utils/useApi"
 
 const DocumentPage = props => {
   const { data, isLoading } = useFetch(
     "documents/" + props.match.params.document
   );
+  const [call, setCall] = useState({})
   const [dropDataset, setDropDataset] = useState()
   const onDragEnd = result => {
     const { draggableId, destination } = result;
     const dataset = data.datasets.find(d => d._id === draggableId)
     dataset.destinationId = destination.droppableId
+    
     setDropDataset(dataset)
+    setCall({...call, method: 'post', path: `/${destination.droppableId}/${draggableId}`, trigger: true})
   };
+  const { response, waiting } = useApi(call)
   return (
     <>
+    {console.log(response)}
       <H1>{isLoading ? "Loading..." : data.title}</H1>
       <Layout>
         {isLoading ? <Loading /> : <Document document={data} />}

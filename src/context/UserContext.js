@@ -12,7 +12,6 @@ const UserProvider = props => {
   }, [token])
   return (
     <UserContext.Provider value={{ token, setToken, user, isAuthenticated, setIsAuthenticated }}>
-      {console.log(`${isAuthenticated} ${token}`)}
       {props.children}
     </UserContext.Provider>
   );

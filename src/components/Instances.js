@@ -1,24 +1,29 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useFetch } from "../utils/useFetch";
 import Loading from "./Loading";
 import { TabContext } from "../context/TabContext";
 import styled from "styled-components";
 import { NoUl, H3 } from "./Commons";
 import { Droppable } from "react-beautiful-dnd";
+import useApi from "../utils/useApi"
 
 const Instance = ({ instance, provided, dropDataset }) => {
   const { openTab } = useContext(TabContext);
-  return (
+  // const [call, setCall] = useState({trigger: false})
+  // const { response } = useApi(call)
+  // call.trigger && setCall({trigger: false})
+  // useEffect(() => {
+  //   dropDataset && setCall({path: `/${instance._id}/${dropDataset._id}`, method: 'post', data: "", trigger: true})
+  // }, [dropDataset, instance._id])
+
+  return (<>
     <div>
       <H3 onClick={() => openTab(instance)}>{instance.name}</H3>
-      <div>{instance.description}</div>
-      <b>Flavour:</b>
       <div>
-        {instance.flavour.type} - {instance.flavour.name} [CPU:{" "}
-        {instance.flavour.cpu} | GPU: {instance.flavour.gpu}]
+        {instance.flavour.type} - {instance.flavour.name}
       </div>
           <b>Datasets:</b>
-          <NoUl>
+          <ul>
             {instance.datasets.map(dataset => (
               <li key={dataset._id}>
                 <i>{dataset.title}</i>
@@ -30,8 +35,8 @@ const Instance = ({ instance, provided, dropDataset }) => {
               <i>{dropDataset.title}</i>
             </li>
             )}
-          </NoUl>
-    </div>
+          </ul>
+    </div></>
   );
 };
 
