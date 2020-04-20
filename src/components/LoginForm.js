@@ -6,14 +6,14 @@ import { Redirect } from "react-router-dom"
 
 const LoginForm = () => {
     const [credentials, setCredentials] = useState({})
-    const {user, setToken} = useContext(UserContext)
+    const {setToken, isAuthenticated} = useContext(UserContext)
     const submit = async (evt) => {
         evt.preventDefault();
         const {data} = await axios.post(process.env.REACT_APP_AUTH, {...credentials});
         setToken(data.token)
     }
     return(<>
-        {user.username ? <Redirect to={'/'} /> : (
+        {isAuthenticated ? <Redirect to={'/'} /> : (
         <Form onSubmit={submit}>
             <label>Login:</label>
             <input
