@@ -1,14 +1,20 @@
-import React from "react"
+import React, { useEffect, useContext } from "react"
 import LoginForm from "../components/LoginForm"
 import styled from "styled-components"
 import { H1 } from "../components/Commons"
+import { UserContext } from "../context/UserContext"
 
-const LoginPage = () => (
+const LoginPage = () => {
+    const { setToken, setIsAuthenticated } = useContext(UserContext)
+    useEffect(() => (setToken("") || setIsAuthenticated(false)), [setIsAuthenticated, setToken])
+    return (
     <Layout>
-        <section><H1>Welcome to PaNOSC</H1>
-            <LoginForm /></section>
+        <section>
+            <H1>Welcome to PaNOSC</H1>
+            <LoginForm />
+        </section>
     </Layout>
-)
+)}
 
 export default LoginPage
 

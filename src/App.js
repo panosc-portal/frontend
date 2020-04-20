@@ -8,6 +8,7 @@ import NavBar from "./components/Navbar";
 import Iframe from "./pages/iframe/Iframe";
 import GlobalStyle from "./GlobalStyle";
 import LoginPage from "./pages/LoginPage"
+import LogoutPage from "./pages/LogoutPage"
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -30,8 +31,8 @@ const App = () => {
           <Route path="/documents/:document" component={DocumentPage} />
           <Route exact path="/profile" component={DocumentsPage} />
           <Route exact path="/settings" component={DocumentsPage} />
-          <Route exact path="/logout" component={DocumentsPage} />
           <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/logout" component={LogoutPage} />
           <Route path="/instance/:instance" component={Iframe} />
         </Switch>
       </main>
