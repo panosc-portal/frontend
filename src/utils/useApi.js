@@ -1,26 +1,47 @@
 import axios from "axios";
-import { useState, useEffect, useContext } from "react";
-import { UserContext } from "../context/UserContext"
+import {
+  useState,
+  useEffect,
+  useContext
+} from "react";
+import {
+  UserContext
+} from "../context/UserContext"
 
-const useApi = ({path, method, data, trigger}) => {
-  const {token} = useContext(UserContext)
-  const [response, setResponse] = useState();
-  const [waiting, setWaiting] = useState(false)
-  const url = process.env.REACT_APP_CLOUD+path
+const useApi = ({
+  path,
+  method,
+  body,
+}) => {
+  const {
+    token
+  } = useContext(UserContext)
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
+  useEffect(() => {
+    const callApi = async () => {
+      if (path) {
+        setIsLoading(true)
+        const result = await axios({
+          url: process.env.REACT_APP_API + path,
+          method,
+          data: body,
+          headers: {
+            token
+          }
+        });
+        setData(result.data)
+        setIsLoading(false)
+      }
+    };
+    callApi();
+  }, [body, method, path, token]);
 
-useEffect(() => {
-  const callApi = async () => {
-    setWaiting(true)
-    const result = await axios({url, method, data, headers: {token}});
-    console.log(path)
-    setResponse(result);
-    setWaiting(false)
+
+  return {
+    data,
+    isLoading
   };
-  if (trigger) {callApi();}
-}, [data, method, token, url, path, trigger]);
-
-
-return { response, waiting };
 }
 
 export default useApi;
