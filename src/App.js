@@ -11,11 +11,11 @@ import LoginPage from "./pages/LoginPage"
 import LogoutPage from "./pages/LogoutPage"
 
 const App = () => {
-  const { user } = useContext(UserContext)
+  const { isAuthenticated } = useContext(UserContext)
   const { darkTheme } = useContext(ThemeContext);
   const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={(props) => (
-      user.username
+      isAuthenticated
         ? <Component {...props} />
         : <Redirect to={'/login'} />
     )} />
@@ -23,17 +23,15 @@ const App = () => {
   return (
     <>
       <GlobalStyle dark={darkTheme} />
-      <NavBar />
+      {isAuthenticated && <NavBar />}
       <main>
         <Switch>
           <PrivateRoute exact path="/" component={DocumentsPage} />
-          <Route exact path="/documents" component={DocumentsPage} />
-          <Route path="/documents/:document" component={DocumentPage} />
-          <Route exact path="/profile" component={DocumentsPage} />
-          <Route exact path="/settings" component={DocumentsPage} />
+          <PrivateRoute exact path="/documents" component={DocumentsPage} />
+          <PrivateRoute path="/documents/:document" component={DocumentPage} />
           <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/logout" component={LogoutPage} />
-          <Route path="/instance/:instance" component={Iframe} />
+          <PrivateRoute exact path="/logout" component={LogoutPage} />
+          <PrivateRoute path="/instance/:instance" component={Iframe} />
         </Switch>
       </main>
     </>

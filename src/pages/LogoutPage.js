@@ -1,12 +1,16 @@
-import React, {useContext} from "react"
+import React, { useContext } from "react"
 import { Redirect } from "react-router-dom"
 import { UserContext } from "../context/UserContext"
 
 const Logout = () => {
-    const { isAuthenticated, setIsAuthenticated } = useContext(UserContext)
-return (<>{!isAuthenticated && <Redirect to={'/login'} />}
-{setIsAuthenticated(false)}
-</>)
+    const { isAuthenticated, setIsAuthenticated, setToken } = useContext(UserContext)
+    return (
+        <>
+            {setIsAuthenticated(false)}
+            {setToken("")}
+            {localStorage.setItem("token", "")}
+        </>
+    )
 }
 
 export default Logout

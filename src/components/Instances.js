@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useFetch } from "../utils/useFetch";
 import Loading from "./Loading";
 import { TabContext } from "../context/TabContext";
 import styled from "styled-components";
@@ -9,60 +8,60 @@ import useApi from "../utils/useApi"
 
 const Instance = ({ instance, provided, dropDataset }) => {
   const { openTab } = useContext(TabContext);
-  // const [call, setCall] = useState({trigger: false})
-  // const { response } = useApi(call)
-  // call.trigger && setCall({trigger: false})
-  // useEffect(() => {
-  //   dropDataset && setCall({path: `/${instance._id}/${dropDataset._id}`, method: 'post', data: "", trigger: true})
-  // }, [dropDataset, instance._id])
 
-  return (<>
+  return (
     <div>
-      <H3 onClick={() => openTab(instance)}>{instance.name}</H3>
+      <a href="http://localhost:8888/lab" target="_blank"><H3>{instance.name}</H3></a>
+      {/* <H3 onClick={() => openTab(instance)}>{instance.name}</H3> */}
       <div>
         {instance.flavour.type} - {instance.flavour.name}
       </div>
-          <b>Datasets:</b>
-          <ul>
-            {instance.datasets.map(dataset => (
-              <li key={dataset._id}>
-                <i>{dataset.title}</i>
-              </li>
-            ))}
-            {provided.placeholder}
-            {dropDataset && (
-              <li key={dropDataset._id}>
-              <i>{dropDataset.title}</i>
-            </li>
-            )}
-          </ul>
-    </div></>
+      <b>Datasets:</b>
+      <ul>
+        {instance.datasets.map(dataset => (
+          <li key={dataset._id}>
+            <i>{dataset.title}</i>
+          </li>
+        ))}
+        {provided.placeholder}
+      </ul>
+    </div>
   );
 };
 
 const Instances = props => {
-  const { data, isLoading } = useFetch("instances");
+  const [fetch, setFetch] = useState({ path: "/instances" })
+  const { data, isLoading } = useApi(fetch);
   const { tabs } = useContext(TabContext);
   const tabIds = tabs.map(i => i.id).reduce((acc, item) => [...acc, item], []);
+  const [call, setCall] = useState({})
+  const { isLoading: isAddingDataset } = useApi(call)
+  useEffect(() => {
+    if (props.dropDataset) {
+      setCall({ path: `/instances/${props.dropDataset.instance}/${props.dropDataset.dataset}`, method: 'post' })
+      setFetch({ path: "/instances" })
+      console.log("yo")
+    }
+  }, [props.dropDataset])
   return (
     <NoUl>
       {isLoading ? (
         <Loading />
       ) : (
-        data.map(e => (
-          <Droppable key={e._id} droppableId={e._id}>
-            {provided => (
-              <LiInstance
-                active={tabIds.includes(e._id)}
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                <Instance instance={e} provided={provided} dropDataset={props.dropDataset && e._id === props.dropDataset.destinationId && props.dropDataset} />
-              </LiInstance>
-            )}
-          </Droppable>
-        ))
-      )}
+          data.map(e => (
+            <Droppable key={e._id} droppableId={e._id}>
+              {provided => (
+                <LiInstance
+                  active={tabIds.includes(e._id)}
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  <Instance instance={e} provided={provided} dropDataset={props.dropDataset && (e._id === props.dropDataset.instance) && props.dropDataset} />
+                </LiInstance>
+              )}
+            </Droppable>
+          ))
+        )}
     </NoUl>
   );
 };
