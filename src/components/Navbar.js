@@ -17,12 +17,12 @@ const Navbar = props => {
       </NavLinkHome>
       {tabs.map(tab => (
         <NavLinkTabContainer
-          key={tab.id}
+          key={tab._id}
           active={
-            props.location.pathname === "/instance/" + tab.id ? true : false
+            props.location.pathname === "/instance/" + tab._id ? true : false
           }
         >
-          <NavLinkTab to={"/instance/" + tab.id}>{tab.name}</NavLinkTab>
+          <NavLinkTab to={"/instance/" + tab._id}>{tab.name}</NavLinkTab>
           <FiX onClick={() => closeTab(tab)} />
         </NavLinkTabContainer>
       ))}
