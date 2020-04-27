@@ -4,6 +4,7 @@ import Loading from "./Loading";
 import { useFetch } from "../utils";
 import { Link } from "react-router-dom";
 import { NoUl, Div, Img, H3 } from "./Commons";
+import moment from "moment";
 
 const DocumentList = () => {
   const { data, isLoading } = useFetch("documents");
@@ -14,9 +15,9 @@ const DocumentList = () => {
       ) : (
         <NoUl>
           {data.map(d => (
-            <Document key={d.id}>
+            <Document key={d._id}>
               <Main>
-                <Link to={"/documents/" + d.id}>
+                <Link to={"/documents/" + d._id}>
                   <H3>{d.title}</H3>
                 </Link>
                 <Members>
@@ -47,13 +48,13 @@ const DocumentList = () => {
                   Datasets <strong>{d.datasets.length}</strong>
                 </Meta>
                 <Meta>
-                  Started <strong>{d.startDate}</strong>
+                  Started <strong>{moment(d.startDate).format("L")}</strong>
                 </Meta>
                 <Meta>
-                  Ended <strong>{d.endDate}</strong>
+                  Ended <strong>{moment(d.endDate).format("L")}</strong>
                 </Meta>
                 <Meta>
-                  Released <strong>{d.releaseDate}</strong>
+                  Released <strong>{moment(d.releaseDate).format("L")}</strong>
                 </Meta>
               </Metas>
               <Img src={d.img} />

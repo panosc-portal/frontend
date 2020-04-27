@@ -10,7 +10,7 @@ const TabProvider = props => {
   const [tabs, setTabs] = useState([...initTabs]);
   const openTab = tab => {
     const tabIds = tabs
-      .map(i => i.id)
+      .map(i => i._id)
       .reduce((acc, item) => [...acc, item], []);
     !tabIds.includes(tab.id) &&
       (setTabs([...tabs, tab]) ||
