@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsdfc.a  CMakeFiles/sdfc.dir/sdf_control.c.o CMakeFiles/sdfc.dir/sdf_derived.c.o CMakeFiles/sdfc.dir/sdf_extension_util.c.o CMakeFiles/sdfc.dir/sdf_helper.c.o CMakeFiles/sdfc.dir/sdf_input.c.o CMakeFiles/sdfc.dir/sdf_input_cartesian.c.o CMakeFiles/sdfc.dir/sdf_input_point.c.o CMakeFiles/sdfc.dir/sdf_input_station.c.o CMakeFiles/sdfc.dir/sdf_modify.c.o CMakeFiles/sdfc.dir/sdf_output.c.o CMakeFiles/sdfc.dir/sdf_util.c.o CMakeFiles/sdfc.dir/stack_allocator.c.o
+/usr/bin/ranlib libsdfc.a

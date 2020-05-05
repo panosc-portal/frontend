@@ -1,0 +1,7 @@
+setup.py
+/home/jm/sdfsource/SDF-master/utilities/sdf_legacy.py
+/home/jm/sdfsource/SDF-master/utilities/sdf_python.c
+/home/jm/sdfsource/SDF-master/utilities/sdfpy.egg-info/PKG-INFO
+/home/jm/sdfsource/SDF-master/utilities/sdfpy.egg-info/SOURCES.txt
+/home/jm/sdfsource/SDF-master/utilities/sdfpy.egg-info/dependency_links.txt
+/home/jm/sdfsource/SDF-master/utilities/sdfpy.egg-info/top_level.txt

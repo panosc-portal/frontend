@@ -1,0 +1,18 @@
+version: '3'
+services:
+  db:
+    image: 'mongo'
+    ports: 
+      - "27017:27017"
+  
+  express:
+    build: express/.
+    ports:
+      - "5000:5000"
+
+  react:
+    build: react/.
+    ports:
+      - "3000:3000"
+
+    
