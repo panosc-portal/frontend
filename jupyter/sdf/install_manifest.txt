@@ -1,0 +1,15 @@
+/usr/local/lib/libsdfc.a
+/usr/local/lib/SDFC/SDFCConfigVersion.cmake
+/usr/local/lib/SDFC/SDFCConfig.cmake
+/usr/local/lib/SDFC/SDFCConfig-noconfig.cmake
+/usr/local/./include/sdf.h
+/usr/local/./include/sdf_vector_type.h
+/usr/local/./include/sdf_helper.h
+/usr/local/./include/sdf_list_type.h
+/usr/local/./include/stack_allocator.h
+/usr/local/./include/sdf_extension.h
+/usr/local/./include/sdf_derived.h
+/usr/local/include/uthash.h
+/usr/local/bin/sdf2ascii
+/usr/local/bin/sdffilter
+/usr/local/bin/sdfdiff
