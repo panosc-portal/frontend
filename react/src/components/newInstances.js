@@ -10,7 +10,7 @@ import AddInstance from "./AddInstance"
 const Instance = ({ instance, provided }) => {
   return (
     <div>
-      <a href="http://localhost:8888/lab" target="_blank"><H3>{instance.name}</H3></a>
+      <a href="http://10.36.30.20:8888/lab" target="_blank"><H3>{instance.name}</H3></a>
       <div>
         {instance.flavour.type} - {instance.flavour.name}
       </div>

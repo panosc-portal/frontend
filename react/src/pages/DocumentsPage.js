@@ -10,7 +10,7 @@ import Api from "../utils/api"
 const DocumentsPage = () => {
   const [instances, setInstances] = useState([])
   const [isLoadingInstances, setIsLoadingInstances] = useState(true)
-  const [AddNewInstance, setAddNewInstance] = useState({})
+  const [addNewInstance, setAddNewInstance] = useState({})
 
   useEffect(() => {
     const fetch = async () => {
@@ -23,7 +23,7 @@ const DocumentsPage = () => {
       }
     }
     fetch()
-  }, [AddNewInstance])
+  }, [addNewInstance])
   return (
     <Layout>
       <Search>
