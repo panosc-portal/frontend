@@ -1,1 +1,0 @@
-/usr/bin/cc   -rdynamic CMakeFiles/sdf2ascii.dir/sdf2ascii.c.o  -o sdf2ascii  ../C/src/libsdfc.a -ldl -lm 

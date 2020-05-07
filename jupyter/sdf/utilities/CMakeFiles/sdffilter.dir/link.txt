@@ -1,1 +1,0 @@
-/usr/bin/cc   -rdynamic CMakeFiles/sdffilter.dir/sdffilter.c.o CMakeFiles/sdffilter.dir/sdf_vtk_writer.c.o  -o sdffilter  ../C/src/libsdfc.a -ldl -lm 

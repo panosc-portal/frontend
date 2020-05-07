@@ -1,1 +1,0 @@
-/usr/bin/cc   -rdynamic CMakeFiles/sdfdiff.dir/sdfdiff.c.o  -o sdfdiff  ../C/src/libsdfc.a -ldl -lm 
