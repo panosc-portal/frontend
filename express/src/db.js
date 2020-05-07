@@ -38,6 +38,27 @@ const Instances = [{
 ]
 
 const Datasets = [{
+
+        title: "PARTICLE-IN-CELL SIMULATIONS",
+
+        isPublic: true,
+
+        size: 54,
+
+        creationDate: "2020-03-10",
+
+        instrument: {
+
+            name: "pic",
+
+            facility: "ELI Beamlines"
+
+        },
+
+        technique: "Guess & See"
+
+    },
+    {
         title: "Unusual tera-magnetic wave",
         isPublic: true,
         size: 314,
@@ -84,6 +105,63 @@ const Datasets = [{
 ]
 
 const Documents = [{
+
+        title: "Recoil Effects on Reflection from Relativistic Mirrors in Laser Plasmas",
+
+        img: "/thumbnails/5e6/recoil_pv.png",
+
+        summary: "Relativistic mirrors can be realized with strongly nonlinear Langmuir waves excited by intense laser pulses in underdense plasma. On reflection from the relativistic mirror the incident light affects the mirror motion. The corresponding recoil effects are investigated analytically and with particle-in-cell simulations. It is found that if the fluence of the incident electromagnetic wave exceeds a certain threshold, the relativistic mirror undergoes a significant back reaction and splits into multiple electron layers. The reflection coefficient of the relativistic mirror as well as the factors of electric field amplification and frequency upshift of the electromagnetic wave are obtained.",
+
+        datasets: [],
+
+        members: [{
+
+                name: "P. Valenta",
+
+                affiliation: " ELI Beamlines, Institute of Physics, Czech Academy of Sciences",
+
+                role: "Junior Scientist",
+
+            },
+
+            {
+
+                name: "T. Zh. Esirkepov",
+
+                affiliation: " Kansai Photon Science Institute, National Institutes for Quantum and Radiological Science and Technology",
+
+                role: "Scientist"
+
+            }
+
+        ],
+
+        doi: "https://doi.org/10.1063/1.5142084",
+
+        citation: "Petr Valenta; (2020), Recoil Effects on Reflection from Relativistic Mirrors in Laser Plasmas, DOI:10.1142/s0217751x19430103",
+
+        isPublic: true,
+
+        type: "Publication",
+
+        startDate: "2020-03-10",
+
+        endDate: "2020-03-10",
+
+        releaseDate: "2020-03-10",
+
+        licence: "MIT",
+
+        keywords: [
+
+            "RELATIVISTIC MIRROR REALIZED WITH A LANGMUIR WAVE",
+
+            "PARTICLE-IN-CELL SIMULATIONS",
+
+
+        ]
+
+    }, {
         title: "Time-resolvent spectroscopy - run 1-52",
         img: "/thumbnails/5e6/8d4697a40e308dccc1b4389a34e841a8c64dd.jpg",
         summary: "RP4-SRS focuses on time-resolvent spectroscopy experiments in the full range of frequencies from IR to UV. Users can measure samples as varied as solid state crystals, or proteins in their natural environment. Time-resolved spectroscopy is the collection of techniques that are used to examined the dynamic processes of materials and chemicals upon illumination with a pulsed laser.",

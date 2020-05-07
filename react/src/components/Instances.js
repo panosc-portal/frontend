@@ -11,7 +11,7 @@ const Instance = ({ instance, provided, dropDataset }) => {
 
   return (
     <div>
-      <a href="http://localhost:8888/lab" target="_blank"><H3>{instance.name}</H3></a>
+      <a href="http://10.10.4.26:8899/lab" target="_blank"><H3>{instance.name}</H3></a>
       {/* <H3 onClick={() => openTab(instance)}>{instance.name}</H3> */}
       <div>
         {instance.flavour.type} - {instance.flavour.name}
