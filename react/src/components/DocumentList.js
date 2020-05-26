@@ -2,12 +2,35 @@ import React from 'react'
 import styled from 'styled-components'
 import Loading from './Loading'
 import {useFetch} from '../utils'
+import useSearchApi from '../utils/useSearchApi.js'
 import {Link} from 'react-router-dom'
 import {NoUl, Div, Img, H3} from './Commons'
 import moment from 'moment'
 
 const DocumentList = () => {
-  const {data, isLoading} = useFetch('documents')
+  // const {data, isLoading} = useFetch('documents')
+
+  const proposedQuery = {
+    include: [
+      {
+        relation: 'datasets'
+      },
+      {
+        relation: 'members',
+        scope: {
+          include: [
+            {
+              relation: 'affiliation'
+            },
+            {
+              relation: 'person'
+            }
+          ]
+        }
+      }
+    ]
+  }
+  const {data, isLoading, hasError} = useSearchApi('Documents', proposedQuery)
   return (
     <>
       {isLoading ? (
@@ -15,15 +38,15 @@ const DocumentList = () => {
       ) : (
         <NoUl>
           {data.map((d) => (
-            <Document key={d._id}>
+            <Document key={d.pid}>
               <Main>
-                <Link to={'/documents/' + d._id}>
+                <Link to={'/documents/' + d.pid}>
                   <H3>{d.title}</H3>
                 </Link>
                 <Members>
-                  {d.members.map((m, index) => (
-                    <Member key={index}>
-                      {m.name} ({m.affiliation} / {m.role})
+                  {d.members.map((m) => (
+                    <Member key={m.id}>
+                      {m.person.fullName} ({m.affiliation.name} / {m.role})
                     </Member>
                   ))}
                 </Members>
