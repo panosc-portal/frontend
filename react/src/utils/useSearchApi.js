@@ -2,7 +2,7 @@ import axios from 'axios'
 import {useState, useContext, useEffect} from 'react'
 import {UserContext} from '../context/UserContext.js'
 
-const useSearchApi = ({target, query}) => {
+const useSearchApi = (target, query) => {
   const {token} = useContext(UserContext)
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -15,13 +15,14 @@ const useSearchApi = ({target, query}) => {
     }
   })
 
-  const uri = target + '?filter=' + encodeURIComponent(JSON.stringify(query))
-  console.log(uri)
+  const processedQuery =
+    target + '?filter=' + encodeURIComponent(JSON.stringify(query))
+  console.log(processedQuery)
   useEffect(() => {
     const makeTheCall = async () => {
       try {
         setIsLoading(true)
-        const response = await api.get(target)
+        const response = await api.get(processedQuery)
         setData(response.data)
         setIsLoading(false)
         setHasError(false)
@@ -33,7 +34,8 @@ const useSearchApi = ({target, query}) => {
       }
     }
     makeTheCall()
-  }, [target, query])
+  }, [processedQuery])
+  console.log(target + '  ' + query)
   return {data, isLoading, hasError}
 }
 

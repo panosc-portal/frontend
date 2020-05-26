@@ -24,10 +24,10 @@ const Document = ({document}) => (
     </Metas>
     <Members>
       <H2>Members</H2>
-      {document.members.map((m, index) => (
-        <MemberLi key={index}>
-          <MemberFieldName>{m.name}</MemberFieldName>
-          <MemberField>{m.affiliation}</MemberField>
+      {document.members.map((m) => (
+        <MemberLi key={m.id}>
+          <MemberFieldName>{m.person.fullName}</MemberFieldName>
+          <MemberField>{m.affiliation.name}</MemberField>
           <MemberField>{m.role}</MemberField>
         </MemberLi>
       ))}

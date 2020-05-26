@@ -29,7 +29,10 @@ const App = () => {
         <Switch>
           <PrivateRoute exact path="/" component={DocumentsPage} />
           <PrivateRoute exact path="/documents" component={DocumentsPage} />
-          <PrivateRoute path="/documents/:document" component={DocumentPage} />
+          <PrivateRoute
+            path="/documents/:pid1/:pid2"
+            component={DocumentPage}
+          />
           <Route exact path="/login" component={LoginPage} />
           <PrivateRoute exact path="/logout" component={LogoutPage} />
           <PrivateRoute path="/instance/:instance" component={Iframe} />

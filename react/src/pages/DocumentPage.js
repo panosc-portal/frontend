@@ -10,13 +10,42 @@ import {DragDropContext} from 'react-beautiful-dnd'
 import useApi from '../utils/useApi'
 import Instances from '../components/newInstances'
 import Api from '../utils/api'
+import useSearchApi from '../utils/useSearchApi'
 
 const DocumentPage = (props) => {
   // documents
-  const {data, isLoading} = useApi({
-    path: '/documents/' + props.match.params.document
-  })
-
+  // const {data, isLoading} = useApi({
+  //   path: '/documents/' + props.match.params.document
+  // })
+  const pid = props.match.params.pid1 + '/' + props.match.params.pid2
+  const singleQuery = {
+    where: {
+      pid: pid
+    },
+    include: [
+      {
+        relation: 'datasets',
+        scope: {
+          include: [{relation: 'instrument'}]
+        }
+      },
+      {
+        relation: 'members',
+        scope: {
+          include: [
+            {
+              relation: 'affiliation'
+            },
+            {
+              relation: 'person'
+            }
+          ]
+        }
+      }
+    ]
+  }
+  console.log('pid: ' + pid)
+  const {data, isLoading, hasError} = useSearchApi('Documents', singleQuery)
   //instances
   const [instances, setInstances] = useState([])
   const [isLoadingInstances, setIsLoadingInstances] = useState(true)
@@ -61,13 +90,14 @@ const DocumentPage = (props) => {
         ) : (
           <section>
             <H1>{data.title}</H1>
-            <Document document={data} />
+            <Document document={data[0]} />
+            {console.log(data)}
           </section>
         )}
         <DragDropContext onDragEnd={pushDataset}>
           <DatasetSection>
             <H1>Datasets</H1>
-            {isLoading ? <Loading /> : <Datasets datasets={data.datasets} />}
+            {isLoading ? <Loading /> : <Datasets datasets={data[0].datasets} />}
           </DatasetSection>
           <Environments>
             <H1>Environments</H1>
