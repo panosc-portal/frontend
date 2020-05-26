@@ -13,6 +13,7 @@ const Instance = ({instance, provided, dropDataset}) => {
     <div>
       <a href="http://10.10.4.26:8899/lab" target="_blank">
         <H3>{instance.name}</H3>
+        <div>Whatevert</div>
       </a>
       {/* <H3 onClick={() => openTab(instance)}>{instance.name}</H3> */}
       <div>

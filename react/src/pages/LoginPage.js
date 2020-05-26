@@ -15,10 +15,11 @@ const LoginPage = () => {
       <section>
         <H1>The Photon and Neutron Open Science Cloud (PaNOSC)</H1>
         <About>
-          The Photon and Neutron Open Science Cloud (PaNOSC) is a European project
-          for making FAIR data a reality in 6 European Research Infrastructures
-          (RIs), developing and providing services for scientific data and connecting
-          these to the European Open Science Cloud (EOSC).
+          The Photon and Neutron Open Science Cloud (PaNOSC) is a European
+          project for making FAIR data a reality in 6 European Research
+          Infrastructures (RIs), developing and providing services for
+          scientific data and connecting these to the European Open Science
+          Cloud (EOSC).
         </About>
         <About>Please login to continue. (login: user, password: pass)</About>
         <LoginForm />

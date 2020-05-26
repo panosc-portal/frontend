@@ -9,7 +9,9 @@ const LoginForm = () => {
   const {setToken, isAuthenticated} = useContext(UserContext)
   const submit = async (evt) => {
     evt.preventDefault()
-    const {data} = await axios.post(process.env.REACT_APP_AUTH, {...credentials})
+    const {data} = await axios.post(process.env.REACT_APP_AUTH, {
+      ...credentials
+    })
     setToken(data.token)
     localStorage.setItem('token', data.token)
   }

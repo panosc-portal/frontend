@@ -6,7 +6,9 @@ const ThemeProvider = (props) => {
   localStorage.getItem('darkTheme') === null &&
     localStorage.setItem('darkTheme', true)
   let isDark
-  localStorage.getItem('darkTheme') === 'true' ? (isDark = true) : (isDark = false)
+  localStorage.getItem('darkTheme') === 'true'
+    ? (isDark = true)
+    : (isDark = false)
   const [darkTheme, setDarkTheme] = useState(isDark)
   const changeTheme = () => {
     localStorage.setItem('darkTheme', !darkTheme)
