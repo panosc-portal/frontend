@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { H1 } from "../components/Commons";
-import DocumentList from "../components/DocumentList";
-import Instances from "../components/newInstances";
-import SearchQuery from "../components/SearchQuery";
-import { DragDropContext } from "react-beautiful-dnd";
-import Api from "../utils/api"
+import React, {useState, useEffect} from 'react'
+import styled from 'styled-components'
+import {H1} from '../components/Commons'
+import DocumentList from '../components/DocumentList'
+import Instances from '../components/newInstances'
+import SearchQuery from '../components/SearchQuery'
+import {DragDropContext} from 'react-beautiful-dnd'
+import Api from '../utils/api'
 
 const DocumentsPage = () => {
   const [instances, setInstances] = useState([])
@@ -15,7 +15,7 @@ const DocumentsPage = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await Api.get("/instances")
+        const res = await Api.get('/instances')
         setInstances(res.data)
         setIsLoadingInstances(false)
       } catch (err) {
@@ -33,7 +33,9 @@ const DocumentsPage = () => {
       <DragDropContext>
         <Environments>
           <H1>Environments</H1>
-          {isLoadingInstances || <Instances instances={instances} setAddNewInstance={setAddNewInstance} />}
+          {isLoadingInstances || (
+            <Instances instances={instances} setAddNewInstance={setAddNewInstance} />
+          )}
         </Environments>
         <Documents>
           <H1>Documents</H1>
@@ -42,9 +44,9 @@ const DocumentsPage = () => {
       </DragDropContext>
     </Layout>
   )
-};
+}
 
-export default DocumentsPage;
+export default DocumentsPage
 
 const Layout = styled.div`
   margin: 0 5.5rem;
@@ -52,13 +54,13 @@ const Layout = styled.div`
   grid-template-columns: 20rem minmax(60rem, 1fr);
   grid-template-rows: repeat(2, min-content) 1fr;
   grid-gap: var(--dist);
-`;
+`
 
 const Documents = styled.section`
   grid-row: 1/-1;
   grid-column: 2/3;
-`;
+`
 
-const Search = styled.section``;
+const Search = styled.section``
 
-const Environments = styled.section``;
+const Environments = styled.section``
