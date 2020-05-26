@@ -18,7 +18,9 @@ const Navbar = (props) => {
       {tabs.map((tab) => (
         <NavLinkTabContainer
           key={tab._id}
-          active={props.location.pathname === '/instance/' + tab._id ? true : false}
+          active={
+            props.location.pathname === '/instance/' + tab._id ? true : false
+          }
         >
           <NavLinkTab to={'/instance/' + tab._id}>{tab.name}</NavLinkTab>
           <FiX onClick={() => closeTab(tab)} />

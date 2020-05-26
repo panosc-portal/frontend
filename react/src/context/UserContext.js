@@ -11,8 +11,12 @@ const UserProvider = (props) => {
   const localToken = localStorage.getItem('token')
 
   useEffect(() => {
-    token === '' && localToken != null && localToken != null && setToken(localToken)
-    token !== '' && (setUser(jwt.decode(token).user) || setIsAuthenticated(true))
+    token === '' &&
+      localToken != null &&
+      localToken != null &&
+      setToken(localToken)
+    token !== '' &&
+      (setUser(jwt.decode(token).user) || setIsAuthenticated(true))
   }, [token, localToken])
   return (
     <UserContext.Provider

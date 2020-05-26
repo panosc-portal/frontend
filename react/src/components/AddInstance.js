@@ -6,7 +6,9 @@ import {UserContext} from '../context/UserContext'
 
 const AddInstance = ({setAddNewInstance}) => {
   const [newInstance, setNewInstance] = useState({})
-  const {data: dataFlavours, isLoading: isLoadingFlavours} = useFetch('flavours')
+  const {data: dataFlavours, isLoading: isLoadingFlavours} = useFetch(
+    'flavours'
+  )
   const {user} = useContext(UserContext)
   const submit = async (evt) => {
     evt.preventDefault()

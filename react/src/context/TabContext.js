@@ -9,7 +9,9 @@ const TabProvider = (props) => {
 
   const [tabs, setTabs] = useState([...initTabs])
   const openTab = (tab) => {
-    const tabIds = tabs.map((i) => i._id).reduce((acc, item) => [...acc, item], [])
+    const tabIds = tabs
+      .map((i) => i._id)
+      .reduce((acc, item) => [...acc, item], [])
     !tabIds.includes(tab.id) &&
       (setTabs([...tabs, tab]) ||
         localStorage.setItem('tabs', JSON.stringify([...tabs, tab])))

@@ -34,7 +34,10 @@ const DocumentsPage = () => {
         <Environments>
           <H1>Environments</H1>
           {isLoadingInstances || (
-            <Instances instances={instances} setAddNewInstance={setAddNewInstance} />
+            <Instances
+              instances={instances}
+              setAddNewInstance={setAddNewInstance}
+            />
           )}
         </Environments>
         <Documents>
