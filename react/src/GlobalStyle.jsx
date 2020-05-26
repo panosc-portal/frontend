@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import {createGlobalStyle} from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
 
@@ -39,9 +39,9 @@ const GlobalStyle = createGlobalStyle`
 html{
     font-size: 87.5%;
 
-    ${props =>
+    ${(props) =>
       props.dark
-        ? " --color-bg-0: var(--grey0);\
+        ? ' --color-bg-0: var(--grey0);\
             --color-bg-1: var(--grey1);\
             --color-bg-2: var(--grey2);\
             --color-text: var(--white1);\
@@ -51,8 +51,8 @@ html{
             --color-link-hover: var(--blue1);\
             --color-highlight: var(--pink0);\
             --color-jupyter: var(--orange);\
-            --color-vm: var(--violet0);"
-        : " --color-bg-0: var(--grey3);\
+            --color-vm: var(--violet0);'
+        : ' --color-bg-0: var(--grey3);\
             --color-bg-1: var(--grey4);\
             --color-bg-2: var(--grey5);\
             --color-text: var(--white4);\
@@ -62,7 +62,7 @@ html{
             --color-link-hover: var(--blue1);\
             --color-highlight: var(--pink1);\
             --color-jupyter: var(--orange);\
-            --color-vm: var(--violet1);"}
+            --color-vm: var(--violet1);'}
 
         font-family: "Open Sans", sans-serif;
 
@@ -100,6 +100,6 @@ a {
     color: var(--color-link-hover);
     }
 }
-`;
+`
 
-export default GlobalStyle;
+export default GlobalStyle
