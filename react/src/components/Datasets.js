@@ -4,7 +4,7 @@ import {NoUl, Li, H3} from './Commons'
 import {Draggable, Droppable} from 'react-beautiful-dnd'
 
 const Dataset = ({dataset, index}) => (
-  <Draggable draggableId={dataset._id} index={index}>
+  <Draggable draggableId={dataset.pid} index={index}>
     {(provided) => (
       <Li
         {...provided.draggableProps}
@@ -28,7 +28,7 @@ const Datasets = ({datasets}) => (
     {(provided) => (
       <NoUl ref={provided.innerRef} {...provided.droppableProps}>
         {datasets.map((dataset, index) => (
-          <Dataset dataset={dataset} index={index} key={dataset._id} />
+          <Dataset dataset={dataset} index={index} key={dataset.pid} />
         ))}
         {provided.placeholder}
       </NoUl>

@@ -19,7 +19,7 @@ const Instance = ({instance, provided}) => {
       <b>Datasets:</b>
       <ul>
         {instance.datasets.map((dataset) => (
-          <li key={dataset._id}>
+          <li key={dataset.pid}>
             <i>{dataset.title}</i>
           </li>
         ))}

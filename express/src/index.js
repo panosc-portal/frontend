@@ -23,17 +23,18 @@ app.use(
 
 app.use(async (req, res, next) => {
   const token = req.header("token");
-  if (req.path === "/auth") return next();
+  return next();
+  // if (req.path === "/auth") return next();
   // if (!token) return res.sendStatus(403);
 
-  try {
-    const decodedToken = jwt.verify(token, process.env.SECRET);
-    req.user = decodedToken.user;
-    // console.log(decodedToken)
-    next();
-  } catch (e) {
-    res.sendStatus(403);
-  }
+  // try {
+  //   const decodedToken = jwt.verify(token, process.env.SECRET);
+  //   req.user = decodedToken.user;
+  //   // console.log(decodedToken)
+  //   next();
+  // } catch (e) {
+  //   res.sendStatus(403);
+  // }
 });
 
 app.use(async (req, res, next) => {
