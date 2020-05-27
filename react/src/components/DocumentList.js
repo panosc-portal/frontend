@@ -40,7 +40,7 @@ const DocumentList = () => {
           {data.map((d) => (
             <Document key={d.pid}>
               <Main>
-                <Link to={'/documents/' + d.pid}>
+                <Link to={'/documents/' + encodeURIComponent(d.pid)}>
                   <H3>{d.title}</H3>
                 </Link>
                 <Members>
