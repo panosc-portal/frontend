@@ -45,16 +45,10 @@ router.post("/:instanceId/:datasetId", async (req, res) => {
   const instance = await req.context.models.Instance.findById(
     req.params.instanceId
   );
-  console.log(
-    `backendId: ${instance._id} incomingId: ${req.params.instanceId}`
-  );
+
   // instance.datasets.push(req.params.datasetId);
-  const updatedDatasets = [
-    ...instance.datasets,
-    req.params.datasetId,
-  ];
+  const updatedDatasets = [...instance.datasets, req.params.datasetId];
   instance.datasets = updatedDatasets;
-  console.log(`altered instance: ${instance}`);
   instance.save();
   return res.send(instance);
 });
