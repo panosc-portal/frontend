@@ -65,7 +65,9 @@ const DocumentPage = (props) => {
       if (addDataset.dataset) {
         try {
           const add = await Api.post(
-            `/instances/${addDataset.instance}/${addDataset.dataset}`
+            `/instances/${addDataset.instance}/${encodeURIComponent(
+              addDataset.dataset
+            )}`
           )
           console.log(add)
         } catch (err) {
