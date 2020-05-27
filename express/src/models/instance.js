@@ -1,22 +1,19 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const instanceSchema = new mongoose.Schema({
   name: String,
   description: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: "User",
   },
   flavour: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Flavour'
+    ref: "Flavour",
   },
-  datasets: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Dataset'
-  }]
+  datasets: [String],
 });
 
-const Instance = mongoose.model('Instance', instanceSchema);
+const Instance = mongoose.model("Instance", instanceSchema);
 
 export default Instance;

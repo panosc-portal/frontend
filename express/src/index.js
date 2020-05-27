@@ -47,7 +47,7 @@ app.use(async (req, res, next) => {
 // Routes
 
 app.use("/users", routes.user);
-app.use("/documents", routes.document);
+// app.use("/documents", routes.document);
 app.use("/instances", routes.instance);
 app.use("/auth", routes.auth);
 app.use("/flavours", routes.flavour);
@@ -60,15 +60,15 @@ connectDb().then(async () => {
     models.User.deleteMany({}),
     models.Instance.deleteMany({}),
     models.Flavour.deleteMany({}),
-    models.Dataset.deleteMany({}),
-    models.Document.deleteMany({}),
+    // models.Dataset.deleteMany({}),
+    // models.Document.deleteMany({}),
   ]);
 
   await createUsers();
   await createFlavours();
   await createInstances();
-  await createDatasets();
-  await createDocuments();
+  // await createDatasets();
+  // await createDocuments();
 });
 
 app.listen(process.env.PORT);
