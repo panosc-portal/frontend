@@ -17,7 +17,7 @@ const DocumentPage = (props) => {
   // const {data, isLoading} = useApi({
   //   path: '/documents/' + props.match.params.document
   // })
-  const pid = props.match.params.pid1 + '/' + props.match.params.pid2
+  const pid = decodeURIComponent(props.match.params.documentId)
   const singleQuery = {
     where: {
       pid: pid
