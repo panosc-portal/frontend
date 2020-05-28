@@ -32,7 +32,7 @@ const useFreshInstances = () => {
     }
     freshenInstances()
   }, [newInstance])
-  return [{data, isLoading, hasError}, setNewInstance]
+  return {data, isLoading, hasError, setNewInstance}
 }
 
 export default useFreshInstances

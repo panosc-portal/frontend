@@ -19,7 +19,6 @@ const DocumentsPage = () => {
         setInstances(res.data)
         setIsLoadingInstances(false)
       } catch (err) {
-        console.log(err)
       }
     }
     fetch()

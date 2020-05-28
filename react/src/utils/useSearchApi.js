@@ -17,7 +17,6 @@ const useSearchApi = (target, query) => {
 
   const processedQuery =
     target + '?filter=' + encodeURIComponent(JSON.stringify(query))
-  console.log(processedQuery)
   useEffect(() => {
     const makeTheCall = async () => {
       try {
@@ -27,7 +26,6 @@ const useSearchApi = (target, query) => {
         setIsLoading(false)
         setHasError(false)
       } catch (err) {
-        console.log(err)
         setHasError(true)
         setIsLoading(false)
         setData([{error: err}])
@@ -35,7 +33,6 @@ const useSearchApi = (target, query) => {
     }
     makeTheCall()
   }, [processedQuery])
-  console.log(target + '  ' + query)
   return {data, isLoading, hasError}
 }
 

@@ -46,7 +46,6 @@ const Instances = (props) => {
         method: 'post'
       })
       setFetch({path: '/instances'})
-      console.log('yo')
     }
   }, [props.dropDataset])
   return (

@@ -3,18 +3,19 @@ import styled from 'styled-components'
 import Api from '../utils/api'
 import {useFetch} from '../utils'
 import {UserContext} from '../context/UserContext'
+import useFreshInstances from './instanceDndHelper.js'
 
-const AddInstance = ({setAddNewInstance}) => {
+const AddInstance = () => {
   const [newInstance, setNewInstance] = useState({})
   const {data: dataFlavours, isLoading: isLoadingFlavours} = useFetch(
     'flavours'
   )
+  const {setNewInstance: setAddNewInstance} = useFreshInstances()
   const {user} = useContext(UserContext)
   const submit = async (evt) => {
     evt.preventDefault()
     const payload = {...newInstance, user: user._id}
-    const addInstance = await Api.post('/instances', {...payload})
-    console.log(addInstance)
+    await Api.post('/instances', {...payload})
     setAddNewInstance({...payload})
   }
   return (
