@@ -1,6 +1,6 @@
 # Quickstart
 `docker-compose up`
- - starts a fork of search api with my demo data
+ - starts a fork of search api with my demo data (:5001)
  - starts express backend (:5000) //dummy cloud api
  - starts react frontend (:3000)
 
