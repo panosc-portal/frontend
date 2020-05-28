@@ -8,16 +8,15 @@ const useSearchApi = (target, query) => {
   const [isLoading, setIsLoading] = useState(true)
   const [hasError, setHasError] = useState(false)
 
-  const api = axios.create({
-    baseURL: process.env.REACT_APP_SEARCHAPI,
-    headers: {
-      token: token
-    }
-  })
-
   const processedQuery =
     target + '?filter=' + encodeURIComponent(JSON.stringify(query))
   useEffect(() => {
+    const api = axios.create({
+      baseURL: process.env.REACT_APP_SEARCHAPI,
+      headers: {
+        token: token
+      }
+    })
     const makeTheCall = async () => {
       try {
         setIsLoading(true)
@@ -32,7 +31,7 @@ const useSearchApi = (target, query) => {
       }
     }
     makeTheCall()
-  }, [processedQuery])
+  }, [processedQuery, token])
   return {data, isLoading, hasError}
 }
 
