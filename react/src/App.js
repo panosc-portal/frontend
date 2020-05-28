@@ -21,10 +21,13 @@ const App = () => {
   //     }
   //   />
   // )
+  //
+
+  // {isAuthenticated && <NavBar />}
   return (
     <>
       <GlobalStyle dark={darkTheme} />
-      {isAuthenticated && <NavBar />}
+      <NavBar />
       <main>
         <Switch>
           <Route exact path="/" component={DocumentsPage} />
