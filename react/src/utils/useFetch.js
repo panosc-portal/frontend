@@ -16,7 +16,6 @@ const useAxios = (url) => {
           : 'http://localhost:5000/' + url,
         {headers: {token}}
       )
-      console.log(jwt.decode(token))
       setData(result.data)
       setIsLoading(false)
     }

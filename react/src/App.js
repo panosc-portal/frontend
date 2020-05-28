@@ -9,6 +9,7 @@ import Iframe from './pages/iframe/Iframe'
 import GlobalStyle from './GlobalStyle'
 import LoginPage from './pages/LoginPage'
 import LogoutPage from './pages/LogoutPage'
+import {SWRConfig} from 'swr'
 
 const App = () => {
   const {isAuthenticated} = useContext(UserContext)

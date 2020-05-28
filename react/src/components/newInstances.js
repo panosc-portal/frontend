@@ -6,26 +6,43 @@ import {Droppable} from 'react-beautiful-dnd'
 import useApi from '../utils/useApi'
 import Api from '../utils/api'
 import AddInstance from './AddInstance'
+import useSearchApi from '../utils/useSearchApi.js'
 
 const Instance = ({instance, provided}) => {
+  const datasetIds = instance.datasets.reduce(
+    (acc, val) => [...acc, {pid: val}],
+    []
+  )
+  const query = {
+    where: {
+      or: datasetIds
+    }
+  }
+  const {data: datasets, isLoading} = useSearchApi('Datasets', query)
   return (
-    <div>
-      <a href="http://10.36.30.20:8888/lab" target="_blank">
-        <H3>{instance.name}</H3>
-      </a>
-      <div>
-        {instance.flavour.type} - {instance.flavour.name}
-      </div>
-      <b>Datasets:</b>
-      <ul>
-        {instance.datasets.map((dataset) => (
-          <li key={dataset.pid}>
-            <i>{dataset.title}</i>
-          </li>
-        ))}
-        {provided.placeholder}
-      </ul>
-    </div>
+    <>
+      {isLoading ? (
+        <p>Loading</p>
+      ) : (
+        <div>
+          <a href="http://10.36.30.20:8888/lab" target="_blank">
+            <H3>{instance.name}</H3>
+          </a>
+          <div>
+            {instance.flavour.type} - {instance.flavour.name}
+          </div>
+          <b>Datasets:</b>
+          <ul>
+            {datasets.map((dataset) => (
+              <li key={dataset.pid}>
+                <i>{dataset.title}</i>
+              </li>
+            ))}
+            {provided.placeholder}
+          </ul>
+        </div>
+      )}
+    </>
   )
 }
 

@@ -2,37 +2,37 @@ import axios from 'axios'
 import {useContext, useEffect, useState} from 'react'
 import {UserContext} from '../context/UserContext.js'
 
-const useFreshInstances = () => {
-  const [data, setData] = useState([])
+const getFreshInstances = () => {
+  const [data, setInstances] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [newInstance, setNewInstance] = useState({})
   const [hasError, setHasError] = useState(false)
+
   const {token} = useContext(UserContext)
   const api = axios.create({
-    baseURL: process.env.REACT_APP_CLOUDAPI,
+    baseURL: process.env.REACT_APP_SEARCHAPI,
     headers: {
       token: token
     }
   })
-  console.log('state of instance: ' + newInstance)
+
   useEffect(() => {
     const freshenInstances = async () => {
       try {
         const res = await api.get('/instances')
-        setData(res.data)
+        setInstances(res.data)
         setIsLoading(false)
         setHasError(false)
-        console.log(`instancRefresherSays: ${res.data[0].datasets}`)
       } catch (err) {
         console.log(err)
         setHasError(true)
         setIsLoading(false)
-        setData([{err}])
+        setInstances([{err}])
       }
     }
     freshenInstances()
   }, [newInstance])
-  return [{data, isLoading, hasError}, setNewInstance]
+  return {data, isLoading, hasError, setNewInstance}
 }
 
-export default useFreshInstances
+export default getFreshInstances

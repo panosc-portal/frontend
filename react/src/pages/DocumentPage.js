@@ -11,6 +11,7 @@ import useApi from '../utils/useApi'
 import Instances from '../components/newInstances'
 import Api from '../utils/api'
 import useSearchApi from '../utils/useSearchApi'
+import useFreshInstances from '../components/instanceDndHelper.js'
 
 const DocumentPage = (props) => {
   // documents
@@ -44,12 +45,11 @@ const DocumentPage = (props) => {
       }
     ]
   }
-  console.log('pid: ' + pid)
   const {data, isLoading, hasError} = useSearchApi('Documents', singleQuery)
   //instances
-  const [instances, setInstances] = useState([])
-  const [isLoadingInstances, setIsLoadingInstances] = useState(true)
-  const [AddNewInstance, setAddNewInstance] = useState({})
+  // const [instances, setInstances] = useState([])
+  // const [isLoadingInstances, setIsLoadingInstances] = useState(true)
+  // const [AddNewInstance, setAddNewInstance] = useState({})
 
   const [addDataset, setAddDataset] = useState({})
   const pushDataset = (result) => {
@@ -59,7 +59,10 @@ const DocumentPage = (props) => {
     }
     setAddDataset({...payload})
   }
-
+  const [
+    {data: instances, isLoading: isLoadingInstances},
+    setAddNewInstance
+  ] = useFreshInstances()
   useEffect(() => {
     const fetch = async () => {
       if (addDataset.dataset) {
@@ -69,21 +72,20 @@ const DocumentPage = (props) => {
               addDataset.dataset
             )}`
           )
-          console.log(add)
-        } catch (err) {
-          console.log(err)
-        }
+          setAddNewInstance({yo: 'yo'})
+        } catch (err) {}
       }
-      try {
-        const res = await Api.get('/instances')
-        setInstances(res.data)
-        setIsLoadingInstances(false)
-      } catch (err) {
-        console.log(err)
-      }
+      // try {
+      //   const res = await Api.get('/instances')
+      //   setInstances(res.data)
+      //   setIsLoadingInstances(false)
+      // } catch (err) {
+      //   console.log(err)
+      // }
     }
     fetch()
-  }, [addDataset, AddNewInstance])
+  }, [addDataset])
+
   return (
     <>
       <Layout>
@@ -93,7 +95,6 @@ const DocumentPage = (props) => {
           <section>
             <H1>{data.title}</H1>
             <Document document={data[0]} />
-            {console.log(data)}
           </section>
         )}
         <DragDropContext onDragEnd={pushDataset}>
