@@ -3,14 +3,12 @@ import styled from 'styled-components'
 import Api from '../utils/api'
 import {useFetch} from '../utils'
 import {UserContext} from '../context/UserContext'
-import useFreshInstances from './instanceDndHelper.js'
 
-const AddInstance = () => {
+const AddInstance = ({setAddNewInstance}) => {
   const [newInstance, setNewInstance] = useState({})
   const {data: dataFlavours, isLoading: isLoadingFlavours} = useFetch(
     'flavours'
   )
-  const {setNewInstance: setAddNewInstance} = useFreshInstances()
   const {user} = useContext(UserContext)
   const submit = async (evt) => {
     evt.preventDefault()

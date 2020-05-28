@@ -9,34 +9,30 @@ import Iframe from './pages/iframe/Iframe'
 import GlobalStyle from './GlobalStyle'
 import LoginPage from './pages/LoginPage'
 import LogoutPage from './pages/LogoutPage'
-import {SWRConfig} from 'swr'
 
 const App = () => {
   const {isAuthenticated} = useContext(UserContext)
   const {darkTheme} = useContext(ThemeContext)
-  const PrivateRoute = ({component: Component, ...rest}) => (
-    <Route
-      {...rest}
-      render={(props) =>
-        isAuthenticated ? <Component {...props} /> : <Redirect to={'/login'} />
-      }
-    />
-  )
+  // const PrivateRoute = ({component: Component, ...rest}) => (
+  //   <Route
+  //     {...rest}
+  //     render={(props) =>
+  //       isAuthenticated ? <Component {...props} /> : <Redirect to={'/login'} />
+  //     }
+  //   />
+  // )
   return (
     <>
       <GlobalStyle dark={darkTheme} />
       {isAuthenticated && <NavBar />}
       <main>
         <Switch>
-          <PrivateRoute exact path="/" component={DocumentsPage} />
-          <PrivateRoute exact path="/documents" component={DocumentsPage} />
-          <PrivateRoute
-            path="/documents/:documentId"
-            component={DocumentPage}
-          />
+          <Route exact path="/" component={DocumentsPage} />
+          <Route exact path="/documents" component={DocumentsPage} />
+          <Route path="/documents/:documentId" component={DocumentPage} />
           <Route exact path="/login" component={LoginPage} />
-          <PrivateRoute exact path="/logout" component={LogoutPage} />
-          <PrivateRoute path="/instance/:instance" component={Iframe} />
+          <Route exact path="/logout" component={LogoutPage} />
+          <Route path="/instance/:instance" component={Iframe} />
         </Switch>
       </main>
     </>

@@ -1,87 +1,66 @@
 import React from 'react'
 import styled from 'styled-components'
-import Loading from './Loading'
-import {useFetch} from '../utils'
 import useSearchApi from '../utils/useSearchApi.js'
 import {Link} from 'react-router-dom'
 import {NoUl, Div, Img, H3} from './Commons'
 import moment from 'moment'
 
-const DocumentList = () => {
-  // const {data, isLoading} = useFetch('documents')
-
-  const proposedQuery = {
-    include: [
-      {
-        relation: 'datasets'
-      },
-      {
-        relation: 'members',
-        scope: {
-          include: [
-            {
-              relation: 'affiliation'
-            },
-            {
-              relation: 'person'
-            }
-          ]
-        }
-      }
-    ]
-  }
-  const {data, isLoading, hasError} = useSearchApi('Documents', proposedQuery)
+const Doc = ({d}) => (
+  <Document>
+    <Main>
+      <Link to={'/documents/' + encodeURIComponent(d.pid)}>
+        <H3>{d.title}</H3>
+      </Link>
+      <Members>
+        {d.members.map((m) => (
+          <Member key={m.id}>
+            {m.person.fullName} ({m.affiliation.name} / {m.role})
+          </Member>
+        ))}
+      </Members>
+      <ShortSummary>{d.summary}</ShortSummary>
+      <Citation>{d.citation}</Citation>
+      <Badges>
+        {d.keywords.map((keyword, index) => (
+          <Badge key={index}>{keyword}</Badge>
+        ))}
+      </Badges>
+    </Main>
+    <Metas>
+      <Meta>
+        <strong>{d.type}</strong>
+      </Meta>
+      <Meta>
+        <strong>
+          {d.licence} / {d.isPublic ? 'Public' : 'Non-Public'}
+        </strong>
+      </Meta>
+      <Meta>
+        Datasets <strong>{d.datasets.length}</strong>
+      </Meta>
+      <Meta>
+        Started <strong>{moment(d.startDate).format('L')}</strong>
+      </Meta>
+      <Meta>
+        Ended <strong>{moment(d.endDate).format('L')}</strong>
+      </Meta>
+      <Meta>
+        Released <strong>{moment(d.releaseDate).format('L')}</strong>
+      </Meta>
+    </Metas>
+    <Img src={d.img} />
+  </Document>
+)
+const DocumentList = ({query}) => {
+  const {data, isLoading} = useSearchApi('Documents', query)
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <p>Loading...</p>
       ) : (
         <NoUl>
-          {data.map((d) => (
-            <Document key={d.pid}>
-              <Main>
-                <Link to={'/documents/' + encodeURIComponent(d.pid)}>
-                  <H3>{d.title}</H3>
-                </Link>
-                <Members>
-                  {d.members.map((m) => (
-                    <Member key={m.id}>
-                      {m.person.fullName} ({m.affiliation.name} / {m.role})
-                    </Member>
-                  ))}
-                </Members>
-                <ShortSummary>{d.summary}</ShortSummary>
-                <Citation>{d.citation}</Citation>
-                <Badges>
-                  {d.keywords.map((keyword, index) => (
-                    <Badge key={index}>{keyword}</Badge>
-                  ))}
-                </Badges>
-              </Main>
-              <Metas>
-                <Meta>
-                  <strong>{d.type}</strong>
-                </Meta>
-                <Meta>
-                  <strong>
-                    {d.licence} / {d.isPublic ? 'Public' : 'Non-Public'}
-                  </strong>
-                </Meta>
-                <Meta>
-                  Datasets <strong>{d.datasets.length}</strong>
-                </Meta>
-                <Meta>
-                  Started <strong>{moment(d.startDate).format('L')}</strong>
-                </Meta>
-                <Meta>
-                  Ended <strong>{moment(d.endDate).format('L')}</strong>
-                </Meta>
-                <Meta>
-                  Released <strong>{moment(d.releaseDate).format('L')}</strong>
-                </Meta>
-              </Metas>
-              <Img src={d.img} />
-            </Document>
+          {data.map((document) => (
+            <Doc key={document.pid} d={document} />
           ))}
         </NoUl>
       )}

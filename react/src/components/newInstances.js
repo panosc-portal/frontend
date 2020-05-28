@@ -1,10 +1,7 @@
-import React, {useContext, useEffect, useState} from 'react'
-import Loading from './Loading'
+import React from 'react'
 import styled from 'styled-components'
 import {NoUl, H3} from './Commons'
 import {Droppable} from 'react-beautiful-dnd'
-import useApi from '../utils/useApi'
-import Api from '../utils/api'
 import AddInstance from './AddInstance'
 import useSearchApi from '../utils/useSearchApi.js'
 

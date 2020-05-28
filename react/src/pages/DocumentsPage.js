@@ -1,38 +1,44 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import {H1} from '../components/Commons'
 import DocumentList from '../components/DocumentList'
 import Instances from '../components/newInstances'
 import SearchQuery from '../components/SearchQuery'
 import {DragDropContext} from 'react-beautiful-dnd'
-import Api from '../utils/api'
 import useFreshInstances from '../components/instanceDndHelper.js'
 
 const DocumentsPage = () => {
-  // const [instances, setInstances] = useState([])
-  // const [isLoadingInstances, setIsLoadingInstances] = useState(true)
-  // const [addNewInstance, setAddNewInstance] = useState({})
-
-  // useEffect(() => {
-  //   const fetch = async () => {
-  //     try {
-  //       const res = await Api.get('/instances')
-  //       setInstances(res.data)
-  //       setIsLoadingInstances(false)
-  //     } catch (err) {
-  //     }
-  //   }
-  //   fetch()
-  // }, [addNewInstance])
   const [
     {data: instances, isLoading: isLoadingInstances},
     setAddNewInstance
   ] = useFreshInstances()
+  const initialQuery = {
+    include: [
+      {
+        relation: 'datasets'
+      },
+      {
+        relation: 'members',
+        scope: {
+          include: [
+            {
+              relation: 'affiliation'
+            },
+            {
+              relation: 'person'
+            }
+          ]
+        }
+      }
+    ]
+  }
+
+  const [query, setQuery] = useState(initialQuery)
   return (
     <Layout>
       <Search>
         <H1>Search Query</H1>
-        <SearchQuery />
+        <SearchQuery setQuery={setQuery} />
       </Search>
       <DragDropContext>
         <Environments>
@@ -46,7 +52,7 @@ const DocumentsPage = () => {
         </Environments>
         <Documents>
           <H1>Documents</H1>
-          <DocumentList />
+          <DocumentList query={query} />
         </Documents>
       </DragDropContext>
     </Layout>

@@ -1,23 +1,17 @@
 import React, {useState, useEffect} from 'react'
-import {useFetch} from '../utils'
 import styled from 'styled-components'
-import {H1, H2} from '../components/Commons'
+import {H1} from '../components/Commons'
 import Document from '../components/Document'
 import Datasets from '../components/Datasets'
 // import Instances from "../components/Instances";
 import Loading from '../components/Loading'
 import {DragDropContext} from 'react-beautiful-dnd'
-import useApi from '../utils/useApi'
 import Instances from '../components/newInstances'
 import Api from '../utils/api'
 import useSearchApi from '../utils/useSearchApi'
 import useFreshInstances from '../components/instanceDndHelper.js'
 
 const DocumentPage = (props) => {
-  // documents
-  // const {data, isLoading} = useApi({
-  //   path: '/documents/' + props.match.params.document
-  // })
   const pid = decodeURIComponent(props.match.params.documentId)
   const singleQuery = {
     where: {
@@ -45,12 +39,7 @@ const DocumentPage = (props) => {
       }
     ]
   }
-  const {data, isLoading, hasError} = useSearchApi('Documents', singleQuery)
-  //instances
-  // const [instances, setInstances] = useState([])
-  // const [isLoadingInstances, setIsLoadingInstances] = useState(true)
-  // const [AddNewInstance, setAddNewInstance] = useState({})
-
+  const {data, isLoading} = useSearchApi('Documents', singleQuery)
   const [addDataset, setAddDataset] = useState({})
   const pushDataset = (result) => {
     const payload = {
@@ -67,21 +56,16 @@ const DocumentPage = (props) => {
     const fetch = async () => {
       if (addDataset.dataset) {
         try {
-          const add = await Api.post(
+          await Api.post(
             `/instances/${addDataset.instance}/${encodeURIComponent(
               addDataset.dataset
             )}`
           )
           setAddNewInstance({yo: 'yo'})
-        } catch (err) {}
+        } catch (err) {
+          console.log(err)
+        }
       }
-      // try {
-      //   const res = await Api.get('/instances')
-      //   setInstances(res.data)
-      //   setIsLoadingInstances(false)
-      // } catch (err) {
-      //   console.log(err)
-      // }
     }
     fetch()
   }, [addDataset])
