@@ -1,6 +1,7 @@
 # Quickstart
 `docker-compose up`
- - starts express backend (:5000)
+ - starts a fork of search api with my demo data
+ - starts express backend (:5000) //dummy cloud api
  - starts react frontend (:3000)
 
 ## It looks like it's getting out of hands, some architectural changesare imminent
