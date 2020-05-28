@@ -34,6 +34,7 @@ const DocumentsPage = () => {
   }
 
   const [query, setQuery] = useState(initialQuery)
+  console.log(query)
   return (
     <Layout>
       <Search>

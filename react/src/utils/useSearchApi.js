@@ -10,6 +10,7 @@ const useSearchApi = (target, query) => {
 
   const processedQuery =
     target + '?filter=' + encodeURIComponent(JSON.stringify(query))
+  console.log(processedQuery)
   useEffect(() => {
     const api = axios.create({
       baseURL: process.env.REACT_APP_SEARCHAPI,
