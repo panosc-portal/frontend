@@ -6,23 +6,28 @@ import Instances from '../components/newInstances'
 import SearchQuery from '../components/SearchQuery'
 import {DragDropContext} from 'react-beautiful-dnd'
 import Api from '../utils/api'
+import useFreshInstances from '../components/instanceDndHelper.js'
 
 const DocumentsPage = () => {
-  const [instances, setInstances] = useState([])
-  const [isLoadingInstances, setIsLoadingInstances] = useState(true)
-  const [addNewInstance, setAddNewInstance] = useState({})
+  // const [instances, setInstances] = useState([])
+  // const [isLoadingInstances, setIsLoadingInstances] = useState(true)
+  // const [addNewInstance, setAddNewInstance] = useState({})
 
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const res = await Api.get('/instances')
-        setInstances(res.data)
-        setIsLoadingInstances(false)
-      } catch (err) {
-      }
-    }
-    fetch()
-  }, [addNewInstance])
+  // useEffect(() => {
+  //   const fetch = async () => {
+  //     try {
+  //       const res = await Api.get('/instances')
+  //       setInstances(res.data)
+  //       setIsLoadingInstances(false)
+  //     } catch (err) {
+  //     }
+  //   }
+  //   fetch()
+  // }, [addNewInstance])
+  const [
+    {data: instances, isLoading: isLoadingInstances},
+    setAddNewInstance
+  ] = useFreshInstances()
   return (
     <Layout>
       <Search>
