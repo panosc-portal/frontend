@@ -79,7 +79,7 @@ const DocumentPage = (props) => {
           <Loading />
         ) : (
           <section>
-            <H1>{data.title}</H1>
+            <H1>{data[0].title}</H1>
             <Document document={data[0]} />
           </section>
         )}
