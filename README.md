@@ -1,16 +1,19 @@
 # Quickstart
 `docker-compose up`
- - starts a fork of search api with my demo data (:5001)
- - starts express backend (:5000) //dummy cloud api
+ - clones searchapi and replaces its database with mine(:5001)
+ - starts an express app providing dummy cloud service(:5000)
  - starts react frontend (:3000)
 
-## It looks like it's getting out of hands, some architectural changesare imminent
-I've put together a list of packages (and also just 'stuff') that I think could help with that. It would be super helpful if some webdev master went through and reviewed it...
+ - if running as individual services, set env variables manually
+## Current state
+ - Login / Logout disabled
+ - Somewhat hard to maintain
+ - If you try to break it, you will succeed..
+
+## It looks like it's getting out of hands, some architectural changes are imminent
+I've put together a list of things that I think could help.
  - Rebass (w Emotion) - a simple UI component library
  - SWR - data fetching library with support for Suspense
  - Something for handling sessions (Passport.js, AUTH0, Firebase, ??)
  - proper Eslint setup with Husky
  - unit tests
- - docker-compose with hot-reloading for ez development
-
-### The entire thing is ready for a rewrite using ^^^

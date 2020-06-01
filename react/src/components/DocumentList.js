@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import useSearchApi from '../utils/useSearchApi.js'
+import {useSearchApi} from '../utils/useApi.js'
 import {Link} from 'react-router-dom'
 import {NoUl, Div, Img, H3} from './Commons'
 import moment from 'moment'

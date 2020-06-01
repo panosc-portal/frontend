@@ -4,16 +4,20 @@ import {TabContext} from '../context/TabContext'
 import styled from 'styled-components'
 import {NoUl, H3} from './Commons'
 import {Droppable} from 'react-beautiful-dnd'
+import {useFakeCloudService} from '../utils/useSearchApi.js'
 import useApi from '../utils/useApi'
 
 const Instance = ({instance, provided, dropDataset}) => {
-  const {openTab} = useContext(TabContext)
+  // const {openTab} = useContext(TabContext)
 
   return (
     <div>
-      <a href="http://10.10.4.26:8899/lab" target="_blank">
+      <a
+        href="http://localhost:8888/lab"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
         <H3>{instance.name}</H3>
-        <div>Whatevert</div>
       </a>
       {/* <H3 onClick={() => openTab(instance)}>{instance.name}</H3> */}
       <div>
@@ -33,12 +37,13 @@ const Instance = ({instance, provided, dropDataset}) => {
 }
 
 const Instances = (props) => {
+  /* This needs refactoring, I dont understand the code nor want to read it */
   const [fetch, setFetch] = useState({path: '/instances'})
-  const {data, isLoading} = useApi(fetch)
+  const {data, isLoading} = useFakeCloudService(fetch)
   const {tabs} = useContext(TabContext)
   const tabIds = tabs.map((i) => i.id).reduce((acc, item) => [...acc, item], [])
   const [call, setCall] = useState({})
-  const {isLoading: isAddingDataset} = useApi(call)
+  const {isLoading: isAddingDataset} = useFakeCloudService(call)
   useEffect(() => {
     if (props.dropDataset) {
       setCall({
