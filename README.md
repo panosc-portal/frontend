@@ -9,6 +9,7 @@
  - if running as individual services, set env variables manually
 ## Current state
  - Login / Logout disabled
+ - Internal tabs long disabled
  - Somewhat hard to maintain
  - If you try to break it, you will succeed..
 
