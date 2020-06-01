@@ -27,34 +27,55 @@ const SearchQuery = ({setQuery}) => {
   const [preQuery, setPreQuery] = useState({})
   const submit = async (evt) => {
     evt.preventDefault()
-    setQuery({
-      where: {
-        title: {ilike: preQuery.fulltext}
-      },
-      include: [
-        {
-          relation: 'datasets'
-        },
-        {
-          relation: 'members',
-          scope: {
-            include: [
-              {
-                relation: 'affiliation'
-              },
-              {
-                relation: 'person'
+    preQuery.fulltext
+      ? setQuery({
+          where: {
+            title: {ilike: preQuery.fulltext}
+          },
+          include: [
+            {
+              relation: 'datasets'
+            },
+            {
+              relation: 'members',
+              scope: {
+                include: [
+                  {
+                    relation: 'affiliation'
+                  },
+                  {
+                    relation: 'person'
+                  }
+                ]
               }
-            ]
-          }
-        }
-      ]
-    })
+            }
+          ]
+        })
+      : setQuery({
+          include: [
+            {
+              relation: 'datasets'
+            },
+            {
+              relation: 'members',
+              scope: {
+                include: [
+                  {
+                    relation: 'affiliation'
+                  },
+                  {
+                    relation: 'person'
+                  }
+                ]
+              }
+            }
+          ]
+        })
   }
   return (
     <div>
       <form onSubmit={submit}>
-        Fulltext:{' '}
+        Title:{' '}
         <input
           type="text"
           onChange={(e) => setPreQuery({...preQuery, fulltext: e.target.value})}

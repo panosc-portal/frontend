@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {NoUl, H3} from './Commons'
 import {Droppable} from 'react-beautiful-dnd'
 import AddInstance from './AddInstance'
-import useSearchApi from '../utils/useSearchApi.js'
+import {useSearchApi} from '../utils/useApi.js'
 
 const Instance = ({instance, provided}) => {
   const datasetIds = instance.datasets.reduce(
@@ -22,7 +22,11 @@ const Instance = ({instance, provided}) => {
         <p>Loading</p>
       ) : (
         <div>
-          <a href="http://10.36.30.20:8888/lab" target="_blank">
+          <a
+            href="http://localhost:8888/lab"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <H3>{instance.name}</H3>
           </a>
           <div>

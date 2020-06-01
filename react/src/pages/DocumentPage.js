@@ -3,13 +3,14 @@ import styled from 'styled-components'
 import {H1} from '../components/Commons'
 import Document from '../components/Document'
 import Datasets from '../components/Datasets'
-// import Instances from "../components/Instances";
 import Loading from '../components/Loading'
 import {DragDropContext} from 'react-beautiful-dnd'
 import Instances from '../components/newInstances'
-import Api from '../utils/api'
-import useSearchApi from '../utils/useSearchApi'
-import useFreshInstances from '../components/instanceDndHelper.js'
+import {
+  useSearchApi,
+  fakeCloudService,
+  useFreshInstances
+} from '../utils/useApi'
 
 const DocumentPage = (props) => {
   const pid = decodeURIComponent(props.match.params.documentId)
@@ -52,12 +53,13 @@ const DocumentPage = (props) => {
     {data: instances, isLoading: isLoadingInstances},
     setAddNewInstance
   ] = useFreshInstances()
+  console.log(`ll: ${isLoadingInstances}, dd: ${instances}`)
   useEffect(() => {
     const fetch = async () => {
       if (addDataset.dataset) {
         try {
-          await Api.post(
-            `/instances/${addDataset.instance}/${encodeURIComponent(
+          await fakeCloudService.post(
+            `instances/${addDataset.instance}/${encodeURIComponent(
               addDataset.dataset
             )}`
           )
@@ -68,7 +70,7 @@ const DocumentPage = (props) => {
       }
     }
     fetch()
-  }, [addDataset])
+  }, [addDataset, setAddNewInstance])
 
   return (
     <>

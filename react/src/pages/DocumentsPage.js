@@ -5,7 +5,7 @@ import DocumentList from '../components/DocumentList'
 import Instances from '../components/newInstances'
 import SearchQuery from '../components/SearchQuery'
 import {DragDropContext} from 'react-beautiful-dnd'
-import useFreshInstances from '../components/instanceDndHelper.js'
+import {useFreshInstances} from '../utils/useApi.js'
 
 const DocumentsPage = () => {
   const [
