@@ -17,5 +17,5 @@ I've put together a list of things that I think could help.
  - Rebass (w Emotion) - a simple UI component library
  - SWR - data fetching library with support for Suspense
  - Something for handling sessions (Passport.js, AUTH0, Firebase, ??)
- - proper Eslint setup with Husky
+ - typing (typescript, propTypes, both?)
  - unit tests
