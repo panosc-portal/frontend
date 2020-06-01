@@ -13,7 +13,7 @@
  - If you try to break it, you will succeed..
 
 ## Codebase a little messy at this point, refactoring & some architectural changes are imminent
-I've put together a list of things that I think could help.
+I've put together a list of things that I think could help make it more robust / complete
  - Rebass (w Emotion) - a simple UI component library
  - SWR - data fetching library with support for Suspense
  - Something for handling sessions (Passport.js, AUTH0, Firebase, ??)
