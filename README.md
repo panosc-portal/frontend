@@ -4,6 +4,8 @@
  - starts an express app providing dummy cloud service(:5000)
  - starts react frontend (:3000)
 
+ - if things go sideways try this first: `docker-compose build --no-cache`
+
  - if running as individual services, set env variables manually
 ## Current state
  - Login / Logout disabled
