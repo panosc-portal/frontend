@@ -1,8 +1,89 @@
-import React from "react";
-import { Div } from "./Commons";
+import React, {useState} from 'react'
 
-const SearchQuery = () => (
-  <Div>Here should be elastic search query builder...</Div>
-);
+// const proposedQuery = {
+//   include: [
+//     {
+//       relation: 'datasets'
+//     },
+//     {
+//       relation: 'members',
+//       scope: {
+//         include: [
+//           {
+//             relation: 'affiliation'
+//           },
+//           {
+//             relation: 'person'
+//           }
+//         ]
+//       }
+//     }
+//   ]
+// }
 
-export default SearchQuery;
+// Wavelength: <input type="range" name="wavelength" />
+//
+const SearchQuery = ({setQuery}) => {
+  const [preQuery, setPreQuery] = useState({})
+  const submit = async (evt) => {
+    evt.preventDefault()
+    preQuery.fulltext
+      ? setQuery({
+          where: {
+            title: {ilike: preQuery.fulltext}
+          },
+          include: [
+            {
+              relation: 'datasets'
+            },
+            {
+              relation: 'members',
+              scope: {
+                include: [
+                  {
+                    relation: 'affiliation'
+                  },
+                  {
+                    relation: 'person'
+                  }
+                ]
+              }
+            }
+          ]
+        })
+      : setQuery({
+          include: [
+            {
+              relation: 'datasets'
+            },
+            {
+              relation: 'members',
+              scope: {
+                include: [
+                  {
+                    relation: 'affiliation'
+                  },
+                  {
+                    relation: 'person'
+                  }
+                ]
+              }
+            }
+          ]
+        })
+  }
+  return (
+    <div>
+      <form onSubmit={submit}>
+        Title:{' '}
+        <input
+          type="text"
+          onChange={(e) => setPreQuery({...preQuery, fulltext: e.target.value})}
+        />
+        <input type="submit" value="Search" />
+      </form>
+    </div>
+  )
+}
+
+export default SearchQuery

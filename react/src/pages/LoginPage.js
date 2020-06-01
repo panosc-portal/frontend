@@ -1,15 +1,15 @@
-import React, { useEffect, useContext } from "react";
-import LoginForm from "../components/LoginForm";
-import styled from "styled-components";
-import { H1 } from "../components/Commons";
-import { UserContext } from "../context/UserContext";
+import React, {useEffect, useContext} from 'react'
+import LoginForm from '../components/LoginForm'
+import styled from 'styled-components'
+import {H1} from '../components/Commons'
+import {UserContext} from '../context/UserContext'
 
 const LoginPage = () => {
-  const { setToken, setIsAuthenticated } = useContext(UserContext);
-  useEffect(() => setToken("") || setIsAuthenticated(false), [
+  const {setToken, setIsAuthenticated} = useContext(UserContext)
+  useEffect(() => setToken('') || setIsAuthenticated(false), [
     setIsAuthenticated,
     setToken
-  ]);
+  ])
   return (
     <Layout>
       <section>
@@ -25,10 +25,10 @@ const LoginPage = () => {
         <LoginForm />
       </section>
     </Layout>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage
 
 const Layout = styled.div`
   width: 100%;
@@ -36,7 +36,7 @@ const Layout = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-`;
+`
 const About = styled.p`
   width: 70rem;
-`;
+`

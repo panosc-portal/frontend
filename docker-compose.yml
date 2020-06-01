@@ -2,22 +2,26 @@ version: '3'
 services:
   db:
     image: 'mongo'
-    ports: 
+    ports:
       - "27017:27017"
-  
+  searchapi:
+    environment:
+      - PORT=5001
+    build: searchapi/.
+    ports:
+      - "5001:5001"
   express:
     environment:
-      - DATABASE_URL=mongodb://db:27017
       - PORT=5000
+      - DATABASE_URL=mongodb://db:27017
       - SECRET=sekret
     build: express/.
     ports:
       - "5000:5000"
   react:
     environment:
-      - REACT_APP_AUTH=http://localhost:5000/auth
-      - REACT_APP_API=http://localhost:5000
-      - REACT_APP_BACKEND=http://localhost:5000/
+      - REACT_APP_EXPRESS=http://localhost:5000/
+      - REACT_APP_SEARCHAPI=http://localhost:5001/api/
     build: react/.
     ports:
       - "3000:3000"

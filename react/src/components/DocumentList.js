@@ -1,72 +1,74 @@
-import React from "react";
-import styled from "styled-components";
-import Loading from "./Loading";
-import { useFetch } from "../utils";
-import { Link } from "react-router-dom";
-import { NoUl, Div, Img, H3 } from "./Commons";
-import moment from "moment";
+import React from 'react'
+import styled from 'styled-components'
+import {useSearchApi} from '../utils/useApi.js'
+import {Link} from 'react-router-dom'
+import {NoUl, Div, Img, H3} from './Commons'
+import moment from 'moment'
 
-const DocumentList = () => {
-  const { data, isLoading } = useFetch("documents");
+const Doc = ({d}) => (
+  <Document>
+    <Main>
+      <Link to={'/documents/' + encodeURIComponent(d.pid)}>
+        <H3>{d.title}</H3>
+      </Link>
+      <Members>
+        {d.members.map((m) => (
+          <Member key={m.id}>
+            {m.person.fullName} ({m.affiliation.name} / {m.role})
+          </Member>
+        ))}
+      </Members>
+      <ShortSummary>{d.summary}</ShortSummary>
+      <Citation>{d.citation}</Citation>
+      <Badges>
+        {d.keywords.map((keyword, index) => (
+          <Badge key={index}>{keyword}</Badge>
+        ))}
+      </Badges>
+    </Main>
+    <Metas>
+      <Meta>
+        <strong>{d.type}</strong>
+      </Meta>
+      <Meta>
+        <strong>
+          {d.licence} / {d.isPublic ? 'Public' : 'Non-Public'}
+        </strong>
+      </Meta>
+      <Meta>
+        Datasets <strong>{d.datasets.length}</strong>
+      </Meta>
+      <Meta>
+        Started <strong>{moment(d.startDate).format('L')}</strong>
+      </Meta>
+      <Meta>
+        Ended <strong>{moment(d.endDate).format('L')}</strong>
+      </Meta>
+      <Meta>
+        Released <strong>{moment(d.releaseDate).format('L')}</strong>
+      </Meta>
+    </Metas>
+    <Img src={d.img} />
+  </Document>
+)
+const DocumentList = ({query}) => {
+  const {data, isLoading} = useSearchApi('Documents', query)
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <p>Loading...</p>
       ) : (
         <NoUl>
-          {data.map(d => (
-            <Document key={d._id}>
-              <Main>
-                <Link to={"/documents/" + d._id}>
-                  <H3>{d.title}</H3>
-                </Link>
-                <Members>
-                  {d.members.map((m, index) => (
-                    <Member key={index}>
-                      {m.name} ({m.affiliation} / {m.role})
-                    </Member>
-                  ))}
-                </Members>
-                <ShortSummary>{d.summary}</ShortSummary>
-                <Citation>{d.citation}</Citation>
-                <Badges>
-                  {d.keywords.map((keyword, index) => (
-                    <Badge key={index}>{keyword}</Badge>
-                  ))}
-                </Badges>
-              </Main>
-              <Metas>
-                <Meta>
-                  <strong>{d.type}</strong>
-                </Meta>
-                <Meta>
-                  <strong>
-                    {d.licence} / {d.isPublic ? "Public" : "Non-Public"}
-                  </strong>
-                </Meta>
-                <Meta>
-                  Datasets <strong>{d.datasets.length}</strong>
-                </Meta>
-                <Meta>
-                  Started <strong>{moment(d.startDate).format("L")}</strong>
-                </Meta>
-                <Meta>
-                  Ended <strong>{moment(d.endDate).format("L")}</strong>
-                </Meta>
-                <Meta>
-                  Released <strong>{moment(d.releaseDate).format("L")}</strong>
-                </Meta>
-              </Metas>
-              <Img src={d.img} />
-            </Document>
+          {data.map((document) => (
+            <Doc key={document.pid} d={document} />
           ))}
         </NoUl>
       )}
     </>
-  );
-};
+  )
+}
 
-export default DocumentList;
+export default DocumentList
 
 const Document = styled.li`
   display: grid;
@@ -75,46 +77,46 @@ const Document = styled.li`
   height: 15rem;
   overflow: hidden;
   margin-bottom: var(--dist);
-`;
+`
 
 const Main = styled(Div)`
   display: flex;
   flex-flow: column;
   justify-content: space-between;
-`;
+`
 
 const Members = styled.div`
   display: flex;
   flex-flow: row;
   font-size: 0.8rem;
   font-weight: bold;
-`;
+`
 
 const Member = styled.span`
   & + &:before {
-    content: "|";
+    content: '|';
     padding: 0 var(--dist-smaller);
   }
-`;
+`
 
 const ShortSummary = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-`;
+`
 
 const Citation = styled.div`
   font-size: 0.8rem;
   font-weight: bold;
-`;
+`
 
 const Badges = styled(NoUl)`
   display: flex;
   flex-flow: row wrap;
   overflow: hidden;
   height: 1.8rem;
-`;
+`
 
 const Badge = styled.li`
   padding: var(--dist-smaller) var(--dist-small);
@@ -123,13 +125,13 @@ const Badge = styled.li`
   margin-right: var(--dist-smaller);
   font-size: 0.8rem;
   height: 1.4rem;
-`;
+`
 
 const Metas = styled(NoUl)`
   display: grid;
   grid-template-rows: repeat(6, 1fr);
   grid-gap: var(--dist-tiny);
-`;
+`
 
 const Meta = styled.li`
   display: flex;
@@ -139,4 +141,4 @@ const Meta = styled.li`
   font-size: 0.8rem;
   background-color: var(--color-bg-1);
   padding: 0 var(--dist-small);
-`;
+`

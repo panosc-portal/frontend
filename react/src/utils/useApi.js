@@ -1,47 +1,97 @@
-import axios from "axios";
-import {
-  useState,
-  useEffect,
-  useContext
-} from "react";
-import {
-  UserContext
-} from "../context/UserContext"
+import axios from 'axios'
+import {useState, useEffect} from 'react'
+// import {UserContext} from '../context/UserContext.js'
+// const {token} = useContext(UserContext)
+const token = 'hjkdsl'
 
-const useApi = ({
-  path,
-  method,
-  body,
-}) => {
-  const {
-    token
-  } = useContext(UserContext)
-  const [data, setData] = useState([]);
+export const useSearchApi = (target, query) => {
+  const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+
+  const processedQuery =
+    target + '?filter=' + encodeURIComponent(JSON.stringify(query))
   useEffect(() => {
-    const callApi = async () => {
-      if (path) {
-        setIsLoading(true)
-        const result = await axios({
-          url: process.env.REACT_APP_API + path,
-          method,
-          data: body,
-          headers: {
-            token
-          }
-        });
-        setData(result.data)
-        setIsLoading(false)
+    const api = axios.create({
+      baseURL: process.env.REACT_APP_SEARCHAPI,
+      headers: {
+        token
       }
-    };
-    callApi();
-  }, [body, method, path, token]);
-
-
-  return {
-    data,
-    isLoading
-  };
+    })
+    const makeTheCall = async () => {
+      try {
+        setIsLoading(true)
+        const response = await api.get(processedQuery)
+        setData(response.data)
+        setIsLoading(false)
+        setHasError(false)
+      } catch (err) {
+        setHasError(true)
+        setIsLoading(false)
+        setData([{error: err}])
+      }
+    }
+    makeTheCall()
+  }, [processedQuery])
+  return {data, isLoading, hasError}
 }
 
-export default useApi;
+export const fakeCloudService = axios.create({
+  baseURL: process.env.REACT_APP_EXPRESS,
+  headers: {
+    token
+  }
+})
+
+export const useFakeCloudService = (target) => {
+  const [data, setData] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+
+  const url = process.env.REACT_APP_EXPRESS + target
+  useEffect(() => {
+    const makeTheCall = async () => {
+      try {
+        setIsLoading(true)
+        const response = await axios.get(url)
+        setData(response.data)
+        setIsLoading(false)
+        setHasError(false)
+      } catch (err) {
+        setHasError(true)
+        setIsLoading(false)
+        setData([{error: err}])
+      }
+    }
+    makeTheCall()
+  }, [target, url])
+  return {data, isLoading, hasError}
+}
+
+export const useFreshInstances = () => {
+  const [data, setData] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [newInstance, setNewInstance] = useState({})
+  const [hasError, setHasError] = useState(false)
+  useEffect(() => {
+    const api = axios.create({
+      baseURL: process.env.REACT_APP_EXPRESS,
+      headers: {
+        token
+      }
+    })
+    const freshenInstances = async () => {
+      try {
+        const res = await api.get('instances')
+        setData(res.data)
+        setIsLoading(false)
+        setHasError(false)
+      } catch (err) {
+        setHasError(true)
+        setIsLoading(false)
+      }
+    }
+    freshenInstances()
+  }, [newInstance])
+  return [{data, isLoading, hasError}, setNewInstance]
+}

@@ -1,24 +1,22 @@
-import {
-  Router
-} from 'express';
+import { Router } from "express";
 
 const router = Router();
 
-router.get('/', async (req, res) => {
-  const instances = await req.context.models.Instance
-    .find()
-    .populate('datasets').populate('flavour');
+router.get("/", async (req, res) => {
+  const instances = await req.context.models.Instance.find().populate(
+    "flavour"
+  );
   return res.send(instances);
 });
 
-router.get('/:instanceId', async (req, res) => {
-  const instances = await req.context.models.Instance
-    .findById(req.params.instanceId)
-    .populate('datasets').populate('flavour');
+router.get("/:instanceId", async (req, res) => {
+  const instances = await req.context.models.Instance.findById(
+    req.params.instanceId
+  ).populate("flavour");
   return res.send(instances);
 });
 
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const instance = await req.context.models.Instance.create({
     name: req.body.name,
     description: "",
@@ -30,35 +28,43 @@ router.post('/', async (req, res) => {
   return res.send(instance);
 });
 
-router.patch('/:instanceId', async (req, res) => {
-  const instance = await req.context.models.Instance.findById(req.params.instanceId, (err, instance) => {
-    for (const field of req.body) {
-      instance[field] = req.body[field];
-    }
-  })
-  instance.save();
-  return res.send(instance);
-})
-
-router.post('/:instanceId/:datasetId', async (req, res) => {
-  console.log('yo')
-  const instance = await req.context.models.Instance.findById(req.params.instanceId)
-
-  instance.datasets.push(req.params.datasetId)
-  instance.save()
-  return res.send(instance)
-})
-
-router.delete('/:instanceId/:datasetId', async (req, res) => {
-  const instance = await req.context.models.Instance.findById(req.params.instanceId)
-  instance.datasets.filter(i => i !== req.params.datasetId)
-  instance.save()
-  return res.send(instance)
-})
-
-router.delete('/:instanceId', async (req, res) => {
+router.patch("/:instanceId", async (req, res) => {
   const instance = await req.context.models.Instance.findById(
     req.params.instanceId,
+    (err, instance) => {
+      for (const field of req.body) {
+        instance[field] = req.body[field];
+      }
+    }
+  );
+  instance.save();
+  return res.send(instance);
+});
+
+router.post("/:instanceId/:datasetId", async (req, res) => {
+  const instance = await req.context.models.Instance.findById(
+    req.params.instanceId
+  );
+
+  // instance.datasets.push(req.params.datasetId);
+  const updatedDatasets = [...instance.datasets, req.params.datasetId];
+  instance.datasets = updatedDatasets;
+  instance.save();
+  return res.send(instance);
+});
+
+router.delete("/:instanceId/:datasetId", async (req, res) => {
+  const instance = await req.context.models.Instance.findById(
+    req.params.instanceId
+  );
+  instance.datasets.filter((i) => i !== req.params.datasetId);
+  instance.save();
+  return res.send(instance);
+});
+
+router.delete("/:instanceId", async (req, res) => {
+  const instance = await req.context.models.Instance.findById(
+    req.params.instanceId
   );
 
   let result = null;

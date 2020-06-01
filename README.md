@@ -1,4 +1,21 @@
 # Quickstart
 `docker-compose up`
- - starts express backend (:5000)
+ - clones searchapi and replaces its database with mine(:5001)
+ - starts an express app providing dummy cloud service(:5000)
  - starts react frontend (:3000)
+
+ - if things go sideways try this first: `docker-compose build --no-cache`
+
+ - if running as individual services, set env variables manually
+## Current state
+ - Login / Logout disabled
+ - Somewhat hard to maintain
+ - If you try to break it, you will succeed..
+
+## It looks like it's getting out of hands, some architectural changes are imminent
+I've put together a list of things that I think could help.
+ - Rebass (w Emotion) - a simple UI component library
+ - SWR - data fetching library with support for Suspense
+ - Something for handling sessions (Passport.js, AUTH0, Firebase, ??)
+ - proper Eslint setup with Husky
+ - unit tests
