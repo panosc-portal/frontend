@@ -12,6 +12,26 @@ const removeEmpty = (obj) => {
 
 const SearchQuery = ({setQuery}) => {
   const [preQuery, setPreQuery] = useState({})
+  const baseQuery = {
+    include: [
+      {
+        relation: 'datasets'
+      },
+      {
+        relation: 'members',
+        scope: {
+          include: [
+            {
+              relation: 'affiliation'
+            },
+            {
+              relation: 'person'
+            }
+          ]
+        }
+      }
+    ]
+  }
   const submit = async (evt) => {
     evt.preventDefault()
     preQuery.fulltext
