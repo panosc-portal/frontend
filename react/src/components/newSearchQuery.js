@@ -34,28 +34,44 @@ const SearchQuery = ({setQuery}) => {
     ]
   }
   const submit = (data) => {
-	const query = {...baseQuery, where: {title: {ilike: data.title}}}
-	  data.title || delete query.where.title
-	  setQuery(query)
-    console.log(data)
+	  const query = baseQuery
+    data.title && (query.where = {title: {ilike: data.title}})
+    data.wavelength && query['include'].push({
+      relation: 'parameters',
+      scope: {
+        where: {
+          and: [
+            {name: 'wavelength'},
+            {value: {between: data.wavelength}},
+            {unit: 'nm'}
+          ]
+        }
+      }
+    })
+    setQuery(query)
   }
-
 
   return (
     <div>
       <form onSubmit={handleSubmit(submit)}>
         Title: <input type="text" ref={register} name="title" />
         <br />
-        <Controller as={<StyledSlider
-	   onAfterChange={val => console.log('onAfterChange value:', val)}
-          defaultValue={[200, 900]}
-		min={200}
-		max={900}
-          renderTrack={Track}
-          renderThumb={Thumb}
-          pearling
-          minDistance={10}
-        />} name="wavelength" control={control} />
+        <Controller
+          as={
+            <StyledSlider
+              // onAfterChange={val => console.log('onAfterChange value:', val)}
+              defaultValue={[0, 2000]}
+              min={0}
+              max={2000}
+              renderTrack={Track}
+              renderThumb={Thumb}
+              pearling
+              minDistance={10}
+            />
+          }
+          name="wavelength"
+          control={control}
+        />
         <input type="submit" value="Search" />
       </form>
     </div>
@@ -92,4 +108,3 @@ const StyledTrack = styled.div`
 `
 
 const Track = (props, state) => <StyledTrack {...props} index={state.index} />
-

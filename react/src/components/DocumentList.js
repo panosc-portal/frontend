@@ -60,7 +60,12 @@ const DocumentList = ({query}) => {
       ) : (
         <NoUl>
           {data.map((document) => (
-            <Doc key={document.pid} d={document} />
+            <>
+              <Doc key={document.pid} d={document} />
+              {console.log('document ', document)}
+              {console.log('query ', JSON.stringify(query))}
+              {console.log(encodeURIComponent(JSON.stringify(query)))}
+            </>
           ))}
         </NoUl>
       )}
