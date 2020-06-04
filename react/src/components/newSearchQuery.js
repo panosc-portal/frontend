@@ -12,11 +12,8 @@ const removeEmpty = (obj) => {
 }
 
 const SearchQuery = ({setQuery}) => {
-  const [preQuery, setPreQuery] = useState({})
-	const {register, handleSubmit, watch, errors} = useForm()
-	const submit = (data) => {
-console.log(data)
-	}
+  // const [preQuery, setPreQuery] = useState(baseQuery)
+  const {register, handleSubmit, watch, errors} = useForm()
   const baseQuery = {
     include: [
       {
@@ -37,18 +34,29 @@ console.log(data)
       }
     ]
   }
+  const submit = (data) => {
+    // setQuery(
+    //   removeEmpty({
+    //     ...baseQuery,
+    //     where: {
+    //       title: {ilike: data.title}
+    //     }
+    //   })
+    // )
+	const query = {...baseQuery, where: {title: {ilike: data.title}}}
+	  data.title || delete query.where.title
+	  setQuery(query)
+    console.log(query)
+  }
+
   // const submit = async (evt) => {
   //   evt.preventDefault()
-    
+
   // }
   return (
     <div>
       <form onSubmit={handleSubmit(submit)}>
-        Title:{' '}
-        <input
-          type="text"
-          onChange={(e) => setPreQuery({...preQuery, fulltext: e.target.value})}
-        />
+        Title: <input type="text" ref={register} name="title" />
         <br />
         <StyledSlider
           defaultValue={[0, 100]}
