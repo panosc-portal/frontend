@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import ReactSlider from 'react-slider'
 import styled from 'styled-components'
+import {useForm} from 'react-hook-form'
 
 const removeEmpty = (obj) => {
   Object.keys(obj).forEach((key) => {
@@ -12,6 +13,10 @@ const removeEmpty = (obj) => {
 
 const SearchQuery = ({setQuery}) => {
   const [preQuery, setPreQuery] = useState({})
+	const {register, handleSubmit, watch, errors} = useForm()
+	const submit = (data) => {
+console.log(data)
+	}
   const baseQuery = {
     include: [
       {
@@ -32,56 +37,13 @@ const SearchQuery = ({setQuery}) => {
       }
     ]
   }
-  const submit = async (evt) => {
-    evt.preventDefault()
-    preQuery.fulltext
-      ? setQuery({
-          where: {
-            title: {ilike: preQuery.fulltext}
-          },
-          include: [
-            {
-              relation: 'datasets'
-            },
-            {
-              relation: 'members',
-              scope: {
-                include: [
-                  {
-                    relation: 'affiliation'
-                  },
-                  {
-                    relation: 'person'
-                  }
-                ]
-              }
-            }
-          ]
-        })
-      : setQuery({
-          include: [
-            {
-              relation: 'datasets'
-            },
-            {
-              relation: 'members',
-              scope: {
-                include: [
-                  {
-                    relation: 'affiliation'
-                  },
-                  {
-                    relation: 'person'
-                  }
-                ]
-              }
-            }
-          ]
-        })
-  }
+  // const submit = async (evt) => {
+  //   evt.preventDefault()
+    
+  // }
   return (
     <div>
-      <form onSubmit={submit}>
+      <form onSubmit={handleSubmit(submit)}>
         Title:{' '}
         <input
           type="text"
@@ -131,3 +93,48 @@ const StyledTrack = styled.div`
 `
 
 const Track = (props, state) => <StyledTrack {...props} index={state.index} />
+
+// preQuery.fulltext
+//       ? setQuery({
+//           where: {
+//             title: {ilike: preQuery.fulltext}
+//           },
+//           include: [
+//             {
+//               relation: 'datasets'
+//             },
+//             {
+//               relation: 'members',
+//               scope: {
+//                 include: [
+//                   {
+//                     relation: 'affiliation'
+//                   },
+//                   {
+//                     relation: 'person'
+//                   }
+//                 ]
+//               }
+//             }
+//           ]
+//         })
+//       : setQuery({
+//           include: [
+//             {
+//               relation: 'datasets'
+//             },
+//             {
+//               relation: 'members',
+//               scope: {
+//                 include: [
+//                   {
+//                     relation: 'affiliation'
+//                   },
+//                   {
+//                     relation: 'person'
+//                   }
+//                 ]
+//               }
+//             }
+//           ]
+//         })
