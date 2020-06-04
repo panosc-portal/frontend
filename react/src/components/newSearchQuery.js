@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import ReactSlider from 'react-slider'
 import styled from 'styled-components'
-import {useForm} from 'react-hook-form'
+import {useForm, Controller} from 'react-hook-form'
 
 const removeEmpty = (obj) => {
   Object.keys(obj).forEach((key) => {
@@ -12,8 +12,7 @@ const removeEmpty = (obj) => {
 }
 
 const SearchQuery = ({setQuery}) => {
-  // const [preQuery, setPreQuery] = useState(baseQuery)
-  const {register, handleSubmit, watch, errors} = useForm()
+  const {register, handleSubmit, control} = useForm()
   const baseQuery = {
     include: [
       {
@@ -35,36 +34,28 @@ const SearchQuery = ({setQuery}) => {
     ]
   }
   const submit = (data) => {
-    // setQuery(
-    //   removeEmpty({
-    //     ...baseQuery,
-    //     where: {
-    //       title: {ilike: data.title}
-    //     }
-    //   })
-    // )
 	const query = {...baseQuery, where: {title: {ilike: data.title}}}
 	  data.title || delete query.where.title
 	  setQuery(query)
-    console.log(query)
+    console.log(data)
   }
 
-  // const submit = async (evt) => {
-  //   evt.preventDefault()
 
-  // }
   return (
     <div>
       <form onSubmit={handleSubmit(submit)}>
         Title: <input type="text" ref={register} name="title" />
         <br />
-        <StyledSlider
-          defaultValue={[0, 100]}
+        <Controller as={<StyledSlider
+	   onAfterChange={val => console.log('onAfterChange value:', val)}
+          defaultValue={[200, 900]}
+		min={200}
+		max={900}
           renderTrack={Track}
           renderThumb={Thumb}
           pearling
           minDistance={10}
-        />
+        />} name="wavelength" control={control} />
         <input type="submit" value="Search" />
       </form>
     </div>
@@ -102,47 +93,3 @@ const StyledTrack = styled.div`
 
 const Track = (props, state) => <StyledTrack {...props} index={state.index} />
 
-// preQuery.fulltext
-//       ? setQuery({
-//           where: {
-//             title: {ilike: preQuery.fulltext}
-//           },
-//           include: [
-//             {
-//               relation: 'datasets'
-//             },
-//             {
-//               relation: 'members',
-//               scope: {
-//                 include: [
-//                   {
-//                     relation: 'affiliation'
-//                   },
-//                   {
-//                     relation: 'person'
-//                   }
-//                 ]
-//               }
-//             }
-//           ]
-//         })
-//       : setQuery({
-//           include: [
-//             {
-//               relation: 'datasets'
-//             },
-//             {
-//               relation: 'members',
-//               scope: {
-//                 include: [
-//                   {
-//                     relation: 'affiliation'
-//                   },
-//                   {
-//                     relation: 'person'
-//                   }
-//                 ]
-//               }
-//             }
-//           ]
-//         })
