@@ -23,7 +23,7 @@ const Instance = ({instance, provided}) => {
       ) : (
         <div>
           <a
-            href="http://localhost:8888/lab"
+            href="http://localhost:8888/"
             rel="noopener noreferrer"
             target="_blank"
           >
