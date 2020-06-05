@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {NoUl, H3} from './Commons'
+import {Div, NoUl, H3} from './Commons'
 import {Droppable} from 'react-beautiful-dnd'
 import AddInstance from './AddInstance'
 import {useSearchApi} from '../utils/useApi.js'
@@ -30,17 +30,21 @@ const Instance = ({instance, provided}) => {
             <H3>{instance.name}</H3>
           </a>
           <div>
-            {instance.flavour.type} - {instance.flavour.name}
+            Flavour: <b>{instance.flavour.name}</b>
+            <br />
+            CPUs: <b>{instance.flavour.cpu}</b>
+            <br />
+            GPUs: <b>{instance.flavour.gpu}</b>
           </div>
           <b>Datasets:</b>
-          <ul>
+          <NoUl>
             {datasets.map((dataset) => (
               <li key={dataset.pid}>
                 <i>{dataset.title}</i>
               </li>
             ))}
             {provided.placeholder}
-          </ul>
+          </NoUl>
         </div>
       )}
     </>
@@ -68,7 +72,9 @@ const Instances = (props) => (
         </Droppable>
       ))}
     </NoUl>
-    <AddInstance setAddNewInstance={props.setAddNewInstance} />
+    <Div>
+      <AddInstance setAddNewInstance={props.setAddNewInstance} />
+    </Div>
   </>
 )
 

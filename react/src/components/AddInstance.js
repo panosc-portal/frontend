@@ -22,29 +22,36 @@ const AddInstance = ({setAddNewInstance}) => {
         <>Loading</>
       ) : (
         <div>
-          <b>Create environment</b>
+          <h3>Create new environment</h3>
           <Form onSubmit={submit}>
-            <label>Name:</label>
-            <input
-              type="text"
-              onChange={(e) =>
-                setNewInstance({...newInstance, name: e.target.value})
-              }
-            />
             <br />
-            <select
-              onChange={(e) =>
-                setNewInstance({...newInstance, flavour: e.target.value})
-              }
-            >
-              <option key={'selecta'}>{'-'}</option>
-              {dataFlavours.map((f) => (
-                <option key={f._id} value={f._id}>
-                  {f.name}
-                </option>
-              ))}
-            </select>
-            <input type="submit" value="Submit" />
+            <h4>Name:</h4>
+            <p>
+              <input
+                type="text"
+                onChange={(e) =>
+                  setNewInstance({...newInstance, name: e.target.value})
+                }
+              />
+            </p>
+            <h4>Flavour:</h4>
+            <p>
+              <select
+                onChange={(e) =>
+                  setNewInstance({...newInstance, flavour: e.target.value})
+                }
+              >
+                <option key={'selecta'}>{'-'}</option>
+                {dataFlavours.map((f) => (
+                  <option key={f._id} value={f._id}>
+                    {f.name}
+                  </option>
+                ))}
+              </select>
+            </p>
+            <p>
+              <input type="submit" value="Spawn" />
+            </p>
           </Form>
         </div>
       )}
