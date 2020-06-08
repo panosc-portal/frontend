@@ -31,7 +31,7 @@ const listOfTechniques = [
 const SearchQuery = ({setQuery}) => {
   const {register, handleSubmit, control} = useForm()
   const baseQuery = {
-    include: [
+     include: [
       {
         relation: 'datasets'
       },
@@ -72,18 +72,18 @@ const SearchQuery = ({setQuery}) => {
     const query = baseQuery
     data.title && (query.where = {title: {ilike: data.title}})
     data.technique && (query.where = {keywords: {inq: [data.technique]}})
-    // data.wavelength && query['include'].push({
-    //   relation: 'parameters',
-    //   scope: {
-    //     where: {
-    //       and: [
-    //         {name: 'wavelength'},
-    //         {value: {between: data.wavelength}},
-    //         {unit: 'nm'}
-    //       ]
-    //     }
-    //   }
-    // })
+    data.wavelength && query['include'].unshift({
+      relation: 'parameters',
+      scope: {
+        where: {
+          and: [
+            {name: 'wavelength'},
+            {value: {between: data.wavelength}},
+            {unit: 'nm'}
+          ]
+        }
+      }
+    })
     console.log('form data: ', data)
     setQuery(query)
   }
@@ -98,7 +98,7 @@ const SearchQuery = ({setQuery}) => {
         <p>
           <input type="text" ref={register} name="title" />
         </p>
-        {/*   <p><Controller
+          <p><Controller
           as={
             <StyledSlider
               defaultValue={[0, 2000]}
@@ -112,7 +112,7 @@ const SearchQuery = ({setQuery}) => {
           }
           name="wavelength"
           control={control}
-        /></p> */}
+        /></p> 
         <h4>Techniques:</h4>
         {/*	 <p><Controller as={<Techniques />} name="technique" control={control} /></p>*/}
         <Techniques />
