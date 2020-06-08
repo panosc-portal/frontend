@@ -1,5 +1,7 @@
 # Quickstart
 `docker-compose up`
+ - mongodb
+ - jupyter notebook for the upcoming demo
  - clones searchapi and replaces its database with mine(:5001)
  - starts an express app providing dummy cloud service(:5000)
  - starts react frontend (:3000)
