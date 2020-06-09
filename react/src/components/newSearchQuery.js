@@ -4,14 +4,6 @@ import styled from 'styled-components'
 import {useForm, Controller} from 'react-hook-form'
 import {Div} from './Commons.js'
 
-// const removeEmpty = (obj) => {
-//   Object.keys(obj).forEach((key) => {
-//     if (obj[key] && typeof obj[key] === 'object') removeEmpty(obj[key])
-//     else if (obj[key] === undefined) delete obj[key]
-//   })
-//   return obj
-// }
-
 const listOfTechniques = [
   'Reflectometry',
   'Spectroscopy',
@@ -31,7 +23,7 @@ const listOfTechniques = [
 const SearchQuery = ({setQuery}) => {
   const {register, handleSubmit, control} = useForm()
   const baseQuery = {
-     include: [
+    include: [
       {
         relation: 'datasets'
       },
@@ -72,18 +64,19 @@ const SearchQuery = ({setQuery}) => {
     const query = baseQuery
     data.title && (query.where = {title: {ilike: data.title}})
     data.technique && (query.where = {keywords: {inq: [data.technique]}})
-    data.wavelength && query['include'].unshift({
-      relation: 'parameters',
-      scope: {
-        where: {
-          and: [
-            {name: 'wavelength'},
-            {value: {between: data.wavelength}},
-            {unit: 'nm'}
-          ]
+    data.wavelength &&
+      query['include'].unshift({
+        relation: 'parameters',
+        scope: {
+          where: {
+            and: [
+              {name: 'wavelength'},
+              {value: {between: data.wavelength}},
+              {unit: 'nm'}
+            ]
+          }
         }
-      }
-    })
+      })
     console.log('form data: ', data)
     setQuery(query)
   }
@@ -98,21 +91,23 @@ const SearchQuery = ({setQuery}) => {
         <p>
           <input type="text" ref={register} name="title" />
         </p>
-          <p><Controller
-          as={
-            <StyledSlider
-              defaultValue={[0, 2000]}
-              min={0}
-              max={2000}
-              renderTrack={Track}
-              renderThumb={Thumb}
-              pearling
-              minDistance={10}
-            />
-          }
-          name="wavelength"
-          control={control}
-        /></p> 
+        <p>
+          <Controller
+            as={
+              <StyledSlider
+                defaultValue={[0, 2000]}
+                min={0}
+                max={2000}
+                renderTrack={Track}
+                renderThumb={Thumb}
+                pearling
+                minDistance={10}
+              />
+            }
+            name="wavelength"
+            control={control}
+          />
+        </p>
         <h4>Techniques:</h4>
         {/*	 <p><Controller as={<Techniques />} name="technique" control={control} /></p>*/}
         <Techniques />

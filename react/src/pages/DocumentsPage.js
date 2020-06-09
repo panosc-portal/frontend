@@ -41,7 +41,7 @@ const DocumentsPage = () => {
         <H1>Search Query</H1>
         <SearchQuery setQuery={setQuery} />
       </Search>
-	  {/*      <DragDropContext>
+      {/*      <DragDropContext>
         <Environments>
           <H1>Environments</H1>
           {isLoadingInstances || (
@@ -52,10 +52,10 @@ const DocumentsPage = () => {
           )}
       </DragDropContext>
         </Environments> */}
-        <Documents>
-          <H1>Documents</H1>
-          <DocumentList query={query} />
-        </Documents>
+      <Documents>
+        <H1>Documents</H1>
+        <DocumentList query={query} />
+      </Documents>
     </Layout>
   )
 }
