@@ -1,7 +1,4 @@
-import React from 'react'
-import {ThemeProvider} from 'emotion-theming'
-
-const theme = {
+const light = {
   colors: {
     text: '#000',
     background: '#fff',
@@ -10,6 +7,30 @@ const theme = {
     muted: '#f6f6f9',
     gray: '#dddddf',
     highlight: 'hsla(205, 100%, 40%, 0.125)'
+  },
+  darkness: {
+    background: ['hsl(0, 0%, 95%)', 'hsl(0, 0%, 90%)', 'hsl(0, 0%, 80%)'],
+    heading: 'hsl(0, 0%, 0%)',
+    text: 'hsl(0, 0%, 20%)',
+    icon: 'hsl(0, 0%, 60%)',
+    linkHover: 'hsl(207, 100%, 50%)',
+    link: 'hsl(207, 74%, 39%)',
+    highlight: 'hsl(335, 46%, 50%)',
+    jupyter: 'hsl(24, 90%, 55%)',
+    vm: 'hsl(257, 100%, 65%)'
+  },
+  brightness: {
+    bg0: 'hsl(0, 0%, 5%)',
+    bg1: 'hsl(0, 0%, 12.5%)',
+    bg2: 'hsl(0, 0%, 25%)',
+    heading: 'hsl(0, 0%, 100%)',
+    text: 'hsl(0, 0%, 80%)',
+    icon: 'hsl(0, 0%, 40%)',
+    linkHover: 'hsl(207, 100%, 50%)',
+    link: 'hsl(207, 65%, 70%)',
+    highlight: 'hsl(335, 100%, 69%)',
+    vm: 'hsl(246, 100%, 75%)',
+    jupyter: 'hsl(24, 90%, 55%)'
   },
   fonts: {
     body: 'Open Sans, sans-serif',

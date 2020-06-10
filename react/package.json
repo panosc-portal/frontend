@@ -13,6 +13,7 @@
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "node-sass": "^4.13.1",
+    "normalize.css": "^8.0.1",
     "react": "^16.12.0",
     "react-app-polyfill": "^1.0.6",
     "react-beautiful-dnd": "^13.0.0",
@@ -89,6 +90,7 @@
   },
   "devDependencies": {
     "@types/react-slider": "^1.0.0",
+    "babel-plugin-emotion": "^10.0.33",
     "babel-plugin-styled-components": "^1.10.7",
     "concurrently": "^5.1.0",
     "eslint": "^6.8.0",
