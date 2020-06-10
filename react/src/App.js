@@ -9,6 +9,7 @@ import Iframe from './pages/iframe/Iframe'
 import GlobalStyle from './GlobalStyle'
 import LoginPage from './pages/LoginPage'
 import LogoutPage from './pages/LogoutPage'
+import Instance from './components/instance'
 
 const App = () => {
   const {isAuthenticated} = useContext(UserContext)
@@ -36,6 +37,7 @@ const App = () => {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/logout" component={LogoutPage} />
           <Route path="/instance/:instance" component={Iframe} />
+          <Route exact path="/test" component={Instance} />
         </Switch>
       </main>
     </>
