@@ -1,7 +1,8 @@
 # Quickstart
 `docker-compose up`
+ - jupyter notebook for the upcoming demo
  - clones searchapi and replaces its database with mine(:5001)
- - starts an express app providing dummy cloud service(:5000)
+ - starts an express app providing dummy cloud service(:5000) and mongodb (:27017)
  - starts react frontend (:3000)
 
  - if things go sideways, try this first: `docker-compose build --no-cache`
@@ -18,5 +19,5 @@ I've put together a list of things that I think could help make it more robust /
  - [ ] Rebass (w Emotion) - a simple UI component library
  - [ ] SWR - data fetching library with support for Suspense
  - [ ] Something for handling sessions (Passport.js, AUTH0, Firebase, ??)
- - [ ] typing (typescript / protypes / both?)
+ - [ ] typing
  - [ ] unit tests
