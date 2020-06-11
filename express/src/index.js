@@ -96,20 +96,24 @@ const createFlavours = async () => {
   }
 };
 const createInstances = async () => {
+  for (const dataset of data.Datasets) {
+    await models.Dataset.create(dataset);
+  }
   for (const instance of data.Instances) {
     const flavour = await models.Flavour.findOne({
       name: instance.flavour.name,
     });
+    const datasets = await models.Dataset.find().limit(2);
     instance.flavour = flavour;
     instance.user = await models.User.findOne({
       username: "admin",
     });
+    console.log(datasets);
+    instance.datasets = [
+      "20.500.12269/panosc-dataset1",
+      "20.500.12269/panosc-dataset2",
+    ];
     await models.Instance.create(instance);
-  }
-};
-const createDatasets = async () => {
-  for (const dataset of data.Datasets) {
-    await models.Dataset.create(dataset);
   }
 };
 const createDocuments = async () => {

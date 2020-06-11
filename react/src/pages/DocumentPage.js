@@ -89,7 +89,7 @@ const DocumentPage = (props) => {
             {isLoading ? <Loading /> : <Datasets datasets={data[0].datasets} />}
           </DatasetSection>
           <Environments>
-            <H1>Environments</H1>
+            <H1>Analysis</H1>
             {isLoadingInstances || (
               <Instances
                 instances={instances}
@@ -108,7 +108,7 @@ export default DocumentPage
 const Layout = styled.div`
   margin: 0 5.5rem;
   display: grid;
-  grid-template-columns: minmax(42rem, 1fr) repeat(2, 19rem);
+  grid-template-columns: minmax(42rem, 1fr) repeat(2, 22rem);
   grid-template-rows: min-content 1fr;
   grid-gap: var(--dist);
 `

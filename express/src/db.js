@@ -25,24 +25,29 @@ const Flavours = [
   },
 ];
 
-const Instances = [
-  {
-    name: "Jupyter 1",
-    flavour: Flavours[1],
-    description: "my jupyter environment",
-    user: {},
-    datasets: [],
-  },
-  {
-    name: "VM 1",
-    flavour: Flavours[2],
-    description: "my virtual machine",
-    user: {},
-    datasets: [],
-  },
-];
-
 const Datasets = [
+  {
+    title: "PIC Simulation - EPOCH",
+    isPublic: true,
+    size: 41,
+    instrument: {
+      name: "pic",
+      facility: "ELI Beamlines",
+    },
+    technique: "simulation",
+    creationDate: "2020-05-05T15:01:02.000Z",
+  },
+  {
+    title: "PIC Simulation - SMILEY",
+    isPublic: true,
+    size: 41,
+    instrument: {
+      name: "pic",
+      facility: "ELI Beamlines",
+    },
+    technique: "simulation",
+    creationDate: "2020-05-05T15:01:02.000Z",
+  },
   {
     title: "PARTICLE-IN-CELL SIMULATIONS",
     isPublic: true,
@@ -513,6 +518,15 @@ const Documents = [
   },
 ];
 
+const Instances = [
+  {
+    name: "PIC Simulation",
+    flavour: Flavours[1],
+    description: "This is the original analytical environment.",
+    user: {},
+    datasets: [],
+  },
+];
 const data = {
   Flavours,
   Instances,

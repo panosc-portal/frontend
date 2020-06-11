@@ -30,6 +30,8 @@ const Instance = ({instance, provided}) => {
             <H3>{instance.name}</H3>
           </a>
           <div>
+            {instance.description}
+            <br />
             Flavour: <b>{instance.flavour.name}</b>
             <br />
             CPUs: <b>{instance.flavour.cpu}</b>
@@ -72,17 +74,16 @@ const Instances = (props) => (
         </Droppable>
       ))}
     </NoUl>
-    <Div>
+    {/* <Div>
       <AddInstance setAddNewInstance={props.setAddNewInstance} />
-    </Div>
+    </Div> */}
   </>
 )
 
 export default Instances
 
 const LiInstance = styled.li`
-  background-color: ${(props) =>
-    props.active ? 'var(--color-bg-2)' : 'var(--color-bg-1)'};
+  background-color: var(--color-bg-1);
   margin-bottom: var(--dist);
   padding: var(--dist);
 `

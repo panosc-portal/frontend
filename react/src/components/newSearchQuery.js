@@ -3,7 +3,7 @@ import ReactSlider from 'react-slider'
 import styled from 'styled-components'
 import {useForm, Controller} from 'react-hook-form'
 import {Div} from './Commons.js'
-
+import {DevTool} from 'react-hook-form-devtools'
 const listOfTechniques = [
   'Reflectometry',
   'Spectroscopy',
@@ -21,7 +21,7 @@ const listOfTechniques = [
 ]
 
 const SearchQuery = ({setQuery}) => {
-  const {register, handleSubmit, control} = useForm()
+  const {register, handleSubmit, reset, control} = useForm()
   const baseQuery = {
     include: [
       {
@@ -64,7 +64,8 @@ const SearchQuery = ({setQuery}) => {
     const query = baseQuery
     data.title && (query.where = {title: {ilike: data.title}})
     data.technique && (query.where = {keywords: {inq: [data.technique]}})
-    data.wavelength &&
+    data.wavecheck &&
+      data.wavelength &&
       query['include'].unshift({
         relation: 'parameters',
         scope: {
@@ -80,9 +81,6 @@ const SearchQuery = ({setQuery}) => {
     console.log('form data: ', data)
     setQuery(query)
   }
-  const reset = () => {
-    setQuery(baseQuery)
-  }
 
   return (
     <Div>
@@ -92,31 +90,33 @@ const SearchQuery = ({setQuery}) => {
           <input type="text" ref={register} name="title" />
         </p>
         <p>
-          <Controller
-            as={
-              <StyledSlider
-                defaultValue={[0, 2000]}
-                min={0}
-                max={2000}
-                renderTrack={Track}
-                renderThumb={Thumb}
-                pearling
-                minDistance={10}
-              />
-            }
-            name="wavelength"
-            control={control}
-          />
+          <h4>Wavelength:</h4>
+          <SliderWrap>
+            <Checkbox type="checkbox" ref={register} name="wavecheck" />
+            <Controller
+              as={
+                <StyledSlider
+                  defaultValue={[500, 1500]}
+                  min={500}
+                  max={1500}
+                  renderTrack={Track}
+                  renderThumb={Thumb}
+                  pearling
+                  minDistance={100}
+                />
+              }
+              name="wavelength"
+              control={control}
+            />
+          </SliderWrap>
         </p>
         <h4>Techniques:</h4>
         {/*	 <p><Controller as={<Techniques />} name="technique" control={control} /></p>*/}
         <Techniques />
         <p>
           <input type="submit" value="Search" />
+          <input type="button" value="Reset" onClick={() => reset()} />
         </p>
-      </form>
-      <form onSubmit={handleSubmit(reset)}>
-        <input type="submit" value="Reset" />
       </form>
     </Div>
   )
@@ -125,36 +125,48 @@ const SearchQuery = ({setQuery}) => {
 export default SearchQuery
 
 const StyledSlider = styled(ReactSlider)`
-  width: 100%;
-  height: 25px;
+  height: 15px;
+  margin-top: 3px;
 `
 
 const StyledThumb = styled.div`
-  height: 25px;
-  line-height: 25px;
+  height: 15px;
+  line-height: 15px;
   width: 25px;
   text-align: center;
-  background-color: rebeccapurple;
-  color: white;
-  border-radius: 50%;
+  background-color: white;
+  color: black;
   cursor: grab;
+  font-size: 10px;
 `
 
 const Thumb = (props, state) => (
-  <StyledThumb {...props}>{/*state.valueNow*/}</StyledThumb>
+  <StyledThumb {...props}>{state.valueNow}</StyledThumb>
 )
 
 const StyledTrack = styled.div`
   top: 40%;
   bottom: 40%;
   background: ${(props) =>
-    props.index === 2 ? '#ddd' : props.index === 1 ? '#0f0' : '#ddd'};
+    props.index === 2
+      ? 'var(--color-bg-0)'
+      : props.index === 1
+      ? 'var(--color-highlight)'
+      : 'var(--color-bg-0)'};
 `
 
 const ListTechniques = styled.ul`
   list-style-type: none;
   margin: 0;
   padding: 0;
+  line-height: 200%;
 `
 
 const Track = (props, state) => <StyledTrack {...props} index={state.index} />
+const Checkbox = styled.input`
+  display: inline-block;
+`
+const SliderWrap = styled.div`
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+`
