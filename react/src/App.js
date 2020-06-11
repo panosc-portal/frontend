@@ -10,24 +10,38 @@ import GlobalStyle from './GlobalStyle'
 import LoginPage from './pages/LoginPage'
 import LogoutPage from './pages/LogoutPage'
 import Instance from './components/instance'
+import {Global, css} from '@emotion/core'
+import {ThemeProvider, withTheme} from 'emotion-theming'
+import normalize from 'normalize.css'
+// import ThemeProvider from './context/themeProvider'
+import theme from './theme/darkTheme'
+import WebFont from 'webfontloader'
+
+WebFont.load({
+  google: {
+    families: ['Open Sans:400,700', 'sans-serif']
+  }
+})
 
 const App = () => {
   const {isAuthenticated} = useContext(UserContext)
-  const {darkTheme} = useContext(ThemeContext)
-  // const PrivateRoute = ({component: Component, ...rest}) => (
-  //   <Route
-  //     {...rest}
-  //     render={(props) =>
-  //       isAuthenticated ? <Component {...props} /> : <Redirect to={'/login'} />
-  //     }
-  //   />
-  // )
-  //
-
-  // {isAuthenticated && <NavBar />}
+  // const {darkTheme} = useContext(ThemeContext)
+  document.documentElement.style.setProperty('--dist', '1rem')
+  document.documentElement.style.setProperty('--dist-small', '0.5rem')
+  document.documentElement.style.setProperty('--dist-smaller', '0.25rem')
+  document.documentElement.style.setProperty('--dist-tiny', '0.125rem')
   return (
-    <>
-      <GlobalStyle dark={darkTheme} />
+    <ThemeProvider theme={theme}>
+      <Global
+        styles={(theme) => ({
+          body: {
+            fontFamily: theme.fonts.body,
+            backgroundColor: theme.fonts.body,
+            fontSize: theme.fontSizes[1]
+          },
+          normalize
+        })}
+      />
       <NavBar />
       <main>
         <Switch>
@@ -40,7 +54,8 @@ const App = () => {
           <Route exact path="/test" component={Instance} />
         </Switch>
       </main>
-    </>
+      {console.log((props) => props.theme.colors.background[1])}
+    </ThemeProvider>
   )
 }
 

@@ -1,28 +1,6 @@
-const light = {
+const theme = {
   colors: {
-    text: '#000',
-    background: '#fff',
-    primary: '#07c',
-    secondary: '#30c',
-    muted: '#f6f6f9',
-    gray: '#dddddf',
-    highlight: 'hsla(205, 100%, 40%, 0.125)'
-  },
-  darkness: {
-    background: ['hsl(0, 0%, 95%)', 'hsl(0, 0%, 90%)', 'hsl(0, 0%, 80%)'],
-    heading: 'hsl(0, 0%, 0%)',
-    text: 'hsl(0, 0%, 20%)',
-    icon: 'hsl(0, 0%, 60%)',
-    linkHover: 'hsl(207, 100%, 50%)',
-    link: 'hsl(207, 74%, 39%)',
-    highlight: 'hsl(335, 46%, 50%)',
-    jupyter: 'hsl(24, 90%, 55%)',
-    vm: 'hsl(257, 100%, 65%)'
-  },
-  brightness: {
-    bg0: 'hsl(0, 0%, 5%)',
-    bg1: 'hsl(0, 0%, 12.5%)',
-    bg2: 'hsl(0, 0%, 25%)',
+    background: ['hsl(0, 0%, 5%)', 'hsl(0, 0%, 12.5%)', 'hsl(0, 0%, 25%)'],
     heading: 'hsl(0, 0%, 100%)',
     text: 'hsl(0, 0%, 80%)',
     icon: 'hsl(0, 0%, 40%)',
@@ -84,11 +62,11 @@ const light = {
     },
     card: {
       p: 2,
-      bg: 'background',
+      bg: 'background.1',
       boxShadow: 'card'
     },
     link: {
-      color: 'primary'
+      color: 'link'
     },
     nav: {
       fontSize: 1,
@@ -98,28 +76,28 @@ const light = {
       color: 'inherit',
       textDecoration: 'none',
       ':hover,:focus,.active': {
-        color: 'primary'
+        color: 'link'
       }
     }
   },
   buttons: {
-    primary: {
+    link: {
       fontSize: 2,
       fontWeight: 'bold',
-      color: 'background',
-      bg: 'primary',
+      color: 'background.1',
+      bg: 'link',
       borderRadius: 'default'
     },
     outline: {
-      variant: 'buttons.primary',
-      color: 'primary',
+      variant: 'buttons.link',
+      color: 'link',
       bg: 'transparent',
       boxShadow: 'inset 0 0 2px'
     },
-    secondary: {
-      variant: 'buttons.primary',
-      color: 'background',
-      bg: 'secondary'
+    highlight: {
+      variant: 'buttons.link',
+      color: 'background.1',
+      bg: 'highlight'
     }
   },
   styles: {
@@ -131,8 +109,4 @@ const light = {
   }
 }
 
-const ThemeWrap = (props) => (
-  <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
-)
-
-export default ThemeWrap
+export default theme

@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import {H1} from '../components/Commons'
 import DocumentList from '../components/DocumentList'
+import {Heading} from 'rebass'
 import Instances from '../components/newInstances'
 // import SearchQuery from '../components/SearchQuery'
 import SearchQuery from '../components/newSearchQuery.js'
@@ -38,12 +38,12 @@ const DocumentsPage = () => {
   return (
     <Layout>
       <Search>
-        <H1>Search Query</H1>
+        <Heading>Search Query</Heading>
         <SearchQuery setQuery={setQuery} />
       </Search>
       {/*      <DragDropContext>
         <Environments>
-          <H1>Environments</H1>
+          <Heading>Environments</Heading>
           {isLoadingInstances || (
             <Instances
               instances={instances}
@@ -53,7 +53,7 @@ const DocumentsPage = () => {
       </DragDropContext>
         </Environments> */}
       <Documents>
-        <H1>Documents</H1>
+        <Heading>Documents</Heading>
         <DocumentList query={query} />
       </Documents>
     </Layout>

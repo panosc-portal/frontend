@@ -25,7 +25,8 @@
     "react-slider": "^1.0.7",
     "rebass": "^4.0.7",
     "styled-components": "^5.0.1",
-    "swr": "^0.2.2"
+    "swr": "^0.2.2",
+    "webfontloader": "^1.6.28"
   },
   "scripts": {
     "start": "react-scripts start",

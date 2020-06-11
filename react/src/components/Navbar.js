@@ -1,21 +1,21 @@
 import React, {useContext} from 'react'
 import {NavLink} from 'react-router-dom'
 import {TabContext} from '../context/TabContext'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import logo from '../icons/logoc.svg'
 import {FiUser, FiLogOut, FiX} from 'react-icons/fi'
 import ThemeSwitcher from './ThemeSwitcher'
 import {withRouter} from 'react-router-dom'
 
 const Navbar = (props) => {
-  const {tabs, closeTab} = useContext(TabContext)
+  // const {tabs, closeTab} = useContext(TabContext)
 
   return (
     <NavbarContainer>
       <NavLinkHome exact to={'/'}>
         <img src={logo} alt="Home" />
       </NavLinkHome>
-      {tabs.map((tab) => (
+      {/*      {tabs.map((tab) => (
         <NavLinkTabContainer
           key={tab._id}
           active={
@@ -26,6 +26,7 @@ const Navbar = (props) => {
           <FiX onClick={() => closeTab(tab)} />
         </NavLinkTabContainer>
       ))}
+      */}
       <NavbarGap />
       <NavLinkIcon to={'/profile'}>
         <FiUser />
@@ -33,7 +34,7 @@ const Navbar = (props) => {
       <NavLinkIcon to={'/logout'}>
         <FiLogOut />
       </NavLinkIcon>
-      <ThemeSwitcherStyled />
+      {/*     <ThemeSwitcherStyled /> */}
     </NavbarContainer>
   )
 }
@@ -43,7 +44,7 @@ export default withRouter(Navbar)
 const NavbarContainer = styled.nav`
   display: flex;
   flex-flow: row;
-  background-color: var(--color-bg-1);
+  background-color: ${(props) => props.theme.colors.background[1]};
   height: 2rem;
   align-items: center;
 
