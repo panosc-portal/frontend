@@ -1,24 +1,36 @@
 const Flavours = [
   {
-    name: "Jupyter Basic",
+    name: "Basic",
     type: "jupyter",
     cpu: "16",
     gpu: "0",
   },
   {
-    name: "Jupyter Gpu",
+    name: "Beast",
+    type: "jupyter",
+    cpu: "164",
+    gpu: "0",
+  },
+  {
+    name: "GPU",
     type: "jupyter",
     cpu: "32",
     gpu: "4",
   },
   {
-    name: "VM Basic",
+    name: "GPU Beast",
+    type: "jupyter",
+    cpu: "164",
+    gpu: "80",
+  },
+  {
+    name: "Basic",
     type: "vm",
     cpu: "16",
     gpu: "0",
   },
   {
-    name: "VM GPU",
+    name: "GPU",
     type: "vm",
     cpu: "32",
     gpu: "32",
@@ -518,15 +530,7 @@ const Documents = [
   },
 ];
 
-const Instances = [
-  {
-    name: "PIC Simulation",
-    flavour: Flavours[1],
-    description: "This is the original analytical environment.",
-    user: {},
-    datasets: [],
-  },
-];
+const Instances = [];
 const data = {
   Flavours,
   Instances,

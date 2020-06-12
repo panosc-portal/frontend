@@ -89,7 +89,14 @@ const DocumentPage = (props) => {
             {isLoading ? <Loading /> : <Datasets datasets={data[0].datasets} />}
           </DatasetSection>
           <Environments>
-            <H1>Analysis</H1>
+            <Analysis>
+              <H1>Analysis</H1>
+              {isLoading ? (
+                <Loading />
+              ) : (
+                <Datasets datasets={[data[0].datasets[0]]} analysis />
+              )}
+            </Analysis>
             {isLoadingInstances || (
               <Instances
                 instances={instances}
@@ -116,3 +123,4 @@ const Layout = styled.div`
 const DatasetSection = styled.section``
 
 const Environments = styled.section``
+const Analysis = styled.p``

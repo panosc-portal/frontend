@@ -109,10 +109,7 @@ const createInstances = async () => {
       username: "admin",
     });
     console.log(datasets);
-    instance.datasets = [
-      "20.500.12269/panosc-dataset1",
-      "20.500.12269/panosc-dataset2",
-    ];
+    instance.datasets = ["20.500.12269/panosc-dataset1"];
     await models.Instance.create(instance);
   }
 };

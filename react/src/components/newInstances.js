@@ -30,23 +30,30 @@ const Instance = ({instance, provided}) => {
             <H3>{instance.name}</H3>
           </a>
           <div>
-            {instance.description}
+            Type: <Type>{instance.flavour.type}</Type>
             <br />
-            Flavour: <b>{instance.flavour.name}</b>
+            Flavour: <Type>{instance.flavour.name}</Type>
             <br />
             CPUs: <b>{instance.flavour.cpu}</b>
-            <br />
-            GPUs: <b>{instance.flavour.gpu}</b>
+            {instance.flavour.gpu !== '0' && (
+              <>
+                <br />
+                GPUs: <b>{instance.flavour.gpu}</b>
+              </>
+            )}
           </div>
-          <b>Datasets:</b>
-          <NoUl>
-            {datasets.map((dataset) => (
-              <li key={dataset.pid}>
-                <i>{dataset.title}</i>
-              </li>
-            ))}
-            {provided.placeholder}
-          </NoUl>
+          {datasets.length !== 0 && (
+            <>
+              <b>Datasets:</b>
+              <NoUl>
+                {datasets.map((dataset) => (
+                  <li key={dataset.pid}>
+                    <i>{dataset.title}</i>
+                  </li>
+                ))}
+              </NoUl>
+            </>
+          )}
         </div>
       )}
     </>
@@ -55,6 +62,11 @@ const Instance = ({instance, provided}) => {
 
 const Instances = (props) => (
   <>
+    {props.instances.length > 0 && (
+      <BoxCategory>
+        <h2>My Environments</h2>
+      </BoxCategory>
+    )}
     <NoUl>
       {props.instances.map((e) => (
         <Droppable key={e._id} droppableId={e._id}>
@@ -74,9 +86,7 @@ const Instances = (props) => (
         </Droppable>
       ))}
     </NoUl>
-    {/* <Div>
-      <AddInstance setAddNewInstance={props.setAddNewInstance} />
-    </Div> */}
+    <AddInstance setAddNewInstance={props.setAddNewInstance} />
   </>
 )
 
@@ -84,6 +94,20 @@ export default Instances
 
 const LiInstance = styled.li`
   background-color: var(--color-bg-1);
-  margin-bottom: var(--dist);
+  margin-bottom: var(--dist-smaller);
+  font-size: 0.9rem;
   padding: var(--dist);
+`
+const BoxCategory = styled.div`
+  h2 {
+    font-size: 1rem;
+  }
+  background-color: var(--color-bg-1);
+  margin-bottom: var(--dist-smaller);
+  margin-top: var(--dist);
+  padding: var(--dist-small) var(--dist);
+`
+const Type = styled.span`
+  text-transform: capitalize;
+  font-weight: 700;
 `

@@ -81,13 +81,16 @@ const SearchQuery = ({setQuery}) => {
     console.log('form data: ', data)
     setQuery(query)
   }
-
+  const resetQuery = () => {
+    reset()
+    setQuery(baseQuery)
+  }
   return (
     <Div>
       <form onSubmit={handleSubmit(submit)}>
         <h4>Title:</h4>
         <p>
-          <input type="text" ref={register} name="title" />
+          <input size="30" type="text" ref={register} name="title" />
         </p>
         <p>
           <h4>Wavelength:</h4>
@@ -111,12 +114,11 @@ const SearchQuery = ({setQuery}) => {
           </SliderWrap>
         </p>
         <h4>Techniques:</h4>
-        {/*	 <p><Controller as={<Techniques />} name="technique" control={control} /></p>*/}
         <Techniques />
-        <p>
+        <ButtonWrap>
           <input type="submit" value="Search" />
-          <input type="button" value="Reset" onClick={() => reset()} />
-        </p>
+          <input type="button" value="Reset" onClick={() => resetQuery()} />
+        </ButtonWrap>
       </form>
     </Div>
   )
@@ -165,8 +167,14 @@ const ListTechniques = styled.ul`
 const Track = (props, state) => <StyledTrack {...props} index={state.index} />
 const Checkbox = styled.input`
   display: inline-block;
+  margin-top: 4px;
 `
 const SliderWrap = styled.div`
+  margin-top: 5px;
   display: grid;
   grid-template-columns: 2rem 1fr;
+`
+const ButtonWrap = styled.p`
+  display: flex;
+  justify-content: space-between;
 `

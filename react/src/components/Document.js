@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
-import {NoUl, Div, Img, H2} from './Commons'
+import {NoUl, Div, Img, H2 as HH2} from './Commons'
 
 const Document = ({document}) => (
   <Layout>
@@ -109,4 +109,7 @@ const Badge = styled.li`
   background-color: var(--color-bg-2);
   margin-right: var(--dist-smaller);
   font-size: 0.8rem;
+`
+const H2 = styled(HH2)`
+  margin-bottom: var(--dist);
 `
