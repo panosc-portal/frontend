@@ -45,11 +45,17 @@ const DocumentPage = (props) => {
   const {data, isLoading} = useSearchApi('Documents', singleQuery)
   const [addDataset, setAddDataset] = useState({})
   const pushDataset = (result) => {
-    const payload = {
-      dataset: result.draggableId,
-      instance: result.destination.droppableId
+    if (
+      result.destination &&
+      result.destination.droppableId !== 'datasets' &&
+      result.destination.droppableId !== 'analysis'
+    ) {
+      const payload = {
+        dataset: result.draggableId,
+        instance: result.destination.droppableId
+      }
+      setAddDataset({...payload})
     }
-    setAddDataset({...payload})
   }
   const [
     {data: instances, isLoading: isLoadingInstances},

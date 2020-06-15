@@ -73,6 +73,15 @@
       }
     },
     "Dataset": {
+      "20.500.12269/panosc-dataset0": {
+        "pid": "20.500.12269/panosc-dataset0",
+        "title": "PIC Simulation",
+        "isPublic": true,
+        "size": 41,
+        "creationDate": "2020-05-05T15:01:02.341Z",
+        "documentId": "10.5072/panosc-document1",
+        "instrumentId": "20.500.12269/0f98fcf2-7bd7-430e-ad20-d47031ca8f71"
+      },
       "20.500.12269/panosc-dataset1": {
         "pid": "20.500.12269/panosc-dataset1",
         "title": "PIC Simulation - EPOCH",
@@ -241,7 +250,7 @@
         "title": "Recoil Effects on Reflection from Relativistic Mirrors in Laser Plasmas",
         "img": "/thumbnails/5e6/recoil_pv.png",
         "summary": "Relativistic mirrors can be realized with strongly nonlinear Langmuir waves excited by intense laser pulses in underdense plasma. On reflection from the relativistic mirror the incident light affects the mirror motion. The corresponding recoil effects are investigated analytically and with particle-in-cell simulations. It is found that if the fluence of the incident electromagnetic wave exceeds a certain threshold, the relativistic mirror undergoes a significant back reaction and splits into multiple electron layers. The reflection coefficient of the relativistic mirror as well as the factors of electric field amplification and frequency upshift of the electromagnetic wave are obtained.",
-        "doi": "https://doi.org/10.1063/1.5142084",
+        "doi": "10.1063/1.5142084",
         "citation": "Petr Valenta; (2020), Recoil Effects on Reflection from Relativistic Mirrors in Laser Plasmas, DOI:10.1142/s0217751x19430103",
         "isPublic": true,
         "type": "Publication",

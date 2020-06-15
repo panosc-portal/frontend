@@ -19,7 +19,15 @@ const Document = ({document}) => (
       <Meta>Released</Meta>
       <Meta>{moment(document.releaseDate).format('L')}</Meta>
       <Meta>Citation</Meta>
-      <Meta>{document.citation}</Meta>
+      <Meta>
+        <a
+          href={'https://doi.org/' + document.doi}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {document.citation}
+        </a>
+      </Meta>
       <Image src={document.img} />
     </Metas>
     <Members>

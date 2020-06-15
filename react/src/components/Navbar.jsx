@@ -15,7 +15,8 @@ const Navbar = (props) => {
       <NavLinkHome exact to={'/'}>
         <img src={logo} alt="Home" />
       </NavLinkHome>
-      {tabs.map((tab) => (
+      <NavbarGap />
+      {/*      {tabs.map((tab) => (
         <NavLinkTabContainer
           key={tab._id}
           active={
@@ -26,13 +27,12 @@ const Navbar = (props) => {
           <FiX onClick={() => closeTab(tab)} />
         </NavLinkTabContainer>
       ))}
-      <NavbarGap />
       <NavLinkIcon to={'/profile'}>
         <FiUser />
       </NavLinkIcon>
       <NavLinkIcon to={'/logout'}>
         <FiLogOut />
-      </NavLinkIcon>
+      </NavLinkIcon>  */}
       <ThemeSwitcherStyled />
     </NavbarContainer>
   )

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import {useSearchApi} from '../utils/useApi'
 import {Link} from 'react-router-dom'
-import {NoUl, Div, Img, H3} from './Commons'
+import {NoUl, Div, Img, H3 as HH} from './Commons'
 import moment from 'moment'
 
 const Doc = ({d}) => (
@@ -19,7 +19,15 @@ const Doc = ({d}) => (
         ))}
       </Members>
       <ShortSummary>{d.summary}</ShortSummary>
-      <Citation>{d.citation}</Citation>
+      <Citation>
+        <a
+          href={'https://doi.org/' + d.doi}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {d.citation}
+        </a>
+      </Citation>
       <Badges>
         {d.keywords.map((keyword, index) => (
           <Badge key={index}>{keyword}</Badge>
@@ -146,4 +154,9 @@ const Meta = styled.li`
   font-size: 0.8rem;
   background-color: var(--color-bg-1);
   padding: 0 var(--dist-small);
+`
+
+const H3 = styled(HH)`
+  font-size: 1.1rem;
+  margin-bottom: 0;
 `

@@ -45,7 +45,10 @@ const Dataset = ({analysis, dataset, index}) => {
 }
 
 const Datasets = ({datasets, analysis}) => (
-  <Droppable droppableId={analysis ? 'analysis' : 'datasets'}>
+  <Droppable
+    isDropDisabled={true}
+    droppableId={analysis ? 'analysis' : 'datasets'}
+  >
     {(provided) => (
       <>
         <NoUl ref={provided.innerRef} {...provided.droppableProps}>
