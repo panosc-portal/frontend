@@ -1,8 +1,7 @@
 import React, {useState, useContext} from 'react'
 import styled from 'styled-components'
-import {useFakeCloudService, fakeCloudService} from '../utils/useApi.js'
+import {useFakeCloudService, fakeCloudService} from '../utils/useApi'
 import {UserContext} from '../context/UserContext'
-import {H1} from '../components/Commons'
 
 const AddInstance = ({setAddNewInstance}) => {
   const [newInstance, setNewInstance] = useState({})
@@ -25,7 +24,7 @@ const AddInstance = ({setAddNewInstance}) => {
       user: user._id
     }
     console.log('click')
-    setAddNewInstance(payload)
+    setAddNewInstance(getRandomInt(100))
     await fakeCloudService.post('instances', payload)
   }
   const FlavourBox = ({flavour}) => (
@@ -89,12 +88,7 @@ const AddInstance = ({setAddNewInstance}) => {
           <Boxes jupyter>
             {dataFlavours.map(
               (f) =>
-                f.type === 'jupyter' && (
-                  <>
-                    <FlavourBox flavour={f} key={f._id} />
-                    {console.log(f)}
-                  </>
-                )
+                f.type === 'jupyter' && <FlavourBox flavour={f} key={f._id} />
             )}
           </Boxes>
           <BoxCategory>

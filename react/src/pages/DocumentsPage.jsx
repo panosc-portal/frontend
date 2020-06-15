@@ -4,9 +4,9 @@ import {H1} from '../components/Commons'
 import DocumentList from '../components/DocumentList'
 import Instances from '../components/newInstances'
 // import SearchQuery from '../components/SearchQuery'
-import SearchQuery from '../components/newSearchQuery.js'
+import SearchQuery from '../components/newSearchQuery'
 import {DragDropContext} from 'react-beautiful-dnd'
-import {useFreshInstances} from '../utils/useApi.js'
+import {useFreshInstances} from '../utils/useApi'
 
 const DocumentsPage = () => {
   const [

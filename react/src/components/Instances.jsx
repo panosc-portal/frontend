@@ -4,7 +4,7 @@ import {TabContext} from '../context/TabContext'
 import styled from 'styled-components'
 import {NoUl, H3} from './Commons'
 import {Droppable} from 'react-beautiful-dnd'
-import {useFakeCloudService} from '../utils/useSearchApi.js'
+import {useFakeCloudService} from '../utils/useSearchApi'
 import useApi from '../utils/useApi'
 
 const Instance = ({instance, provided, dropDataset}) => {

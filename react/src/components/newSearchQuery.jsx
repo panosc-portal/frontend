@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import ReactSlider from 'react-slider'
 import styled from 'styled-components'
 import {useForm, Controller} from 'react-hook-form'
-import {Div} from './Commons.js'
+import {Div} from './Commons'
 import {DevTool} from 'react-hook-form-devtools'
 const listOfTechniques = [
   'Reflectometry',
@@ -90,7 +90,7 @@ const SearchQuery = ({setQuery}) => {
       <form onSubmit={handleSubmit(submit)}>
         <h4>Title:</h4>
         <p>
-          <input size="30" type="text" ref={register} name="title" />
+          <InputText type="text" ref={register} name="title" />
         </p>
         <p>
           <h4>Wavelength:</h4>
@@ -177,4 +177,10 @@ const SliderWrap = styled.div`
 const ButtonWrap = styled.p`
   display: flex;
   justify-content: space-between;
+`
+const InputText = styled.input`
+  width: 16.5rem;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: 700;
 `

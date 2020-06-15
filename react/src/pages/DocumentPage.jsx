@@ -12,6 +12,8 @@ import {
   useFreshInstances
 } from '../utils/useApi'
 
+//these are very awkward lines of garbage, please dont look ;-)
+
 const DocumentPage = (props) => {
   const pid = decodeURIComponent(props.match.params.documentId)
   const singleQuery = {
@@ -86,11 +88,18 @@ const DocumentPage = (props) => {
         <DragDropContext onDragEnd={pushDataset}>
           <DatasetSection>
             <H1>Datasets</H1>
-            {isLoading ? <Loading /> : <Datasets datasets={data[0].datasets} />}
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <Datasets datasets={data[0].datasets.slice(1)} />
+            )}
           </DatasetSection>
           <Environments>
             <Analysis>
               <H1>Analysis</H1>
+              <BoxCategory>
+                <h2>Original Analysis</h2>
+              </BoxCategory>
               {isLoading ? (
                 <Loading />
               ) : (
@@ -124,3 +133,12 @@ const DatasetSection = styled.section``
 
 const Environments = styled.section``
 const Analysis = styled.p``
+const BoxCategory = styled.div`
+  h2 {
+    font-size: 1rem;
+  }
+  background-color: var(--color-bg-1);
+  margin-bottom: var(--dist-smaller);
+  margin-top: var(--dist);
+  padding: var(--dist-small) var(--dist);
+`

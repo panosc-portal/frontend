@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {useState, useEffect} from 'react'
-// import {UserContext} from '../context/UserContext.js'
+// import {UserContext} from '../context/UserContext'
 // const {token} = useContext(UserContext)
 const token = 'hjkdsl'
 

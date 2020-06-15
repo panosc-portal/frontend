@@ -3,20 +3,13 @@ import moment from 'moment'
 import {NoUl, Li as Lii, H3} from './Commons'
 import {Draggable, Droppable} from 'react-beautiful-dnd'
 import styled from 'styled-components'
+
+//these are very awkward lines of garbage, please dont look ;-)
 const Dataset = ({analysis, dataset, index}) => {
   const analysisDataset = {...dataset}
-  analysis && (analysisDataset.pid = dataset.pid + 'fakeAnalysis')
   return (
     <>
-      {analysis && (
-        <BoxCategory>
-          <h2>Original Analysis</h2>
-        </BoxCategory>
-      )}
-      <Draggable
-        draggableId={analysis ? analysisDataset.pid : dataset.pid}
-        index={index + 99}
-      >
+      <Draggable draggableId={dataset.pid} index={index}>
         {(provided) => (
           <Li
             {...provided.draggableProps}
@@ -24,14 +17,14 @@ const Dataset = ({analysis, dataset, index}) => {
             ref={provided.innerRef}
           >
             {analysis ? (
-              <>
+              <div>
                 <HA>{analysisDataset.title}</HA>
                 Type: <Type>Jupyter</Type>
                 <br />
                 Last modified:
                 <br />
                 {moment(analysisDataset.creationDate).format('lll')}
-              </>
+              </div>
             ) : (
               <>
                 <H3>{dataset.title}</H3>
@@ -41,7 +34,7 @@ const Dataset = ({analysis, dataset, index}) => {
                 <div>
                   Instrument: {dataset.instrument.name} @{' '}
                   {dataset.instrument.facility}
-                </div>{' '}
+                </div>
               </>
             )}
           </Li>
@@ -52,32 +45,26 @@ const Dataset = ({analysis, dataset, index}) => {
 }
 
 const Datasets = ({datasets, analysis}) => (
-  <Droppable droppableId="datasets">
+  <Droppable droppableId={analysis ? 'analysis' : 'datasets'}>
     {(provided) => (
-      <NoUl ref={provided.innerRef} {...provided.droppableProps}>
-        {datasets.map((dataset, index) => (
-          <Dataset
-            dataset={dataset}
-            analysis={analysis}
-            index={index}
-            key={dataset.pid}
-          />
-        ))}
-      </NoUl>
+      <>
+        <NoUl ref={provided.innerRef} {...provided.droppableProps}>
+          {datasets.map((dataset, index) => (
+            <Dataset
+              dataset={dataset}
+              analysis={analysis}
+              index={index}
+              key={dataset.pid}
+            />
+          ))}
+        </NoUl>
+        <div style={{display: 'none'}}>{provided.placeholder}</div>
+      </>
     )}
   </Droppable>
 )
 
 export default Datasets
-const BoxCategory = styled.div`
-  h2 {
-    font-size: 1rem;
-  }
-  background-color: var(--color-bg-1);
-  margin-bottom: var(--dist-smaller);
-  margin-top: var(--dist);
-  padding: var(--dist-small) var(--dist);
-`
 const HA = styled.h2`
   font-size: 0.9rem;
 `

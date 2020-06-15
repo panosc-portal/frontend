@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {useContext, useEffect, useState} from 'react'
-import {UserContext} from '../context/UserContext.js'
+import {UserContext} from '../context/UserContext'
 
 const useFreshInstances = () => {
   const [data, setData] = useState([])

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {Div, NoUl, H3} from './Commons'
 import {Droppable} from 'react-beautiful-dnd'
 import AddInstance from './AddInstance'
-import {useSearchApi} from '../utils/useApi.js'
+import {useSearchApi} from '../utils/useApi'
 
 const Instance = ({instance, provided}) => {
   const datasetIds = instance.datasets.reduce(
@@ -42,18 +42,17 @@ const Instance = ({instance, provided}) => {
               </>
             )}
           </div>
-          {datasets.length !== 0 && (
-            <>
-              <b>Datasets:</b>
-              <NoUl>
-                {datasets.map((dataset) => (
-                  <li key={dataset.pid}>
-                    <i>{dataset.title}</i>
-                  </li>
-                ))}
-              </NoUl>
-            </>
-          )}
+          <>
+            {datasets.length !== 0 && <b>Datasets:</b>}
+            <NoUl>
+              {datasets.map((dataset) => (
+                <li key={dataset.pid}>
+                  <i>{dataset.title}</i>
+                </li>
+              ))}
+              {provided.placeholder}
+            </NoUl>
+          </>
         </div>
       )}
     </>
