@@ -62,7 +62,9 @@ export default {
       bg: 'background.1'
     },
     link: {
-      color: 'link'
+      color: 'jupyter',
+      fontDecoration: 'none',
+      ':hover': {color: 'vm', textDecoration: 'underline'}
     },
     nav: {
       fontSize: 1,

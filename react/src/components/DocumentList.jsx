@@ -9,11 +9,12 @@ const Doc = ({d}) => (
   <Document>
     <Main>
       <Heading
-        fontSize={[5]}
+        fontSize={[3]}
         as={Link}
         to={'/documents/' + encodeURIComponent(d.pid)}
+        variant="headerLink"
       >
-        <H3>{d.title}</H3>
+        {d.title}
       </Heading>
       <Members>
         {d.members.map((m) => (
@@ -24,13 +25,7 @@ const Doc = ({d}) => (
       </Members>
       <ShortSummary>{d.summary}</ShortSummary>
       <Citation>
-        <a
-          href={'https://doi.org/' + d.doi}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {d.citation}
-        </a>
+        <LinkBase href={'https://doi.org/' + d.doi}>{d.citation}</LinkBase>
       </Citation>
       <Badges>
         {d.keywords.map((keyword, index) => (
@@ -138,7 +133,7 @@ const Badges = styled(NoUl)`
 const Badge = styled.li`
   padding: var(--dist-smaller) var(--dist-small);
   text-transform: capitalize;
-  background-color: var(--color-bg-2);
+  background-color: ${(props) => props.theme.colors.background[2]};
   margin-right: var(--dist-smaller);
   font-size: 0.8rem;
   height: 1.4rem;
@@ -162,5 +157,6 @@ const Meta = styled.li`
 
 const H3 = styled(HH)`
   font-size: 1.1rem;
+  color: ${(props) => props.theme.colors['highlight']};
   margin-bottom: 0;
 `

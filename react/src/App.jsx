@@ -36,10 +36,11 @@ const App = () => {
         styles={(theme) => ({
           body: {
             fontFamily: theme.fonts.body,
-            backgroundColor: theme.fonts.body,
+            backgroundColor: theme.colors.background[0],
             fontSize: theme.fontSizes[1]
           },
-          normalize
+          normalize,
+          a: {textDecoration: 'none'}
         })}
       />
       <NavBar />
