@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import {useSearchApi} from '../utils/useApi.js'
+import {useSearchApi} from '../utils/useApi'
 import {Link} from 'react-router-dom'
 import {NoUl, Div, Img, H3 as HH} from './Commons'
 import moment from 'moment'
