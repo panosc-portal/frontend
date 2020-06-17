@@ -11,11 +11,7 @@ import UserProvider from './context/UserContext'
 ReactDOM.render(
   <BrowserRouter>
     <UserProvider>
-      <ThemeProvider>
-        <TabProvider>
-          <App />
-        </TabProvider>
-      </ThemeProvider>
+      <App />
     </UserProvider>
   </BrowserRouter>,
   document.getElementById('root')

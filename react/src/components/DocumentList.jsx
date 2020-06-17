@@ -1,16 +1,20 @@
 import React from 'react'
-import styled from 'styled-components'
-import {useSearchApi} from '../utils/useApi'
+import styled from '@emotion/styled'
+import {useSearchApi} from '../utils/useApi.js'
 import {Link} from 'react-router-dom'
 import {NoUl, Div, Img, H3 as HH} from './Commons'
 import moment from 'moment'
-
+import {Box, Heading, Card, Link as LinkBase, Text, Image} from 'rebass'
 const Doc = ({d}) => (
   <Document>
     <Main>
-      <Link to={'/documents/' + encodeURIComponent(d.pid)}>
+      <Heading
+        fontSize={[5]}
+        as={Link}
+        to={'/documents/' + encodeURIComponent(d.pid)}
+      >
         <H3>{d.title}</H3>
-      </Link>
+      </Heading>
       <Members>
         {d.members.map((m) => (
           <Member key={m.id}>
@@ -92,7 +96,7 @@ const Document = styled.li`
   margin-bottom: var(--dist);
 `
 
-const Main = styled(Div)`
+const Main = styled(Card)`
   display: flex;
   flex-flow: column;
   justify-content: space-between;
