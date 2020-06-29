@@ -1,11 +1,11 @@
 version: '3'
 services:
-  jupyter:
-    build: jupyterdemo/.
-    ports:
-      - "8888:8888"
-    environment:
-      - JUPYTER_ENABLE_LAB=yes
+  # jupyter:
+  #   build: jupyterdemo/.
+  #   ports:
+  #     - "8888:8888"
+  #   environment:
+  #     - JUPYTER_ENABLE_LAB=yes
   db:
     image: 'mongo'
     ports:
@@ -24,10 +24,10 @@ services:
     build: express/.
     ports:
       - "5000:5000"
-  react:
-    environment:
-      - REACT_APP_EXPRESS=http://localhost:5000/
-      - REACT_APP_SEARCHAPI=http://localhost:5001/api/
-    build: react/.
-    ports:
-      - "3000:3000"
+  # react:
+  #   environment:
+  #     - REACT_APP_EXPRESS=http://localhost:5000/
+  #     - REACT_APP_SEARCHAPI=http://localhost:5001/api/
+  #   build: react/.
+  #   ports:
+  #     - "3000:3000"
