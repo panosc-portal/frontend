@@ -19,10 +19,6 @@ const mockTechniques = [
   'Diffraction Imaging',
 ]
 
-export const urlPrefix = '/Documents?filter='
-
-export const parseQuery = query => encodeURIComponent(JSON.stringify(query))
-
 export const baseQuery = {
   include: [
     {
@@ -42,10 +38,9 @@ export const baseQuery = {
       },
     },
   ],
-  limit: 5,
 }
-
-export const baseUrl = urlPrefix + parseQuery(baseQuery)
+export const parseObjectToUri = object =>
+  encodeURIComponent(JSON.stringify(object))
 
 const Search = ({setQueryObject}) => {
   const [fields, setFields] = useState({})
@@ -55,6 +50,7 @@ const Search = ({setQueryObject}) => {
     setFields(data)
 
     const query = baseQuery
+    //garbage...
     data.title && (query.where = {title: {ilike: data.title}})
     data.technique && (query.where = {keywords: {inq: [data.technique]}})
 

@@ -4,7 +4,7 @@ import Spinner from '../App/spinner'
 import Document from './document'
 import styled from 'styled-components'
 import useSWR from 'swr'
-import {baseQuery, parseQuery} from '../Search/search'
+import {baseQuery, parseObjectToUri} from '../Search/search'
 import {Box} from 'rebass/styled-components'
 import Datasets from './datasets'
 import Environments from '../Environments/environments'
@@ -17,7 +17,7 @@ const DocumentPage = props => {
   }
 
   const {data} = useSWR(
-    '/Documents/' + documentId + '?filter=' + parseQuery(query)
+    '/Documents/' + documentId + '?filter=' + parseObjectToUri(query)
   )
   return (
     <ErrorBoundary>

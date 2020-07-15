@@ -1,6 +1,6 @@
 import React, {Suspense, useState, useEffect} from 'react'
 import styled from 'styled-components'
-import Search from '../Search/search'
+import Search, {baseQuery, parseObjectToUri} from '../Search/search'
 import {Box} from 'rebass/styled-components'
 import {useSWRInfinite} from 'swr'
 import ErrorBoundary from '../App/errorBoundary'
@@ -9,40 +9,25 @@ import Document from './document'
 import {useInView} from 'react-intersection-observer'
 
 const DocumentsPage = () => {
-  const limit = 2
-  const baseQueryWithScroll = {
-    include: [
-      {
-        relation: 'datasets',
-      },
-      {
-        relation: 'members',
-        scope: {
-          include: [
-            {
-              relation: 'affiliation',
-            },
-            {
-              relation: 'person',
-            },
-          ],
-        },
-      },
-    ],
-    limit,
-  }
+  const [queryObject, setQueryObject] = useState(baseQuery)
 
-  const parseToUri = object => encodeURIComponent(JSON.stringify(object))
-
-  const [queryObject, setQueryObject] = useState(baseQueryWithScroll)
+  //this swr api is in beta, docs limited
+  //"hasMore" like condition not applicable to searchapi ath this point. count returns total resource count only...
   const {data, size, setSize} = useSWRInfinite(index => {
-    const queryObjectWithSkip = {...queryObject, skip: index * limit}
-    return `/Documents?filter=${parseToUri(queryObjectWithSkip)}`
+    const limit = 2
+    const queryObjectWithPaginationParams = {
+      ...queryObject,
+      limit,
+      skip: index * limit,
+    }
+    return `/Documents?filter=${parseObjectToUri(
+      queryObjectWithPaginationParams
+    )}`
   })
   const documents = data ? [].concat(...data) : []
+  const loadMore = () => (size > 0 ? setSize(size + 1) : setSize(2)) //garbage
 
-  const loadMore = () => (size > 0 ? setSize(size + 1) : setSize(2))
-
+  //this is broken garbage, should trigger lazy loading using observer api, react-window/virtualized should be used instead
   const [ref, inView] = useInView()
   console.log(inView)
   useEffect(() => {
