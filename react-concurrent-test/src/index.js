@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App/App'
+import App from './App/app'
 import * as serviceWorker from './serviceWorker'
 
 import {BrowserRouter} from 'react-router-dom'
@@ -29,3 +29,4 @@ ReactDOM.unstable_createRoot(document.getElementById('root')).render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister()
+
