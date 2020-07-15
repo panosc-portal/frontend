@@ -2,20 +2,23 @@ import React from 'react'
 import styled from 'styled-components'
 import {Box, Card, Text} from 'rebass/styled-components'
 import useSWR from 'swr'
-import {v5 as uuid} from 'uuid'
+import {v4 as uuid} from 'uuid'
 
 const SpawnEnvironment = ({refresh}) => {
   const fetcher = url => fetch(url).then(r => r.json())
   const {data} = useSWR(process.env.REACT_APP_CLOUD + '/flavours', fetcher)
+  console.log(uuid())
   const spawn = async flavour => {
     const payload = {
       flavour,
-      name: 'Test Environment #' + uuid,
-      user: 'dont want to mock backend all the time',
+      name: toString('#' + uuid()),
     }
     await fetch(process.env.REACT_APP_CLOUD + '/instances', {
       method: 'post',
       body: JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
     //should be optimistic
     refresh()
