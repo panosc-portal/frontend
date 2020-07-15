@@ -22,6 +22,7 @@
     "rebass": "^4.0.7",
     "styled-components": "^5.1.1",
     "swr": "^0.3.0-beta.6",
+    "uuid": "^8.2.0",
     "webfontloader": "^1.6.28"
   },
   "scripts": {
@@ -74,4 +75,3 @@
     "typescript": "^3.9.6"
   }
 }
-

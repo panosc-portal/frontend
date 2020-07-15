@@ -25,7 +25,11 @@ const DocumentPage = props => {
         <S.Box>
           <Document data={data} />
           <Datasets data={data.datasets} />
-          <Environments />
+          <ErrorBoundary>
+            <Suspense fallback={<Spinner />}>
+              <Environments />
+            </Suspense>
+          </ErrorBoundary>
         </S.Box>
       </Suspense>
     </ErrorBoundary>
