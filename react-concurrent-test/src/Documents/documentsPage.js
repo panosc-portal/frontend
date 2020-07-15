@@ -14,7 +14,7 @@ const DocumentsPage = () => {
   //this swr api is in beta, docs limited
   //"hasMore" like condition not applicable to searchapi ath this point. count returns total resource count only...
   const {data, size, setSize} = useSWRInfinite(index => {
-    const limit = 2
+    const limit = 5
     const queryObjectWithPaginationParams = {
       ...queryObject,
       limit,
@@ -31,7 +31,7 @@ const DocumentsPage = () => {
   const [ref, inView] = useInView()
   console.log(inView)
   useEffect(() => {
-    inView && loadMore() && console.log('more')
+    inView && loadMore()
   }, [inView])
 
   return (
