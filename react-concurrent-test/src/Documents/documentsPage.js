@@ -29,7 +29,6 @@ const DocumentsPage = () => {
 
   //this is broken garbage, should trigger lazy loading using observer api, react-window/virtualized should be used instead
   const [ref, inView] = useInView()
-  console.log(inView)
   useEffect(() => {
     inView && loadMore()
   }, [inView])
