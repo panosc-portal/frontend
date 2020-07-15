@@ -1,8 +1,9 @@
 import React from 'react'
 import {SWRConfig} from 'swr'
 
+//this could also be cleaner
 const SWRProvider = ({children}) => {
-  const baseUrl = 'http://localhost:5001/api'
+  const baseUrl = process.env.REACT_APP_SEARCH
   const fetcher = url => fetch(baseUrl + url).then(r => r.json())
   return (
     <SWRConfig
