@@ -5,10 +5,7 @@ import Spinner from '../App/spinner'
 import SpawnEnvironment from './spawnEvironment'
 
 const Environments = () => {
-  const fetcher = url => fetch(url).then(r => r.json())
-  const key = process.env.REACT_APP_CLOUD + '/instances'
-  const {data, mutate} = useSWR(key, fetcher)
-  const refresh = () => mutate(key)
+  const {data} = useSWR('/instances')
   return (
     <Box>
       <Heading>Environments</Heading>
@@ -18,7 +15,7 @@ const Environments = () => {
             <Heading>{environment.name}</Heading>
           </Card>
         ))}
-        <SpawnEnvironment refresh={refresh} />
+        <SpawnEnvironment dataInstances={data} />
       </Suspense>
     </Box>
   )

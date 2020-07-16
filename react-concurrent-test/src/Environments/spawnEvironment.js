@@ -1,17 +1,17 @@
-import React from 'react'
+import React, {Suspense} from 'react'
+import Spinner from '../App/spinner'
 import styled from 'styled-components'
 import {Box, Card, Text} from 'rebass/styled-components'
-import useSWR from 'swr'
+import useSWR, {mutate} from 'swr'
+import produce from 'immer'
 import {v4 as uuid} from 'uuid'
 
-const SpawnEnvironment = ({refresh}) => {
-  const fetcher = url => fetch(url).then(r => r.json())
-  const {data} = useSWR(process.env.REACT_APP_CLOUD + '/flavours', fetcher)
-  console.log(uuid())
+const SpawnEnvironment = ({dataInstances}) => {
+  const {data} = useSWR('/flavours')
   const spawn = async flavour => {
     const payload = {
       flavour,
-      name: toString('#' + uuid()),
+      name: 'jfdskl',
     }
     await fetch(process.env.REACT_APP_CLOUD + '/instances', {
       method: 'post',
@@ -20,16 +20,24 @@ const SpawnEnvironment = ({refresh}) => {
         'Content-Type': 'application/json',
       },
     })
-    //should be optimistic
-    refresh()
+    // just trying out immer & optimistic ui patterns
+    mutate(
+      '/instances',
+      produce(dataInstances, draft => {
+        draft.push({...payload, _id: uuid()})
+      })
+    )
   }
+
   return (
     <S.Box>
-      {data.map(flavour => (
-        <S.Card onClick={() => spawn(flavour)} key={flavour._id}>
-          <Text>{flavour.name}</Text>
-        </S.Card>
-      ))}
+      <Suspense fallback={<Spinner />}>
+        {data.map(flavour => (
+          <S.Card onClick={() => spawn(flavour)} key={flavour._id}>
+            <Text>{flavour.name}</Text>
+          </S.Card>
+        ))}
+      </Suspense>
     </S.Box>
   )
 }
