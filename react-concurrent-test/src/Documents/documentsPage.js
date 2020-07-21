@@ -1,4 +1,4 @@
-import React, {Suspense, useState, useEffect} from 'react'
+import React, {useCallback, Suspense, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Search, {baseQuery, parseObjectToUri} from '../Search/search'
 import {Box} from 'rebass/styled-components'
@@ -6,44 +6,50 @@ import {useSWRInfinite} from 'swr'
 import ErrorBoundary from '../App/errorBoundary'
 import Spinner from '../App/spinner'
 import Document from './document'
-import {useInView} from 'react-intersection-observer'
+
+//I do not fancy this component, will be replaced...
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 const DocumentsPage = () => {
+  const limit = 10 //no. of items per "page"
+
   const [queryObject, setQueryObject] = useState(baseQuery)
 
-  //this swr api is in beta, docs limited
-  //"hasMore" like condition not applicable to searchapi ath this point. count returns total resource count only...
-  const {data, size, setSize} = useSWRInfinite(index => {
-    const limit = 5
-    const queryObjectWithPaginationParams = {
+  //new SWR's api in beta, shouldn't change though
+  const {data, setSize} = useSWRInfinite(index => {
+    const paginatedQueryObject = {
       ...queryObject,
       limit,
       skip: index * limit,
     }
-    return `/Documents?filter=${parseObjectToUri(
-      queryObjectWithPaginationParams
-    )}`
+    //convert the complete query object to uri
+    return `/Documents?filter=${parseObjectToUri(paginatedQueryObject)}`
   })
-  const documents = data ? [].concat(...data) : []
-  const loadMore = () => (size > 0 ? setSize(size + 1) : setSize(2)) //garbage
+  const documents = data ? [].concat(...data) : [] //merge paginated chunks into one dimensional array
 
-  //this is broken garbage, should trigger lazy loading using observer api, react-window/virtualized should be used instead
-  const [ref, inView] = useInView()
+  const loadMore = useCallback(() => setSize(size => size + 1), [setSize])
+
+  //search api doesnt return item count at this point
+  const [hasMore, setHasMore] = useState(true)
   useEffect(() => {
-    inView && loadMore()
-  }, [inView])
+    data[data.length - 1].length || setHasMore(false)
+  }, [data, setHasMore])
 
   return (
     <S.Box>
       <Search setQueryObject={setQueryObject} />
       <ErrorBoundary>
         <Suspense fallback={<Spinner />}>
-          <S.List>
+          <InfiniteScroll
+            dataLength={documents.length}
+            next={loadMore}
+            hasMore={hasMore}
+            loader={<Spinner />}
+          >
             {documents.map(document => (
               <Document key={document.pid} document={document} />
             ))}
-          </S.List>
-          <Box ref={ref} />
+          </InfiniteScroll>
         </Suspense>
       </ErrorBoundary>
     </S.Box>
@@ -62,4 +68,3 @@ S.List = styled(Box)`
   grid-auto-rows: min-content;
   grid-gap: ${props => props.theme.space[3]};
 `
-

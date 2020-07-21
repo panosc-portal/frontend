@@ -25,4 +25,3 @@ export default App
 const Main = styled(Box)`
   padding: ${props => props.theme.space[3]};
 `
-

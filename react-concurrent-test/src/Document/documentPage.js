@@ -44,4 +44,3 @@ S.Box = styled(Box)`
   grid-gap: ${props => props.theme.space[2]};
   grid-template-columns: 2fr 1fr 1fr;
 `
-

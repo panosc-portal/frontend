@@ -106,4 +106,3 @@ const Search = ({setQueryObject}) => {
 }
 
 export default Search
-

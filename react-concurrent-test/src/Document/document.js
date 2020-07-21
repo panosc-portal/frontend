@@ -23,4 +23,3 @@ const S = {}
 S.Image = styled(Image)`
   display: block;
 `
-

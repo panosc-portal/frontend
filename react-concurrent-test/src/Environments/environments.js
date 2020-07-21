@@ -15,6 +15,7 @@ const Environments = () => {
             <Heading>{environment.name}</Heading>
           </Card>
         ))}
+        <br />
         <SpawnEnvironment dataInstances={data} />
       </Suspense>
     </Box>
@@ -22,4 +23,3 @@ const Environments = () => {
 }
 
 export default Environments
-

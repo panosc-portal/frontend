@@ -11,7 +11,8 @@ const SpawnEnvironment = ({dataInstances}) => {
   const spawn = async flavour => {
     const payload = {
       flavour,
-      name: 'jfdskl',
+      //Super simplified, we should probably spawn a modal with thorough instantiation options
+      name: 'Env #' + Math.floor(Math.random() * 100),
     }
     await fetch(process.env.REACT_APP_CLOUD + '/instances', {
       method: 'post',
@@ -20,7 +21,7 @@ const SpawnEnvironment = ({dataInstances}) => {
         'Content-Type': 'application/json',
       },
     })
-    // just trying out immer & optimistic ui patterns
+    // trying out immer & optimistic ui patterns
     mutate(
       '/instances',
       produce(dataInstances, draft => {
@@ -52,4 +53,3 @@ S.Box = styled(Box)`
   grid-template-rows: repeat(2, 1fr);
 `
 S.Card = styled(Card)``
-

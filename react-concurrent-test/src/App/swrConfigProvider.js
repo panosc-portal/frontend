@@ -3,7 +3,6 @@ import {SWRConfig} from 'swr'
 
 //this could also be cleaner
 const SWRProvider = ({children}) => {
-  const baseUrl = process.env.REACT_APP_SEARCH
   const getUrlWithBase = url =>
     url.startsWith('/instances') || url.startsWith('/flavours')
       ? process.env.REACT_APP_CLOUD + url
@@ -22,4 +21,3 @@ const SWRProvider = ({children}) => {
 }
 
 export default SWRProvider
-

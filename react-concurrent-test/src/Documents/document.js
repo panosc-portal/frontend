@@ -48,4 +48,3 @@ const Card = styled(CardBase)`
   display: grid;
   grid-template-columns: 1fr 15rem 15rem;
 `
-
