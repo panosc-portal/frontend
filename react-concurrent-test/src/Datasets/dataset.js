@@ -4,13 +4,15 @@ import styled from 'styled-components'
 import {useDrag} from 'react-dnd'
 import {ItemTypes} from '../App/itemTypes'
 
-const Dataset = ({dataset, name}) => {
+const Dataset = ({dataset}) => {
   const [{isDragging}, drag] = useDrag({
-    item: {name, type: ItemTypes.DATASET},
+    item: {name: dataset.title, id: dataset.pid, type: ItemTypes.DATASET},
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult()
       if (item && dropResult) {
-        alert(`You dropped ${item.name} into ${dropResult.name}!`)
+        alert(
+          `You dropped ${item.name} with id of ${item.id} into ${dropResult.name} with id ${dropResult.id}!`
+        )
       }
     },
     collect: monitor => ({
@@ -33,5 +35,5 @@ export default Dataset
 const S = {}
 S.Card = styled(Card)`
   margin-bottom: ${props => props.theme.space[2]};
-  opacity: ${props => (props.isDragging ? 0.2 : 1)};
+  opacity: ${props => (props.isDragging ? 0.5 : 1)};
 `

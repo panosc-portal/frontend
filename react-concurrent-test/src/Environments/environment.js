@@ -8,7 +8,7 @@ import {ItemTypes} from '../App/itemTypes'
 const Environment = ({environment}) => {
   const [{canDrop, isOver}, drop] = useDrop({
     accept: ItemTypes.DATASET,
-    drop: () => ({name: environment.name}),
+    drop: () => ({name: environment.name, id: environment._id}),
     collect: monitor => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
