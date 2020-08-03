@@ -17,6 +17,7 @@ router.get("/:instanceId", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  console.log(req.body);
   const instance = await req.context.models.Instance.create({
     name: req.body.name,
     description: "",
@@ -76,3 +77,4 @@ router.delete("/:instanceId", async (req, res) => {
 });
 
 export default router;
+
