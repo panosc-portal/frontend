@@ -7,7 +7,7 @@
 
 # To do
  - [x] Rebass
-  - [ ] Make it look crisp
+   - [ ] Make it look crisp
  - [x] SWR - data fetching library with support for Suspense
  - [ ] Improve pagination
  - [ ] Search Query builder that isn't :poop:
