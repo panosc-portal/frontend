@@ -12,7 +12,8 @@
  - [x] SWR - data fetching library with support for Suspense
  - [ ] Navigation
  - [x] Better dataset DnD
- - [ ] Improve pagination
+ - [x] Add pagination
+    - [ ] Improve pagination
  - [ ] Search Query builder that isn't :poop:
  - [ ] User Dashboard
  - [ ] Session handling
