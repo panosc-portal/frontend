@@ -42,7 +42,7 @@ router.patch("/:instanceId", async (req, res) => {
   return res.send(instance);
 });
 
-router.post("/:instanceId/:datasetId", async (req, res) => {
+router.post("/:instanceId/dataset/:datasetId", async (req, res) => {
   const instance = await req.context.models.Instance.findById(
     req.params.instanceId
   );
@@ -54,11 +54,17 @@ router.post("/:instanceId/:datasetId", async (req, res) => {
   return res.send(instance);
 });
 
-router.delete("/:instanceId/:datasetId", async (req, res) => {
+router.delete("/:instanceId/dataset/:datasetId", async (req, res) => {
+  console.log("recieved request to remove things");
+  console.log(
+    `instance: ${req.params.instanceId}, dataset: ${req.params.datasetId}`
+  );
   const instance = await req.context.models.Instance.findById(
     req.params.instanceId
   );
-  instance.datasets.filter((i) => i !== req.params.datasetId);
+  instance.datasets = instance.datasets.filter(
+    (i) => i !== req.params.datasetId
+  );
   instance.save();
   return res.send(instance);
 });
@@ -67,14 +73,8 @@ router.delete("/:instanceId", async (req, res) => {
   const instance = await req.context.models.Instance.findById(
     req.params.instanceId
   );
-
-  let result = null;
-  if (instance) {
-    result = await instance.remove();
-  }
-
+  const result = await instance.remove();
   return res.send(result);
 });
 
 export default router;
-

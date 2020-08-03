@@ -1,8 +1,9 @@
-import {Box, Card, Heading, Text} from 'rebass/styled-components'
+import {Box, Button, Card, Heading, Text} from 'rebass/styled-components'
 import {useDrop} from 'react-dnd'
 import Dataset from './dataset'
 import React from 'react'
 import styled from 'styled-components'
+import {mutate} from 'swr'
 
 const Environment = ({environment}) => {
   const [{canDrop, isOver}, drop] = useDrop({
@@ -13,6 +14,26 @@ const Environment = ({environment}) => {
       canDrop: monitor.canDrop(),
     }),
   })
+  const removeDataset = async id => {
+    await fetch(
+      `${process.env.REACT_APP_CLOUD}/instances/${encodeURIComponent(
+        environment._id
+      )}/dataset/${encodeURIComponent(id)}`,
+      {
+        method: 'delete',
+      }
+    )
+    mutate('/instances')
+  }
+  const removeMe = async () => {
+    await fetch(
+      `${process.env.REACT_APP_CLOUD}/instances/${encodeURIComponent(
+        environment._id
+      )}`,
+      {method: 'delete'}
+    )
+    mutate('/instances')
+  }
   return (
     <S.Card
       key={environment._id}
@@ -23,10 +44,11 @@ const Environment = ({environment}) => {
       {environment.datasets && (
         <Box>
           {environment.datasets.map(dataset => (
-            <Dataset key={dataset} id={dataset} />
+            <Dataset key={dataset} id={dataset} removeMe={removeDataset} />
           ))}
           <Text>{canDrop ? 'drop' : 'dont'}</Text>
           <Text>{isOver ? 'its over me' : 'its elsewhere'}</Text>
+          <Button onClick={() => removeMe()}>Remove Me</Button>
         </Box>
       )}
     </S.Card>

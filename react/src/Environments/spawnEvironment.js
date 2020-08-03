@@ -22,12 +22,13 @@ const SpawnEnvironment = ({dataInstances}) => {
       },
     })
     // trying out immer & optimistic ui patterns
-    mutate(
-      '/instances',
-      produce(dataInstances, draft => {
-        draft.push({...payload, _id: uuid()})
-      })
-    )
+    mutate('/instances')
+    // mutate(
+    //   '/instances',
+    //   produce(dataInstances, draft => {
+    //     draft.push({...payload, _id: uuid()})
+    //   })
+    // )
   }
 
   return (
