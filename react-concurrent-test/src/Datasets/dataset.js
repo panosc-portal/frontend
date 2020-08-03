@@ -2,23 +2,42 @@ import {Card, Heading, Text} from 'rebass/styled-components'
 import React from 'react'
 import styled from 'styled-components'
 import {useDrag} from 'react-dnd'
-import {ItemTypes} from '../App/itemTypes'
+import produce from 'immer'
+import {mutate} from 'swr'
 
 const Dataset = ({dataset}) => {
   const [{isDragging}, drag] = useDrag({
-    item: {name: dataset.title, id: dataset.pid, type: ItemTypes.DATASET},
+    item: {name: dataset.title, id: dataset.pid, type: 'dataset'},
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult()
       if (item && dropResult) {
-        alert(
-          `You dropped ${item.name} with id of ${item.id} into ${dropResult.name} with id ${dropResult.id}!`
-        )
+        pushDataset({
+          dataset: encodeURIComponent(item.id),
+          instance: encodeURIComponent(dropResult.id),
+        })
       }
     },
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
   })
+
+  const pushDataset = async payload => {
+    await fetch(
+      process.env.REACT_APP_CLOUD +
+        '/instances/' +
+        payload.instance +
+        '/' +
+        payload.dataset,
+      {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+    mutate('/instances')
+  }
   return (
     <S.Card key={dataset.pid} isDragging={isDragging} ref={drag}>
       <Heading>{dataset.title}</Heading>

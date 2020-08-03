@@ -1,13 +1,12 @@
 import {Box, Text, Card, Heading} from 'rebass/styled-components'
-import Dataset from '../Datasets/dataset'
+import Dataset from './dataset'
 import React from 'react'
 import styled from 'styled-components'
 import {useDrop} from 'react-dnd'
-import {ItemTypes} from '../App/itemTypes'
 
 const Environment = ({environment}) => {
   const [{canDrop, isOver}, drop] = useDrop({
-    accept: ItemTypes.DATASET,
+    accept: 'dataset',
     drop: () => ({name: environment.name, id: environment._id}),
     collect: monitor => ({
       isOver: monitor.isOver(),
@@ -24,7 +23,7 @@ const Environment = ({environment}) => {
       {environment.datasets && (
         <Box>
           {environment.datasets.map(dataset => (
-            <Dataset dataset={dataset} key={dataset.pid} />
+            <Dataset key={dataset} id={dataset} />
           ))}
           <Text>{canDrop ? 'drop' : 'dont'}</Text>
           <Text>{isOver ? 'its over me' : 'its elsewhere'}</Text>
