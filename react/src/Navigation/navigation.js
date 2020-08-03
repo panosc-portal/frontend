@@ -1,8 +1,24 @@
 import React from 'react'
-import {Box} from 'rebass/styled-components'
+import {Flex, Link, Box} from 'rebass/styled-components'
+import styled from 'styled-components'
 
 const Navigation = () => {
-  return <Box>Howdy, I shall navigate you through this portal.</Box>
+  return (
+    <S.Flex>
+      <Link variant="nav" href="/">
+        PaNOSC
+      </Link>
+      <Box mx="auto" />
+      <Link variant="nav" href="/dashboard">
+        Dashboard
+      </Link>
+    </S.Flex>
+  )
 }
 
 export default Navigation
+
+const S = {}
+S.Flex = styled(Flex)`
+  background-color: ${props => props.theme.colors.gray};
+`

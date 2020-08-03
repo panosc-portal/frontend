@@ -23,8 +23,7 @@ const Dataset = ({dataset}) => {
 
   const pushDataset = async payload => {
     await fetch(
-      `${process.env.REACT_APP_CLOUD}
-	    /instances/${payload.instance}/${payload.dataset}`,
+      `${process.env.REACT_APP_CLOUD}/instances/${payload.instance}/${payload.dataset}`,
       {
         method: 'post',
         headers: {
