@@ -1,9 +1,8 @@
 import {Card, Heading, Text} from 'rebass/styled-components'
+import {mutate} from 'swr'
+import {useDrag} from 'react-dnd'
 import React from 'react'
 import styled from 'styled-components'
-import {useDrag} from 'react-dnd'
-import produce from 'immer'
-import {mutate} from 'swr'
 
 const Dataset = ({dataset}) => {
   const [{isDragging}, drag] = useDrag({
@@ -24,11 +23,8 @@ const Dataset = ({dataset}) => {
 
   const pushDataset = async payload => {
     await fetch(
-      process.env.REACT_APP_CLOUD +
-        '/instances/' +
-        payload.instance +
-        '/' +
-        payload.dataset,
+      `${process.env.REACT_APP_CLOUD}
+	    /instances/${payload.instance}/${payload.dataset}`,
       {
         method: 'post',
         headers: {

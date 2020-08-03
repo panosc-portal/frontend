@@ -1,10 +1,10 @@
 import {Box} from 'rebass/styled-components'
+import {baseQuery, parseObjectToUri} from '../Search/helpers'
 import {useSWRInfinite} from 'swr'
 import Document from './document'
 import ErrorBoundary from '../App/errorBoundary'
 import React, {Suspense, useCallback, useEffect, useState} from 'react'
 import Search from '../Search/search'
-import {baseQuery, parseObjectToUri} from '../Search/helpers'
 import Spinner from '../App/spinner'
 import styled from 'styled-components'
 

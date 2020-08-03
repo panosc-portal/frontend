@@ -1,8 +1,8 @@
 import {Box, Button, Card} from 'rebass/styled-components'
 import {Input, Label, Radio} from '@rebass/forms'
+import {baseQuery, mockTechniques} from './helpers'
 import {useForm} from 'react-hook-form'
 import React, {useState} from 'react'
-import {baseQuery, mockTechniques} from './helpers'
 
 const Search = ({setQueryObject}) => {
   const [fields, setFields] = useState({})

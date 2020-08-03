@@ -1,8 +1,8 @@
-import {Box, Text, Card, Heading} from 'rebass/styled-components'
+import {Box, Card, Heading, Text} from 'rebass/styled-components'
+import {useDrop} from 'react-dnd'
 import Dataset from './dataset'
 import React from 'react'
 import styled from 'styled-components'
-import {useDrop} from 'react-dnd'
 
 const Environment = ({environment}) => {
   const [{canDrop, isOver}, drop] = useDrop({
@@ -37,9 +37,9 @@ export default Environment
 
 const S = {}
 S.Card = styled(Card)`
-  margin-bottom: ${props => props.theme.space[2]};
   background-color: ${props =>
     props.flavourType === 'jupyter'
       ? props.theme.colors.jupyter
       : props.theme.colors.vm};
+  margin-bottom: ${props => props.theme.space[2]};
 `
