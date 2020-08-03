@@ -1,7 +1,7 @@
 import {Box} from 'rebass/styled-components'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
-import {baseQuery, parseObjectToUri} from '../Search/search'
+import {baseQuery, parseObjectToUri} from '../Search/helpers'
 import Datasets from '../Datasets/datasets'
 import Document from './document'
 import Environments from '../Environments/environments'

@@ -2,45 +2,7 @@ import {Box, Button, Card} from 'rebass/styled-components'
 import {Input, Label, Radio} from '@rebass/forms'
 import {useForm} from 'react-hook-form'
 import React, {useState} from 'react'
-
-const mockTechniques = [
-  'Reflectometry',
-  'Spectroscopy',
-  'Phase Contrast Imaging',
-  'Soft diffraction',
-  'Scattering',
-  'UV VUV spectroscopy',
-  'Photoemission microscopy',
-  'Polarised reflectivity',
-  'Microfluorescence',
-  'Gamma spectroscopy',
-  'Three-axis spectrometers',
-  'X-ray excited optical luminescence',
-  'Diffraction Imaging',
-]
-
-export const baseQuery = {
-  include: [
-    {
-      relation: 'datasets',
-    },
-    {
-      relation: 'members',
-      scope: {
-        include: [
-          {
-            relation: 'affiliation',
-          },
-          {
-            relation: 'person',
-          },
-        ],
-      },
-    },
-  ],
-}
-export const parseObjectToUri = object =>
-  encodeURIComponent(JSON.stringify(object))
+import {baseQuery, mockTechniques} from './helpers'
 
 const Search = ({setQueryObject}) => {
   const [fields, setFields] = useState({})
