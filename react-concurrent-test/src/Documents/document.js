@@ -1,16 +1,10 @@
-import {
-  Box,
-  Card as CardBase,
-  Heading,
-  Image,
-  Text,
-} from 'rebass/styled-components'
+import {Box, Card, Heading, Image, Text} from 'rebass/styled-components'
 import React from 'react'
-import moment from 'moment'
+import {momented} from '../App/helpers'
 import styled from 'styled-components'
 
 const Document = ({document}) => (
-  <Card key={document.pid} id={document.pid}>
+  <S.Card key={document.pid} id={document.pid}>
     <Box>
       <Heading as="a" href={'/documents/' + encodeURIComponent(document.pid)}>
         {document.title}
@@ -33,18 +27,19 @@ const Document = ({document}) => (
       <Text>
         {document.licence} / {document.isPublic ? 'Public' : 'Non-Public'}
       </Text>
-      <Text>Started {moment(document.startDate).format('L')}</Text>
-      <Text>Ended {moment(document.endDate).format('L')}</Text>
-      <Text>Released {moment(document.releaseDate).format('L')}</Text>
+      <Text>Started {momented(document.startDate)}</Text>
+      <Text>Ended {momented(document.endDate)}</Text>
+      <Text>Released {momented(document.releaseDate)}</Text>
     </Box>
 
     <Image src={document.img} />
-  </Card>
+  </S.Card>
 )
 
 export default Document
 
-const Card = styled(CardBase)`
+const S = {}
+S.Card = styled(Card)`
   display: grid;
   grid-template-columns: 1fr 15rem 15rem;
 `

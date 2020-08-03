@@ -1,3 +1,7 @@
+import moment from 'moment'
+
+export const momented = date => moment(date).format('L')
+
 export const mockTechniques = [
   'Reflectometry',
   'Spectroscopy',

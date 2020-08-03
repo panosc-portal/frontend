@@ -1,5 +1,5 @@
 import {Box} from 'rebass/styled-components'
-import {baseQuery, parseObjectToUri} from '../Search/helpers'
+import {baseQuery, parseObjectToUri} from '../App/helpers'
 import {useSWRInfinite} from 'swr'
 import Document from './document'
 import ErrorBoundary from '../App/errorBoundary'

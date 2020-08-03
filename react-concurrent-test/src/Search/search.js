@@ -1,6 +1,6 @@
 import {Box, Button, Card} from 'rebass/styled-components'
 import {Input, Label, Radio} from '@rebass/forms'
-import {baseQuery, mockTechniques} from './helpers'
+import {baseQuery, mockTechniques} from '../App/helpers'
 import {useForm} from 'react-hook-form'
 import React, {useState} from 'react'
 
