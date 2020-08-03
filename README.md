@@ -1,23 +1,18 @@
 # Quickstart
-`docker-compose up`
- - jupyter notebook for the upcoming demo
- - clones searchapi and replaces its database with mine(:5001)
- - starts an express app providing dummy cloud service(:5000) and mongodb (:27017)
- - starts react frontend (:3000)
+`docker-compose up` //spins up only required backend services
+ - clones searchapi and replaces its database (:5001)
+ - starts an express app providing dummy cloud service(:5000)
 
- - if things go sideways, try this first: `docker-compose build --no-cache`
+`yarn install` & `yarn start`
 
- - if running as individual services, set env variables manually
-## Current state
- - Login / Logout disabled
- - Internal tabs long disabled
- - Somewhat hard to maintain
- - If you try to break it, you will succeed..
-
-## Codebase a little messy at this point, refactoring & some architectural changes are imminent
-I've put together a list of things that I think could help make it more robust / complete
+# To do
  - [x] Rebass
+  - [ ] Make it look crisp
  - [x] SWR - data fetching library with support for Suspense
- - [ ] Something for handling sessions
- - [ ] typing
- - [ ] unit tests
+ - [ ] Improve pagination
+ - [ ] Search Query builder that isn't :poop:
+ - [ ] User Dashboard
+ - [ ] Session handling
+ - [ ] Typing
+ - [ ] Unit tests
+ - [ ] Add missing formal details to this repository
