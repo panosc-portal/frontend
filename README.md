@@ -10,6 +10,8 @@
  - [x] Rebass
    - [ ] Make it look crisp
  - [x] SWR - data fetching library with support for Suspense
+ - [ ] Navigation
+ - [x] Better dataset DnD
  - [ ] Improve pagination
  - [ ] Search Query builder that isn't :poop:
  - [ ] User Dashboard
