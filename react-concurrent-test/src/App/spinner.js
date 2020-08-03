@@ -1,6 +1,6 @@
-import React from 'react'
-import PulseLoader from 'react-spinners/PulseLoader'
 import {Box} from 'rebass/styled-components'
+import PulseLoader from 'react-spinners/PulseLoader'
+import React from 'react'
 
 const Spinner = () => (
   <Box>

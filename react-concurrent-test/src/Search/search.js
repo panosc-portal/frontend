@@ -1,7 +1,7 @@
-import React, {useState} from 'react'
+import {Box, Button, Card} from 'rebass/styled-components'
+import {Input, Label, Radio} from '@rebass/forms'
 import {useForm} from 'react-hook-form'
-import {Card, Button, Box} from 'rebass/styled-components'
-import {Label, Input, Radio} from '@rebass/forms'
+import React, {useState} from 'react'
 
 const mockTechniques = [
   'Reflectometry',

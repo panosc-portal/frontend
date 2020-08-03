@@ -1,8 +1,10 @@
+import {Box, Card, Heading} from 'rebass/styled-components'
+import Dataset from '../Datasets/dataset'
 import React, {Suspense} from 'react'
-import useSWR from 'swr'
-import {Box, Heading, Card} from 'rebass/styled-components'
-import Spinner from '../App/spinner'
 import SpawnEnvironment from './spawnEvironment'
+import Spinner from '../App/spinner'
+import useSWR from 'swr'
+import styled from 'styled-components'
 
 const Environments = () => {
   const {data} = useSWR('/instances')
@@ -11,9 +13,14 @@ const Environments = () => {
       <Heading>Environments</Heading>
       <Suspense fallback={<Spinner />}>
         {data.map(environment => (
-          <Card key={environment._id}>
+          <S.Card key={environment._id} flavourType={environment.flavour.type}>
             <Heading>{environment.name}</Heading>
-          </Card>
+		{environment.datasets && (<Box>
+              {environment.datasets.map(dataset => (
+                <Dataset dataset={dataset} key={dataset.pid} />
+              ))}
+            </Box>)}
+          </S.Card>
         ))}
         <br />
         <SpawnEnvironment dataInstances={data} />
@@ -23,3 +30,9 @@ const Environments = () => {
 }
 
 export default Environments
+
+const S = {}
+S.Card = styled(Card)`
+margin-bottom: ${props => props.theme.space[2]};
+background-color: ${props => props.flavourType === 'jupyter' ? props.theme.colors.jupyter : props.theme.colors.vm};
+`

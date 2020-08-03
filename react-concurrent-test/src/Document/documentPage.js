@@ -1,13 +1,15 @@
-import React, {Suspense} from 'react'
-import ErrorBoundary from '../App/errorBoundary'
-import Spinner from '../App/spinner'
+import {Box} from 'rebass/styled-components'
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
+import {baseQuery, parseObjectToUri} from '../Search/search'
+import Datasets from '../Datasets/datasets'
 import Document from './document'
+import Environments from '../Environments/environments'
+import ErrorBoundary from '../App/errorBoundary'
+import React, {Suspense} from 'react'
+import Spinner from '../App/spinner'
 import styled from 'styled-components'
 import useSWR from 'swr'
-import {baseQuery, parseObjectToUri} from '../Search/search'
-import {Box} from 'rebass/styled-components'
-import Datasets from './datasets'
-import Environments from '../Environments/environments'
 
 const DocumentPage = props => {
   const documentId = props.match.params.documentId
@@ -20,19 +22,21 @@ const DocumentPage = props => {
     '/Documents/' + documentId + '?filter=' + parseObjectToUri(query)
   )
   return (
-    <ErrorBoundary>
-      <Suspense fallback={<Spinner />}>
-        <S.Box>
-          <Document data={data} />
-          <Datasets data={data.datasets} />
-          <ErrorBoundary>
-            <Suspense fallback={<Spinner />}>
-              <Environments />
-            </Suspense>
-          </ErrorBoundary>
-        </S.Box>
-      </Suspense>
-    </ErrorBoundary>
+    <S.Box>
+      <DndProvider backend={HTML5Backend}>
+        <ErrorBoundary>
+          <Suspense fallback={<Spinner />}>
+            <Document data={data} />
+            <Datasets data={data.datasets} />
+          </Suspense>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Suspense fallback={<Spinner />}>
+            <Environments />
+          </Suspense>
+        </ErrorBoundary>
+      </DndProvider>
+    </S.Box>
   )
 }
 

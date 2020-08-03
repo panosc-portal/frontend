@@ -1,12 +1,12 @@
-import React from 'react'
-import moment from 'moment'
 import {
   Box,
   Card as CardBase,
-  Text,
-  Image,
   Heading,
+  Image,
+  Text,
 } from 'rebass/styled-components'
+import React from 'react'
+import moment from 'moment'
 import styled from 'styled-components'
 
 const Document = ({document}) => (

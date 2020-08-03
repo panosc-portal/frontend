@@ -1,10 +1,10 @@
-import React, {Suspense} from 'react'
-import {Switch, Route} from 'react-router-dom'
-import DocumentsPage from '../Documents/documentsPage'
-import DocumentPage from '../Document/documentPage'
-import styled from 'styled-components'
 import {Box} from 'rebass/styled-components'
+import {Route, Switch} from 'react-router-dom'
+import DocumentPage from '../Document/documentPage'
+import DocumentsPage from '../Documents/documentsPage'
+import React, {Suspense} from 'react'
 import Spinner from './spinner'
+import styled from 'styled-components'
 
 function App() {
   return (

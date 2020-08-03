@@ -9,6 +9,8 @@ const preset = {
     muted: '#f6f6f9',
     gray: '#dddddf',
     highlight: 'hsla(205, 100%, 40%, 0.125)',
+	  jupyter: 'hsl(24, 90%, 55%)',
+	  vm: 'hsl(246, 100%, 75%)'
   },
   fonts: {
     body: 'system-ui, sans-serif',

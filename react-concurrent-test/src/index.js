@@ -1,14 +1,14 @@
+import * as serviceWorker from './serviceWorker'
+import App from './App/app'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App/app'
-import * as serviceWorker from './serviceWorker'
 
 import {BrowserRouter} from 'react-router-dom'
 import {ThemeProvider, createGlobalStyle} from 'styled-components'
 import SWRProvider from './App/swrConfigProvider'
 
-import theme from './App/theme'
 import normalize from 'normalize.css'
+import theme from './App/theme'
 
 const GlobalStyle = createGlobalStyle`
   ${normalize}

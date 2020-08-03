@@ -43,7 +43,8 @@
     ],
     "plugins": [
       "prettier",
-      "better-styled-components"
+      "better-styled-components",
+      "sort-imports-es6-autofix"
     ],
     "rules": {
       "prettier/prettier": [
@@ -51,7 +52,20 @@
       ],
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
-      "better-styled-components/sort-declarations-alphabetically": 2
+      "better-styled-components/sort-declarations-alphabetically": 2,
+      "sort-imports-es6-autofix/sort-imports-es6": [
+        2,
+        {
+          "ignoreCase": false,
+          "ignoreMemberSort": false,
+          "memberSyntaxSortOrder": [
+            "none",
+            "all",
+            "multiple",
+            "single"
+          ]
+        }
+      ]
     }
   },
   "prettier": {
@@ -79,6 +93,8 @@
     "eslint-plugin-better-styled-components": "^1.1.2",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react-hooks": "^4.0.8",
+    "eslint-plugin-simple-import-sort": "^5.0.3",
+    "eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
     "prettier": "^2.0.5",
     "typescript": "^3.9.6"
   }

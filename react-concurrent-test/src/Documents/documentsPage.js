@@ -1,11 +1,11 @@
-import React, {useCallback, Suspense, useState, useEffect} from 'react'
-import styled from 'styled-components'
-import Search, {baseQuery, parseObjectToUri} from '../Search/search'
 import {Box} from 'rebass/styled-components'
 import {useSWRInfinite} from 'swr'
-import ErrorBoundary from '../App/errorBoundary'
-import Spinner from '../App/spinner'
 import Document from './document'
+import ErrorBoundary from '../App/errorBoundary'
+import React, {Suspense, useCallback, useEffect, useState} from 'react'
+import Search, {baseQuery, parseObjectToUri} from '../Search/search'
+import Spinner from '../App/spinner'
+import styled from 'styled-components'
 
 //I do not fancy this component, will be replaced...
 import InfiniteScroll from 'react-infinite-scroll-component'

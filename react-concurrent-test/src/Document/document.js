@@ -1,5 +1,5 @@
+import {Box, Card, Heading, Image, Link, Text} from 'rebass/styled-components'
 import React from 'react'
-import {Box, Link, Heading, Text, Card, Image} from 'rebass/styled-components'
 import styled from 'styled-components'
 
 const Document = ({data}) => {

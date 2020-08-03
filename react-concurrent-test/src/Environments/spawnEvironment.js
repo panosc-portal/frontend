@@ -1,17 +1,17 @@
+import {Box, Card, Text} from 'rebass/styled-components'
+import {v4 as uuid} from 'uuid'
 import React, {Suspense} from 'react'
 import Spinner from '../App/spinner'
-import styled from 'styled-components'
-import {Box, Card, Text} from 'rebass/styled-components'
-import useSWR, {mutate} from 'swr'
 import produce from 'immer'
-import {v4 as uuid} from 'uuid'
+import styled from 'styled-components'
+import useSWR, {mutate} from 'swr'
 
 const SpawnEnvironment = ({dataInstances}) => {
   const {data} = useSWR('/flavours')
   const spawn = async flavour => {
     const payload = {
       flavour,
-      //Super simplified, we should probably spawn a modal with thorough instantiation options
+      //Super simplified, we should spawn a modal with thorough instantiation options
       name: 'Env #' + Math.floor(Math.random() * 100),
     }
     await fetch(process.env.REACT_APP_CLOUD + '/instances', {
