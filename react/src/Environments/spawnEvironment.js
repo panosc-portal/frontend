@@ -1,34 +1,22 @@
 import {Box, Card, Text} from 'rebass/styled-components'
-import {v4 as uuid} from 'uuid'
-import React, {Suspense} from 'react'
+import React, {Suspense, useState} from 'react'
 import Spinner from '../App/spinner'
-import produce from 'immer'
 import styled from 'styled-components'
 import useSWR, {mutate} from 'swr'
+import {doPost} from '../App/helpers'
 
-const SpawnEnvironment = ({dataInstances}) => {
+const SpawnEnvironment = () => {
   const {data} = useSWR('/flavours')
+
+  //state needed to trigger error boundary from async fc, see the definition of doPost
+  const [, setErrorBoundary] = useState()
   const spawn = async flavour => {
     const payload = {
       flavour,
-      //Super simplified, we should spawn a modal with thorough instantiation options
-      name: 'Env #' + Math.floor(Math.random() * 100),
+      name: 'test',
     }
-    await fetch(process.env.REACT_APP_CLOUD + '/instances', {
-      method: 'post',
-      body: JSON.stringify(payload),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    // trying out immer & optimistic ui patterns
+    await doPost('/instances', setErrorBoundary, payload)
     mutate('/instances')
-    // mutate(
-    //   '/instances',
-    //   produce(dataInstances, draft => {
-    //     draft.push({...payload, _id: uuid()})
-    //   })
-    // )
   }
 
   return (

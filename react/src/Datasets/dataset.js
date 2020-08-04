@@ -1,18 +1,29 @@
 import {Card, Heading, Text} from 'rebass/styled-components'
 import {mutate} from 'swr'
 import {useDrag} from 'react-dnd'
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
+import {doPost} from '../App/helpers'
 
 const Dataset = ({dataset}) => {
+  const [, setErrorBoundary] = useState()
+
+  const pushDataset = async payload => {
+    const uri = `/instances/${encodeURIComponent(
+      payload.instance
+    )}/dataset/${encodeURIComponent(payload.dataset)}`
+    await doPost(uri, setErrorBoundary)
+    mutate('/instances')
+  }
+
   const [{isDragging}, drag] = useDrag({
     item: {name: dataset.title, id: dataset.pid, type: 'dataset'},
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult()
       if (item && dropResult) {
         pushDataset({
-          dataset: encodeURIComponent(item.id),
-          instance: encodeURIComponent(dropResult.id),
+          dataset: item.id,
+          instance: dropResult.id,
         })
       }
     },
@@ -21,15 +32,6 @@ const Dataset = ({dataset}) => {
     }),
   })
 
-  const pushDataset = async payload => {
-    await fetch(
-      `${process.env.REACT_APP_CLOUD}/instances/${payload.instance}/dataset/${payload.dataset}`,
-      {
-        method: 'post',
-      }
-    )
-    mutate('/instances')
-  }
   return (
     <S.Card key={dataset.pid} isDragging={isDragging} ref={drag}>
       <Heading>{dataset.title}</Heading>

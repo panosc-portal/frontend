@@ -15,7 +15,7 @@ const Environments = () => {
         {data.map(environment => (
           <Environment key={environment._id} environment={environment} />
         ))}
-        <SpawnEnvironment dataInstances={data} />
+        <SpawnEnvironment />
       </Suspense>
     </Box>
   )

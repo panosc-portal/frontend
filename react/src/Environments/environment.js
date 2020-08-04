@@ -1,11 +1,28 @@
 import {Box, Button, Card, Heading, Text} from 'rebass/styled-components'
 import {useDrop} from 'react-dnd'
 import Dataset from './dataset'
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import {mutate} from 'swr'
+import {doDelete} from '../App/helpers'
 
 const Environment = ({environment}) => {
+  const [, setErrorBoundary] = useState()
+
+  const removeDataset = async id => {
+    const uri = `/instances/${encodeURIComponent(
+      environment._id
+    )}/dataset/${encodeURIComponent(id)}`
+    await doDelete(uri, setErrorBoundary)
+    mutate('/instances')
+  }
+
+  const removeMe = async () => {
+    const uri = `/instances/${encodeURIComponent(environment._id)}`
+    await doDelete(uri, setErrorBoundary)
+    mutate('/instances')
+  }
+
   const [{canDrop, isOver}, drop] = useDrop({
     accept: 'dataset',
     drop: () => ({name: environment.name, id: environment._id}),
@@ -14,26 +31,6 @@ const Environment = ({environment}) => {
       canDrop: monitor.canDrop(),
     }),
   })
-  const removeDataset = async id => {
-    await fetch(
-      `${process.env.REACT_APP_CLOUD}/instances/${encodeURIComponent(
-        environment._id
-      )}/dataset/${encodeURIComponent(id)}`,
-      {
-        method: 'delete',
-      }
-    )
-    mutate('/instances')
-  }
-  const removeMe = async () => {
-    await fetch(
-      `${process.env.REACT_APP_CLOUD}/instances/${encodeURIComponent(
-        environment._id
-      )}`,
-      {method: 'delete'}
-    )
-    mutate('/instances')
-  }
   return (
     <S.Card
       key={environment._id}
@@ -41,16 +38,14 @@ const Environment = ({environment}) => {
       flavourType={environment.flavour.type}
     >
       <Heading>{environment.name}</Heading>
-      {environment.datasets && (
-        <Box>
-          {environment.datasets.map(dataset => (
-            <Dataset key={dataset} id={dataset} removeMe={removeDataset} />
-          ))}
-          <Text>{canDrop ? 'drop' : 'dont'}</Text>
-          <Text>{isOver ? 'its over me' : 'its elsewhere'}</Text>
-          <Button onClick={() => removeMe()}>Remove Me</Button>
-        </Box>
-      )}
+      <Box>
+        {environment.datasets.map(dataset => (
+          <Dataset key={dataset} id={dataset} removeMe={removeDataset} />
+        ))}
+        <Text>{canDrop ? 'drop' : 'dont'}</Text>
+        <Text>{isOver ? 'its over me' : 'its elsewhere'}</Text>
+        <Button onClick={() => removeMe()}>Remove Me</Button>
+      </Box>
     </S.Card>
   )
 }
