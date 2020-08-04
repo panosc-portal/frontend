@@ -3,7 +3,7 @@ import React, {Suspense, useState} from 'react'
 import Spinner from '../App/spinner'
 import styled from 'styled-components'
 import useSWR, {mutate} from 'swr'
-import {doPost} from '../App/helpers'
+import {doFetch} from '../App/helpers'
 
 const SpawnEnvironment = () => {
   const {data} = useSWR('/flavours')
@@ -15,7 +15,7 @@ const SpawnEnvironment = () => {
       flavour,
       name: 'test',
     }
-    await doPost('/instances', setErrorBoundary, payload)
+    await doFetch('/instances', 'post', setErrorBoundary, payload)
     mutate('/instances')
   }
 

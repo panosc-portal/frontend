@@ -3,7 +3,7 @@ import {mutate} from 'swr'
 import {useDrag} from 'react-dnd'
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import {doPost} from '../App/helpers'
+import {doFetch} from '../App/helpers'
 
 const Dataset = ({dataset}) => {
   const [, setErrorBoundary] = useState()
@@ -12,7 +12,7 @@ const Dataset = ({dataset}) => {
     const uri = `/instances/${encodeURIComponent(
       payload.instance
     )}/dataset/${encodeURIComponent(payload.dataset)}`
-    await doPost(uri, setErrorBoundary)
+    await doFetch(uri, 'post', setErrorBoundary)
     mutate('/instances')
   }
 

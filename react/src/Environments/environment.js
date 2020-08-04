@@ -4,7 +4,7 @@ import Dataset from './dataset'
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import {mutate} from 'swr'
-import {doDelete} from '../App/helpers'
+import {doFetch} from '../App/helpers'
 
 const Environment = ({environment}) => {
   const [, setErrorBoundary] = useState()
@@ -13,13 +13,13 @@ const Environment = ({environment}) => {
     const uri = `/instances/${encodeURIComponent(
       environment._id
     )}/dataset/${encodeURIComponent(id)}`
-    await doDelete(uri, setErrorBoundary)
+    await doFetch(uri,'delete',  setErrorBoundary)
     mutate('/instances')
   }
 
   const removeMe = async () => {
     const uri = `/instances/${encodeURIComponent(environment._id)}`
-    await doDelete(uri, setErrorBoundary)
+    await doFetch(uri, 'delete', setErrorBoundary)
     mutate('/instances')
   }
 
