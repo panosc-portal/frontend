@@ -1,12 +1,14 @@
-import {Box} from 'rebass/styled-components'
+import React, {Suspense} from 'react'
+
 import {Route, Switch} from 'react-router-dom'
+import {Box} from 'rebass/styled-components'
+import styled from 'styled-components'
+
+import Dashboard from '../Dashboard/dashboard'
 import DocumentPage from '../Document/documentPage'
 import DocumentsPage from '../Documents/documentsPage'
-import React, {Suspense} from 'react'
-import Spinner from './spinner'
-import styled from 'styled-components'
 import Navigation from '../Navigation/navigation'
-import Dashboard from '../Dashboard/dashboard'
+import Spinner from './spinner'
 
 function App() {
   return (

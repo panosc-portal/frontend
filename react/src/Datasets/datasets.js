@@ -1,6 +1,8 @@
-import {Box, Heading} from 'rebass/styled-components'
-import Dataset from '../Datasets/dataset'
 import React from 'react'
+
+import {Box, Heading} from 'rebass/styled-components'
+
+import Dataset from '../Datasets/dataset'
 
 const Datasets = ({data}) => (
   <Box>

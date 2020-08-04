@@ -1,7 +1,9 @@
-import {Box, Card, Heading, Image, Text} from 'rebass/styled-components'
 import React from 'react'
-import {momented} from '../App/helpers'
+
+import {Box, Card, Heading, Image, Text} from 'rebass/styled-components'
 import styled from 'styled-components'
+
+import {momented} from '../App/helpers'
 
 const Document = ({document}) => (
   <S.Card key={document.pid} id={document.pid}>

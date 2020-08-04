@@ -1,15 +1,17 @@
-import {Box} from 'rebass/styled-components'
-import {baseQuery, parseObjectToUri} from '../App/helpers'
-import {useSWRInfinite} from 'swr'
-import Document from './document'
-import ErrorBoundary from '../App/errorBoundary'
 import React, {Suspense, useCallback, useEffect, useState} from 'react'
-import Search from '../Search/search'
-import Spinner from '../App/spinner'
+
+import InfiniteScroll from 'react-infinite-scroll-component'
+import {Box} from 'rebass/styled-components'
 import styled from 'styled-components'
+import {useSWRInfinite} from 'swr'
+
+import ErrorBoundary from '../App/errorBoundary'
+import {baseQuery, parseObjectToUri} from '../App/helpers'
+import Spinner from '../App/spinner'
+import Search from '../Search/search'
+import Document from './document'
 
 //I do not fancy this component, will be replaced...
-import InfiniteScroll from 'react-infinite-scroll-component'
 
 const DocumentsPage = () => {
   const limit = 10 //no. of items per "page"

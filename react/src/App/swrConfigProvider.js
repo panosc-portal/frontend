@@ -1,5 +1,6 @@
-import {SWRConfig} from 'swr'
 import React from 'react'
+
+import {SWRConfig} from 'swr'
 
 //this could also be cleaner
 const SWRProvider = ({children}) => {

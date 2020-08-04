@@ -1,10 +1,12 @@
-import {Box, Button, Card, Heading, Text} from 'rebass/styled-components'
-import {useDrop} from 'react-dnd'
-import Dataset from './dataset'
 import React, {useState} from 'react'
+
+import {useDrop} from 'react-dnd'
+import {Box, Button, Card, Heading, Text} from 'rebass/styled-components'
 import styled from 'styled-components'
 import {mutate} from 'swr'
+
 import {doFetch} from '../App/helpers'
+import Dataset from './dataset'
 
 const Environment = ({environment}) => {
   const [, setErrorBoundary] = useState()
@@ -13,7 +15,7 @@ const Environment = ({environment}) => {
     const uri = `/instances/${encodeURIComponent(
       environment._id
     )}/dataset/${encodeURIComponent(id)}`
-    await doFetch(uri,'delete',  setErrorBoundary)
+    await doFetch(uri, 'delete', setErrorBoundary)
     mutate('/instances')
   }
 

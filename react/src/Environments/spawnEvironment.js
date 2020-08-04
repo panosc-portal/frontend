@@ -1,9 +1,11 @@
-import {Box, Card, Text} from 'rebass/styled-components'
 import React, {Suspense, useState} from 'react'
-import Spinner from '../App/spinner'
+
+import {Box, Card, Text} from 'rebass/styled-components'
 import styled from 'styled-components'
 import useSWR, {mutate} from 'swr'
+
 import {doFetch} from '../App/helpers'
+import Spinner from '../App/spinner'
 
 const SpawnEnvironment = () => {
   const {data} = useSWR('/flavours')

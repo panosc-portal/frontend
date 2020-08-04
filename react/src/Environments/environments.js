@@ -1,10 +1,12 @@
-import {Box, Card, Heading} from 'rebass/styled-components'
-import Environment from './environment'
 import React, {Suspense} from 'react'
-import SpawnEnvironment from './spawnEvironment'
-import Spinner from '../App/spinner'
+
+import {Box, Card, Heading} from 'rebass/styled-components'
 import styled from 'styled-components'
 import useSWR from 'swr'
+
+import Spinner from '../App/spinner'
+import Environment from './environment'
+import SpawnEnvironment from './spawnEvironment'
 
 const Environments = () => {
   const {data} = useSWR('/instances')

@@ -1,15 +1,17 @@
-import {Box} from 'rebass/styled-components'
+import React, {Suspense} from 'react'
+
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
-import {baseQuery, parseObjectToUri} from '../App/helpers'
-import Datasets from '../Datasets/datasets'
-import Document from './document'
-import Environments from '../Environments/environments'
-import ErrorBoundary from '../App/errorBoundary'
-import React, {Suspense} from 'react'
-import Spinner from '../App/spinner'
+import {Box} from 'rebass/styled-components'
 import styled from 'styled-components'
 import useSWR from 'swr'
+
+import ErrorBoundary from '../App/errorBoundary'
+import {baseQuery, parseObjectToUri} from '../App/helpers'
+import Spinner from '../App/spinner'
+import Datasets from '../Datasets/datasets'
+import Environments from '../Environments/environments'
+import Document from './document'
 
 const DocumentPage = props => {
   const documentId = props.match.params.documentId
