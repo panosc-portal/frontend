@@ -1,4 +1,4 @@
-import React, {Suspense, useState} from 'react'
+import React, {Suspense} from 'react'
 
 import {Box, Card, Text} from 'rebass/styled-components'
 import styled from 'styled-components'
@@ -10,15 +10,12 @@ import Spinner from '../App/spinner'
 const SpawnEnvironment = () => {
   const {data} = useSWR('/flavours')
 
-  //state needed to trigger error boundary from async fc, see the definition of doPost
-  const [, setErrorBoundary] = useState()
-  const spawn = async flavour => {
+  const spawn = flavour => {
     const payload = {
       flavour,
       name: 'test',
     }
-    await doFetch('/instances', 'post', setErrorBoundary, payload)
-    mutate('/instances')
+    mutate('/instances', doFetch('/instances', 'post', payload))
   }
 
   return (
