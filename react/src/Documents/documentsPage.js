@@ -1,6 +1,8 @@
 import React, {Suspense, useCallback, useEffect, useState} from 'react'
 
-import InfiniteScroll from 'react-infinite-scroll-component'
+import AutoSizer from 'react-virtualized-auto-sizer'
+import {FixedSizeList} from 'react-window'
+import InfiniteLoader from 'react-window-infinite-loader'
 import {Box} from 'rebass/styled-components'
 import styled from 'styled-components'
 import {useSWRInfinite} from 'swr'
@@ -11,14 +13,11 @@ import Spinner from '../App/spinner'
 import Search from '../Search/search'
 import Document from './document'
 
-//I do not fancy this component, will be replaced...
-
 const DocumentsPage = () => {
-  const limit = 10 //no. of items per "page"
+  const limit = 5 //no. of items per "page"
 
   const [queryObject, setQueryObject] = useState(baseQuery)
-  console.log(queryObject)
-  //new SWR's api in beta, shouldn't change though
+
   const {data, setSize} = useSWRInfinite(index => {
     const paginatedQueryObject = {
       ...queryObject,
@@ -28,46 +27,68 @@ const DocumentsPage = () => {
     //convert the complete query object to uri
     return `/Documents?filter=${parseObjectToUri(paginatedQueryObject)}`
   })
-  const documents = data ? [].concat(...data) : [] //merge paginated chunks into one dimensional array
-
+  const documents = data ? [].concat(...data) : []
   const loadMore = useCallback(() => setSize(size => size + 1), [setSize])
-
-  //search api doesnt return item count at this point
   const [hasMore, setHasMore] = useState(true)
+  const isItemLoaded = index => !hasMore || index < documents.length
+  const itemCount = hasMore ? documents.length + 1 : documents.length
   useEffect(() => {
     data[data.length - 1].length || setHasMore(false)
   }, [data, setHasMore])
 
+  const Row = ({index, style}) => (
+    <Document
+      style={style}
+      document={isItemLoaded(index) ? documents[index] : null}
+    />
+  )
   return (
     <S.Box>
       <Search setQueryObject={setQueryObject} />
       <ErrorBoundary>
         <Suspense fallback={<Spinner />}>
-          <InfiniteScroll
-            dataLength={documents.length}
-            next={loadMore}
-            hasMore={hasMore}
-            loader={<Spinner />}
-          >
-            {documents.map(document => (
-              <Document key={document.pid} document={document} />
-            ))}
-          </InfiniteScroll>
+          <S.WindowWrapper>
+            <AutoSizer>
+              {({height, width}) => (
+                <InfiniteLoader
+                  isItemLoaded={isItemLoaded}
+                  itemCount={itemCount}
+                  loadMoreItems={loadMore}
+                >
+                  {({onItemsRendered, ref}) => (
+                    <FixedSizeList
+                      height={height}
+                      width={width}
+                      itemCount={itemCount}
+                      onItemsRendered={onItemsRendered}
+                      ref={ref}
+                      itemSize={300}
+                    >
+                      {Row}
+                    </FixedSizeList>
+                  )}
+                </InfiniteLoader>
+              )}
+            </AutoSizer>
+          </S.WindowWrapper>
         </Suspense>
       </ErrorBoundary>
+      {/* <Box /> */}
     </S.Box>
   )
 }
 export default DocumentsPage
 
 const S = {}
+S.WindowWrapper = styled(Box)`
+  grid-column: 2/3;
+  grid-row: 1/3;
+  height: 100%;
+`
 S.Box = styled(Box)`
   display: grid;
   grid-gap: 2rem;
   grid-template-columns: 1fr 3fr;
-`
-S.List = styled(Box)`
-  display: grid;
-  grid-auto-rows: min-content;
-  grid-gap: ${props => props.theme.space[3]};
+  grid-template-rows: min-content 1fr;
+  height: 90vh;
 `
