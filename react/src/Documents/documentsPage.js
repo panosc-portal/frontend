@@ -10,13 +10,15 @@ import {useSWRInfinite} from 'swr'
 import ErrorBoundary from '../App/errorBoundary'
 import {baseQuery, parseObjectToUri} from '../App/helpers'
 import Spinner from '../App/spinner'
-import Search from '../Search/search'
 import Document from './document'
 
-const DocumentsPage = () => {
-  const limit = 5 //no. of items per "page"
+const Search = React.lazy(() => import('../Search/search'))
 
+const DocumentsPage = () => {
   const [queryObject, setQueryObject] = useState(baseQuery)
+  const [hasMore, setHasMore] = useState(true)
+
+  const limit = 5 //no. of items per "page"
 
   const {data, setSize} = useSWRInfinite(index => {
     const paginatedQueryObject = {
@@ -27,11 +29,14 @@ const DocumentsPage = () => {
     //convert the complete query object to uri
     return `/Documents?filter=${parseObjectToUri(paginatedQueryObject)}`
   })
+
   const documents = data ? [].concat(...data) : []
   const loadMore = useCallback(() => setSize(size => size + 1), [setSize])
-  const [hasMore, setHasMore] = useState(true)
   const isItemLoaded = index => !hasMore || index < documents.length
   const itemCount = hasMore ? documents.length + 1 : documents.length
+
+  //no usable count
+  //https://github.com/panosc-eu/search-api/issues/46
   useEffect(() => {
     data[data.length - 1].length || setHasMore(false)
   }, [data, setHasMore])
@@ -42,12 +47,17 @@ const DocumentsPage = () => {
       document={isItemLoaded(index) ? documents[index] : null}
     />
   )
+
   return (
     <S.Box>
-      <Search setQueryObject={setQueryObject} />
       <ErrorBoundary>
         <Suspense fallback={<Spinner />}>
-          <S.WindowWrapper>
+          <Search setQueryObject={setQueryObject} />
+        </Suspense>
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <Suspense fallback={<Spinner />}>
+          <VWindowWrapper>
             <AutoSizer>
               {({height, width}) => (
                 <InfiniteLoader
@@ -70,21 +80,19 @@ const DocumentsPage = () => {
                 </InfiniteLoader>
               )}
             </AutoSizer>
-          </S.WindowWrapper>
+          </VWindowWrapper>
         </Suspense>
       </ErrorBoundary>
-      {/* <Box /> */}
     </S.Box>
   )
 }
 export default DocumentsPage
 
-const S = {}
-S.WindowWrapper = styled(Box)`
+const VWindowWrapper = styled(Box)`
   grid-column: 2/3;
   grid-row: 1/3;
-  height: 100%;
 `
+const S = {}
 S.Box = styled(Box)`
   display: grid;
   grid-gap: 2rem;
