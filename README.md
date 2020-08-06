@@ -13,7 +13,7 @@
  - [ ] Navigation
  - [x] Better dataset DnD
  - [x] Add pagination
-    - [ ] Improve pagination
+    - [x] Improve pagination
  - [ ] Search Query builder that isn't :poop:
  - [ ] User Dashboard
  - [ ] Session handling
