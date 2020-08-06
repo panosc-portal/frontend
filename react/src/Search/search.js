@@ -13,16 +13,18 @@ const Search = ({setQueryObject}) => {
   const submitForm = data => {
     setFields(data)
 
-    const query = baseQuery
+    const query = {...baseQuery}
     //garbage...
-    data.title && (query.where = {title: {ilike: data.title}})
-    data.technique && (query.where = {keywords: {inq: [data.technique]}})
+    data.title && (query.where = {...query.where, title: {ilike: data.title}})
+    data.technique &&
+      (query.where = {...query.where, keywords: {inq: [data.technique]}})
 
     setQueryObject(query)
   }
 
   const resetForm = () => {
     setFields({})
+    console.log(baseQuery)
     setQueryObject(baseQuery)
   }
 

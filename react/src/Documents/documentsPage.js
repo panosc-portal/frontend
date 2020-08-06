@@ -17,7 +17,7 @@ const DocumentsPage = () => {
   const limit = 10 //no. of items per "page"
 
   const [queryObject, setQueryObject] = useState(baseQuery)
-
+  console.log(queryObject)
   //new SWR's api in beta, shouldn't change though
   const {data, setSize} = useSWRInfinite(index => {
     const paginatedQueryObject = {
