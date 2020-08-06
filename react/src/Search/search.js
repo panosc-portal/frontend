@@ -14,7 +14,6 @@ const Search = ({setQueryObject}) => {
     setFields(data)
 
     const query = {...baseQuery}
-    //garbage...
     data.title && (query.where = {...query.where, title: {ilike: data.title}})
     data.technique &&
       (query.where = {...query.where, keywords: {inq: [data.technique]}})
