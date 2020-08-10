@@ -1,26 +1,26 @@
 import React from 'react'
+import {ErrorBoundary} from 'react-error-boundary'
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {hasError: false}
-  }
-
-  static getDerivedStateFromError() {
-    return {hasError: true}
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.log(error, ', ', errorInfo)
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>
-    }
-
-    return this.props.children
-  }
+const ErrorFallback = ({error, componentStack, resetErrorBoundary}) => {
+  return (
+    <div role="alert">
+      <p>Something went wrong:</p>
+      <pre>{error.message}</pre>
+      <pre>{componentStack}</pre>
+      <button onClick={resetErrorBoundary}>Try again</button>
+    </div>
+  )
 }
 
-export default ErrorBoundary
+const ui = props => (
+  <ErrorBoundary
+    FallbackComponent={ErrorFallback}
+    onReset={() => {
+      // reset the state of your app so the error doesn't happen again
+    }}
+  >
+    {props.children}
+  </ErrorBoundary>
+)
+
+export default ui

@@ -5,9 +5,10 @@ import {Card, Heading, Text} from 'rebass/styled-components'
 import styled from 'styled-components'
 import {mutate} from 'swr'
 
-import {doFetch} from '../App/helpers'
+import {useFetch} from '../App/helpers'
 
 const Dataset = ({dataset}) => {
+  const doFetch = useFetch()
   const [{isDragging}, drag] = useDrag({
     item: {id: dataset.pid, type: 'dataset'},
     end: (item, monitor) => {
@@ -21,11 +22,12 @@ const Dataset = ({dataset}) => {
     }),
   })
 
-  const addDataset = (instanceId, datasetId) => {
+  const addDataset = async (instanceId, datasetId) => {
     const uri = `/instances/${encodeURIComponent(
       instanceId
     )}/dataset/${encodeURIComponent(datasetId)}`
-    mutate('/instances', doFetch(uri, 'post'))
+    await doFetch(uri, 'post')
+    mutate('/instances')
   }
 
   return (

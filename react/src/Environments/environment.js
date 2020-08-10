@@ -5,20 +5,23 @@ import {Box, Button, Card, Heading, Text} from 'rebass/styled-components'
 import styled from 'styled-components'
 import {mutate} from 'swr'
 
-import {doFetch} from '../App/helpers'
+import {useFetch} from '../App/helpers'
 import Dataset from './dataset'
 
 const Environment = ({environment}) => {
-  const removeDataset = id => {
+  const doFetch = useFetch()
+  const removeDataset = async id => {
     const uri = `/instances/${encodeURIComponent(
       environment._id
     )}/dataset/${encodeURIComponent(id)}`
-    mutate('/instances', doFetch(uri, 'delete'))
+    await doFetch(uri, 'delete')
+    mutate('/instances')
   }
 
-  const removeMe = () => {
+  const removeMe = async () => {
     const uri = `/instances/${encodeURIComponent(environment._id)}`
-    mutate('/instances', doFetch(uri, 'delete'))
+    await doFetch(uri, 'delete')
+    mutate('/instances')
   }
 
   const [{canDrop, isOver}, drop] = useDrop({

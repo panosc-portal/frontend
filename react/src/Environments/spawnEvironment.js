@@ -4,18 +4,20 @@ import {Box, Card, Text} from 'rebass/styled-components'
 import styled from 'styled-components'
 import useSWR, {mutate} from 'swr'
 
-import {doFetch} from '../App/helpers'
+import {useFetch} from '../App/helpers'
 import Spinner from '../App/spinner'
 
 const SpawnEnvironment = () => {
   const {data} = useSWR('/flavours')
+  const doFetch = useFetch()
 
-  const spawn = flavour => {
+  const spawn = async flavour => {
     const payload = {
       flavour,
       name: 'test',
     }
-    mutate('/instances', doFetch('/instances', 'post', payload))
+    await doFetch('/instances', 'post', payload)
+    mutate('/instances')
   }
 
   return (
