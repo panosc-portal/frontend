@@ -1,6 +1,7 @@
+import {useState} from 'react'
+
 import moment from 'moment'
 import {useErrorHandler} from 'react-error-boundary'
-import React, {useState} from 'react'
 
 export const momented = date => moment(date).format('L')
 

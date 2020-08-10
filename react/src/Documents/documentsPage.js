@@ -18,7 +18,7 @@ const DocumentsPage = () => {
   const [queryObject, setQueryObject] = useState(baseQuery)
   const [hasMore, setHasMore] = useState(true)
 
-  const limit = 5 //no. of items per "page"
+  const limit = 3 //no. of items per "page"
 
   const {data, setSize} = useSWRInfinite(index => {
     const paginatedQueryObject = {
@@ -35,10 +35,10 @@ const DocumentsPage = () => {
   const isItemLoaded = index => !hasMore || index < documents.length
   const itemCount = hasMore ? documents.length + 1 : documents.length
 
-  //no usable count
+  //no pretty count
   //https://github.com/panosc-eu/search-api/issues/46
   useEffect(() => {
-    data[data.length - 1].length || setHasMore(false)
+    data[data.length - 1].length ? setHasMore(true) : setHasMore(false)
   }, [data, setHasMore])
 
   const Row = ({index, style}) => (
