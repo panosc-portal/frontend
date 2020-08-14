@@ -47,10 +47,12 @@ export const parseObjectToUri = object =>
 
 export const useFetch = () => {
   const [error, setError] = useState()
+  const [data, setData] = useState()
   useErrorHandler(error)
   const doFetch = async (uri, method, payload) => {
     const params = {
       method,
+      credentials: 'include',
     }
     if (payload) {
       params.body = JSON.stringify(payload)
@@ -60,6 +62,8 @@ export const useFetch = () => {
     }
     try {
       const call = await fetch(process.env.REACT_APP_CLOUD + uri, params)
+      const data = await call.json()
+      setData(data)
       if (!call.ok) {
         setError(call.status)
       }
@@ -67,5 +71,5 @@ export const useFetch = () => {
       setError(e)
     }
   }
-  return doFetch
+  return [doFetch, data]
 }

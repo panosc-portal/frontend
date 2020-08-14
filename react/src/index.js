@@ -4,6 +4,7 @@ import normalize from 'normalize.css'
 import ReactDOM from 'react-dom'
 import {BrowserRouter} from 'react-router-dom'
 import {ThemeProvider, createGlobalStyle} from 'styled-components'
+import {SessionProvider} from './Auth/sessionContext'
 
 import App from './App/app'
 import SWRProvider from './App/swrConfigProvider'
@@ -15,14 +16,16 @@ const GlobalStyle = createGlobalStyle`
 `
 //Enable concurrent ui mode
 ReactDOM.unstable_createRoot(document.getElementById('root')).render(
-  <SWRProvider>
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
-  </SWRProvider>
+  <SessionProvider>
+    <SWRProvider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </SWRProvider>
+  </SessionProvider>
 )
 
 // If you want your app to work offline and load faster, you can change

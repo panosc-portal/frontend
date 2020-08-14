@@ -3,10 +3,11 @@ import user from "./user";
 import instance from "./instance";
 import auth from "./auth";
 import flavour from "./flavour";
+import refresh from "./refresh";
 
 export default {
   user,
-  // document,
+  refresh,
   instance,
   auth,
   flavour,

@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import models, { connectDb } from "./models/index.js";
 import routes from "./routes";
-import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 
 import data from "./db";
 
@@ -12,8 +12,8 @@ const app = express();
 
 // Application-Level Middleware
 
-app.use(cors());
-
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -50,6 +50,7 @@ app.use("/users", routes.user);
 // app.use("/documents", routes.document);
 app.use("/instances", routes.instance);
 app.use("/auth", routes.auth);
+app.use("/refresh", routes.refresh);
 app.use("/flavours", routes.flavour);
 
 // Start

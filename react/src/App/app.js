@@ -9,6 +9,7 @@ import DocumentPage from '../Document/documentPage'
 import DocumentsPage from '../Documents/documentsPage'
 import Navigation from '../Navigation/navigation'
 import Spinner from './spinner'
+import Callback from '../Auth/callback'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
               component={DocumentPage}
             />
             <Route path="/dashboard" component={Dashboard} />
+            <Route path="/callback" component={Callback} />
           </Switch>
         </Suspense>
       </S.Box>

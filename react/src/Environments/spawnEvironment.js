@@ -9,7 +9,7 @@ import Spinner from '../App/spinner'
 
 const SpawnEnvironment = () => {
   const {data} = useSWR('/flavours')
-  const doFetch = useFetch()
+  const [doFetch] = useFetch()
 
   const spawn = async flavour => {
     const payload = {

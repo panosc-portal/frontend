@@ -7,7 +7,7 @@ import {mutate} from 'swr'
 import {useFetch} from '../App/helpers'
 
 const Dataset = ({dataset}) => {
-  const doFetch = useFetch()
+  const [doFetch] = useFetch()
   const [{isDragging}, drag] = useDrag({
     item: {id: dataset.pid, type: 'dataset'},
     end: (item, monitor) => {

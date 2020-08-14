@@ -9,7 +9,7 @@ import {useFetch} from '../App/helpers'
 import Dataset from './dataset'
 
 const Environment = ({environment}) => {
-  const doFetch = useFetch()
+  const [doFetch] = useFetch()
   const removeDataset = async id => {
     const uri = `/instances/${encodeURIComponent(
       environment._id
