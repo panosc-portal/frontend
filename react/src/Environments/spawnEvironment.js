@@ -4,8 +4,8 @@ import {Box, Card, Text} from 'rebass/styled-components'
 import styled from 'styled-components'
 import useSWR, {mutate} from 'swr'
 
-import {useFetch} from '../App/helpers'
 import Spinner from '../App/spinner'
+import useFetch from '../App/useFetch'
 
 const SpawnEnvironment = () => {
   const {data} = useSWR('/flavours')

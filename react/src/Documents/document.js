@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {Link} from 'react-router-dom'
 import {Box, Card, Heading, Image, Text} from 'rebass/styled-components'
 import styled from 'styled-components'
 
@@ -13,7 +14,10 @@ const Document = ({style, document}) => {
   return (
     <S.Card key={document.pid} style={style} id={document.pid}>
       <Box>
-        <Heading as="a" href={'/documents/' + encodeURIComponent(document.pid)}>
+        <Heading
+          as={Link}
+          to={'/documents/' + encodeURIComponent(document.pid)}
+        >
           {document.title}
         </Heading>
         <Text>

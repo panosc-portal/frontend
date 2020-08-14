@@ -5,7 +5,7 @@ import {Box, Button, Card, Heading, Text} from 'rebass/styled-components'
 import styled from 'styled-components'
 import {mutate} from 'swr'
 
-import {useFetch} from '../App/helpers'
+import useFetch from '../App/useFetch'
 import Dataset from './dataset'
 
 const Environment = ({environment}) => {

@@ -4,11 +4,11 @@ import normalize from 'normalize.css'
 import ReactDOM from 'react-dom'
 import {BrowserRouter} from 'react-router-dom'
 import {ThemeProvider, createGlobalStyle} from 'styled-components'
-import {SessionProvider} from './Auth/sessionContext'
 
 import App from './App/app'
 import SWRProvider from './App/swrConfigProvider'
 import theme from './App/theme'
+import {SessionProvider} from './Auth/sessionContext'
 import * as serviceWorker from './serviceWorker'
 
 const GlobalStyle = createGlobalStyle`

@@ -1,34 +1,25 @@
-import React, {useEffect, useCallback, useContext} from 'react'
-import SessionContext from './sessionContext'
+import React, {useEffect, useContext} from 'react'
+
 import queryString from 'query-string'
-import {useFetch} from '../App/helpers'
 import {Redirect} from 'react-router-dom'
+
 import Spinner from '../App/spinner'
+import useFetch from '../App/useFetch'
+import SessionContext from './sessionContext'
 
 const Callback = () => {
   const {code} = queryString.parse(window.location.search)
   const {accessToken, setAccessToken} = useContext(SessionContext)
   const [doFetch, data] = useFetch()
-  const getNewToken = useCallback(
-    async code => {
-      await doFetch('/auth', 'post', {code})
-    },
-    [doFetch]
-  )
   useEffect(() => {
-    const getIt = async () => {
+    const getToken = async () => {
       await doFetch('/auth', 'post', {code})
-      setAccessToken(data)
     }
-    getIt()
-  }, [])
-  return (
-    <>
-      {console.log(data)}
-      {/* {accessToken ? <Redirect to="/" /> : <Spinner />} */}
-      {accessToken ? 'true' : 'false'}
-    </>
-  )
+    data || getToken()
+    data &&
+      (setAccessToken(data) || localStorage.setItem('isAuthenticated', 'true'))
+  }, [code, doFetch, data, setAccessToken])
+  return <>{accessToken ? <Redirect to="/" /> : <Spinner />}</>
 }
 
 export default Callback

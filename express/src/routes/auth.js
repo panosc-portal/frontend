@@ -21,11 +21,16 @@ router.post("/", async (req, res) => {
       const response = queryString.parse(body);
       console.log(response);
       if (!response.error) {
-        const forward = {
-          access_token: response.access_token,
-          exp: response.expires_in,
+        const expiryDate = () => {
+          let date = new Date();
+          date = new Date(date.getTime() + response.expires_in * 1000);
+          return date;
         };
-        res.cookie("refresh", response.refresh_token, {
+        const forward = {
+          token: response.access_token,
+          exp: expiryDate(),
+        };
+        res.cookie("refresh_token", response.refresh_token, {
           secure: false,
           httpOnly: true,
           maxAge: parseInt(response.refresh_token_expires_in) * 1000,

@@ -1,6 +1,7 @@
 import React from 'react'
-import {Card} from 'rebass/styled-components'
+
 import {ErrorBoundary} from 'react-error-boundary'
+import {Card} from 'rebass/styled-components'
 
 const ui = props => {
   const ErrorFallback = ({error, componentStack, resetErrorBoundary}) => {
