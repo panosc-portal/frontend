@@ -7,16 +7,24 @@
 `yarn install` & `yarn start`
 
 # To do
- - [x] Rebass
+ - [ ] Get a 'clearer' idea of this app's scope in terms of functionality
+    - [ ] Create a list of requirements (pull requests) to related services so that it can be full-filled
+ - [x] better UI components (better ~ extendable, not a huge pile of :poop:)
+   - using rebass with styled-components
    - [ ] Make it look crisp
- - [x] SWR - data fetching library with support for Suspense
- - [ ] Navigation
- - [x] Better dataset DnD
+   - [ ] Make it responsive
+ - [x] more robust data fetching with support for caching and other more 'advanced' features
+   - SWR library
+ - [x] Better dataset DnD functionality
  - [x] Add pagination
     - [x] Improve pagination
+    - react-window with infinite scroll
  - [ ] Search Query builder that isn't :poop:
  - [ ] User Dashboard
- - [ ] Session handling
+ - [x] Session handling
+   - mock session using OIDC with Github
+     - access tokens stored in runtime
+     - refresh tokens stored as http-only cookies
  - [ ] Typing
  - [ ] Unit tests
  - [ ] Add missing formal details to this repository
