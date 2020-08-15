@@ -9,7 +9,7 @@
 # To do
  - [ ] Get a 'clearer' idea of this app's scope in terms of functionality
     - [ ] Create a list of requirements (pull requests) to related services so that it can be full-filled
- - [x] better UI components (better ~ extendable, not a huge pile of :poop:)
+ - [x] Actually usable UI components (~ extendable and not a huge pile of :poop:)
    - using rebass with styled-components
    - [ ] Make it look crisp
    - [ ] Make it responsive
