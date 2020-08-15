@@ -50,9 +50,7 @@ app.use("/users", routes.user);
 // app.use("/documents", routes.document);
 app.use("/instances", routes.instance);
 app.use("/auth", routes.auth);
-app.use("/refresh", routes.refresh);
 app.use("/flavours", routes.flavour);
-app.use("/logout", routes.logout);
 
 // Start
 

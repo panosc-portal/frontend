@@ -7,34 +7,35 @@ import SessionContext from '../Auth/sessionContext'
 const useFetch = () => {
   const [error, setError] = useState()
   const [data, setData] = useState()
-  const {freshBearer} = useContext(SessionContext)
+  const {bearer} = useContext(SessionContext)
   useErrorHandler(error)
   const doFetch = useCallback(
     async (uri, method, payload) => {
       const params = {
         method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: bearer,
+        },
+        //why send refresh token when not refreshing...
+        credentials: 'omit',
       }
       if (payload) {
         params.body = JSON.stringify(payload)
       }
-      params.headers = {
-        'Content-Type': 'application/json',
-      }
-      if (freshBearer) {
-        params.headers.Authorization = freshBearer
-      }
       try {
         const call = await fetch(process.env.REACT_APP_CLOUD + uri, params)
         const data = await call.json()
-        setData(data)
-        if (!call.ok) {
+        if (call.ok) {
+          setData(data)
+        } else {
           setError(call.status)
         }
       } catch (e) {
         setError(e)
       }
     },
-    [freshBearer]
+    [bearer]
   )
   return [doFetch, data]
 }
