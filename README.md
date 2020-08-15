@@ -25,6 +25,9 @@
    - mock session using OIDC with Github
      - access tokens stored in runtime
      - refresh tokens stored as http-only cookies
+ - [ ] lots of other missing miscellaneous stuff
+   - [ ] cookie policy
+   - [ ] extend this sublist
  - [ ] Typing
  - [ ] Unit tests
  - [ ] Add missing formal details to this repository
