@@ -10,19 +10,22 @@ export const SessionProvider = props => {
 
   const login = useCallback(
     async code => {
-      setAccessToken(await doAuth('login', code))
+      const token = await doAuth('login', code)
+      setAccessToken(token)
       localStorage.setItem('isAuthenticated', 'true')
     },
     [doAuth]
   )
 
   const logout = useCallback(async () => {
-    setAccessToken(await doAuth('logout'))
+    await doAuth('logout')
+    setAccessToken()
     localStorage.clear()
   }, [doAuth])
 
   const refresh = useCallback(async () => {
-    setAccessToken(await doAuth('refresh'))
+    const token = await doAuth('refresh')
+    setAccessToken(token)
   }, [doAuth])
 
   useEffect(() => {

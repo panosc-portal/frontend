@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import LoginLogoutButton from '../Auth/loginLogoutButton'
 
-const Navigation = () => {
+const Navigation = toggle => {
   return (
     <S.Flex>
       <Link as={RouterLink} variant="nav" to="/">
@@ -15,6 +15,9 @@ const Navigation = () => {
       <Box mx="auto" />
       <Link as={RouterLink} variant="nav" to="/dashboard">
         Dashboard
+      </Link>
+      <Link variant="nav" onClick={() => toggle()}>
+        toggle theme
       </Link>
       <LoginLogoutButton />
     </S.Flex>

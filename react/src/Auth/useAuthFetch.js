@@ -17,11 +17,10 @@ const useAuthFetch = () => {
     const doFetch = async () => {
       try {
         const call = await fetch(process.env.REACT_APP_AUTH, params)
-        const data = await call.json()
         if (call.ok) {
+          const data = await call.json()
           return data
         } else {
-          setError(call.status)
           return false
         }
       } catch (e) {

@@ -1,21 +1,30 @@
 import React, {Suspense} from 'react'
 
+import normalize from 'normalize.css'
 import {Route, Switch} from 'react-router-dom'
 import {Box} from 'rebass/styled-components'
 import styled from 'styled-components'
+import {ThemeProvider, createGlobalStyle} from 'styled-components'
 
 import Callback from '../Auth/callback'
 import Dashboard from '../Dashboard/dashboard'
 import DocumentPage from '../Document/documentPage'
 import DocumentsPage from '../Documents/documentsPage'
 import Navigation from '../Navigation/navigation'
+import {light, dark} from '../Theme/theme'
+import useDark from '../Theme/useDark'
 import Spinner from './spinner'
 
+const GlobalStyle = createGlobalStyle`
+  ${normalize}
+`
 function App() {
+  const {isDark, toggle} = useDark()
   return (
-    <>
+    <ThemeProvider theme={isDark ? dark : light}>
+      <GlobalStyle />
       <nav>
-        <Navigation />
+        <Navigation toggle={toggle} />
       </nav>
       <S.Box as="main">
         <Suspense fallback={<Spinner />}>
@@ -32,7 +41,7 @@ function App() {
           </Switch>
         </Suspense>
       </S.Box>
-    </>
+    </ThemeProvider>
   )
 }
 
