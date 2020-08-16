@@ -20,6 +20,8 @@
     - [x] Improve pagination
     - react-window with infinite scroll
  - [ ] Search Query builder that isn't :poop:
+   - it should most definitely be programatically generated
+     - search api needs to have some sort of 'available filter resource'
  - [ ] User Dashboard
  - [x] Session handling
    - mock session using OIDC with Github
@@ -27,6 +29,7 @@
      - refresh tokens stored as http-only cookies
  - [ ] lots of other missing miscellaneous stuff
    - [ ] cookie policy
+   - [ ] footer
    - [ ] extend this sublist
  - [ ] Typing
  - [ ] Unit tests

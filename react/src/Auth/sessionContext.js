@@ -20,7 +20,7 @@ export const SessionProvider = props => {
   const logout = useCallback(async () => {
     await doAuth('logout')
     setAccessToken()
-    localStorage.clear()
+    localStorage.removeItem('isAuthenticated')
   }, [doAuth])
 
   const refresh = useCallback(async () => {
