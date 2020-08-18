@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react'
+import React, {Suspense, useContext} from 'react'
 
 import normalize from 'normalize.css'
 import {Route, Switch} from 'react-router-dom'
@@ -11,20 +11,26 @@ import Dashboard from '../Dashboard/dashboard'
 import DocumentPage from '../Document/documentPage'
 import DocumentsPage from '../Documents/documentsPage'
 import Navigation from '../Navigation/navigation'
-import {light, dark} from '../Theme/theme'
-import useDark from '../Theme/useDark'
+import dark from '../Theme/dark'
+import light from '../Theme/light'
+import ThemeModeContext from '../Theme/themeModeContext'
 import Spinner from './spinner'
 
 const GlobalStyle = createGlobalStyle`
   ${normalize}
+  body {
+  color: ${props => props.theme.colors.text};
+  background-color: ${props => props.theme.colors.background};
+  font-size: ${props => props.theme.fontSizes[1]}px;
+  }
 `
 function App() {
-  const {isDark, toggle} = useDark()
+  const {isDark} = useContext(ThemeModeContext)
   return (
     <ThemeProvider theme={isDark ? dark : light}>
       <GlobalStyle />
       <nav>
-        <Navigation toggle={toggle} />
+        <Navigation />
       </nav>
       <S.Box as="main">
         <Suspense fallback={<Spinner />}>
@@ -49,5 +55,5 @@ export default App
 
 const S = {}
 S.Box = styled(Box)`
-  padding: ${props => props.theme.space[3]};
+  padding: ${props => props.theme.space[4]}px;
 `

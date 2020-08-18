@@ -40,8 +40,7 @@ const useAuthFetch = () => {
       default:
       case 'logout':
         params.method = 'delete'
-        await doFetch()
-        return null
+        break
     }
 
     const response = await doFetch()

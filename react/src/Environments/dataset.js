@@ -9,7 +9,7 @@ const Dataset = ({id, removeMe}) => {
   return (
     <S.Card>
       <Heading>{data.title}</Heading>
-      <S.Button onClick={() => removeMe(id)}>Remove me</S.Button>
+      <S.Button onClick={() => removeMe(id)}>rm dataset</S.Button>
     </S.Card>
   )
 }
@@ -17,6 +17,6 @@ export default Dataset
 
 const S = {}
 S.Card = styled(Card)`
-  margin-bottom: ${props => props.theme.space[1]};
+  margin-bottom: ${props => props.theme.space[2]}px;
 `
 S.Button = styled(Button)``

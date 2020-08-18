@@ -25,8 +25,8 @@ const useFetch = () => {
       }
       try {
         const call = await fetch(process.env.REACT_APP_CLOUD + uri, params)
-        const data = await call.json()
         if (call.ok) {
+          const data = await call.json()
           setData(data)
         } else {
           setError(call.status)

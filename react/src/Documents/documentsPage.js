@@ -18,7 +18,7 @@ const DocumentsPage = () => {
   const [queryObject, setQueryObject] = useState(baseQuery)
   const [hasMore, setHasMore] = useState(true)
 
-  const limit = 3 //no. of items per "page"
+  const limit = 4
 
   const {data, setSize} = useSWRInfinite(index => {
     const paginatedQueryObject = {
@@ -26,7 +26,6 @@ const DocumentsPage = () => {
       limit,
       skip: index * limit,
     }
-    //convert the complete query object to uri
     return `/Documents?filter=${parseObjectToUri(paginatedQueryObject)}`
   })
 

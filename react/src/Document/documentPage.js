@@ -47,6 +47,6 @@ export default DocumentPage
 const S = {}
 S.Box = styled(Box)`
   display: grid;
-  grid-gap: ${props => props.theme.space[2]};
+  grid-gap: ${props => props.theme.space[3]}px;
   grid-template-columns: 2fr 1fr 1fr;
 `

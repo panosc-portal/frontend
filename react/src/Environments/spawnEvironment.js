@@ -25,6 +25,7 @@ const SpawnEnvironment = () => {
       <Suspense fallback={<Spinner />}>
         {data.map(flavour => (
           <S.Card onClick={() => spawn(flavour)} key={flavour._id}>
+            <Text>{flavour.type}</Text>
             <Text>{flavour.name}</Text>
           </S.Card>
         ))}
@@ -38,8 +39,8 @@ export default SpawnEnvironment
 const S = {}
 S.Box = styled(Box)`
   display: grid;
-  grid-gap: ${props => props.theme.space[2]};
+  grid-gap: ${props => props.theme.space[3]}px;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 64px);
 `
 S.Card = styled(Card)``

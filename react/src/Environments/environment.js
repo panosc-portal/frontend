@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {useDrop} from 'react-dnd'
-import {Box, Button, Card, Heading, Text} from 'rebass/styled-components'
+import {Box, Button, Card, Heading} from 'rebass/styled-components'
 import styled from 'styled-components'
 import {mutate} from 'swr'
 
@@ -37,15 +37,15 @@ const Environment = ({environment}) => {
       key={environment._id}
       ref={drop}
       flavourType={environment.flavour.type}
+      isOver={isOver}
+      canDrop={canDrop}
     >
       <Heading>{environment.name}</Heading>
       <Box>
         {environment.datasets.map(dataset => (
           <Dataset key={dataset} id={dataset} removeMe={removeDataset} />
         ))}
-        <Text>{canDrop ? 'drop' : 'dont'}</Text>
-        <Text>{isOver ? 'its over me' : 'its elsewhere'}</Text>
-        <Button onClick={() => removeMe()}>Remove Me</Button>
+        <Button onClick={() => removeMe()}>rm instance</Button>
       </Box>
     </S.Card>
   )
@@ -59,5 +59,6 @@ S.Card = styled(Card)`
     props.flavourType === 'jupyter'
       ? props.theme.colors.jupyter
       : props.theme.colors.vm};
-  margin-bottom: ${props => props.theme.space[2]};
+  margin-bottom: ${props => props.theme.space[3]}px;
+  opacity: ${props => (props.canDrop && !props.isOver ? 0.5 : 1)};
 `

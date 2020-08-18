@@ -8,15 +8,18 @@ import ErrorBoundary from './App/errorBoundary'
 import SWRProvider from './App/swrProvider'
 import {SessionProvider} from './Auth/sessionContext'
 import * as serviceWorker from './serviceWorker'
+import {ThemeModeProvider} from './Theme/themeModeContext'
 
 ReactDOM.render(
   <React.StrictMode>
     <ErrorBoundary>
       <SessionProvider>
         <SWRProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <ThemeModeProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </ThemeModeProvider>
         </SWRProvider>
       </SessionProvider>
     </ErrorBoundary>

@@ -31,5 +31,5 @@ S.Card = styled(Card)`
     props.flavourType === 'jupyter'
       ? props.theme.colors.jupyter
       : props.theme.colors.vm};
-  margin-bottom: ${props => props.theme.space[2]};
+  margin-bottom: ${props => props.theme.space[3]}px;
 `

@@ -40,9 +40,7 @@ export const SessionProvider = props => {
   const bearer = accessToken ? 'Bearer ' + accessToken.token : ''
 
   return (
-    <SessionContext.Provider
-      value={{bearer, login, logout, refresh, accessToken, setAccessToken}}
-    >
+    <SessionContext.Provider value={{bearer, login, logout, refresh}}>
       {props.children}
     </SessionContext.Provider>
   )

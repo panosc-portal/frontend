@@ -53,4 +53,6 @@ const S = {}
 S.Card = styled(Card)`
   display: grid;
   grid-template-columns: 1fr 15rem 15rem;
+  margin-bottom: 30px;
+  max-height: 270px;
 `

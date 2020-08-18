@@ -1,19 +1,24 @@
-import {useState, useCallback} from 'react'
+import React, {useState, useCallback, createContext} from 'react'
 
-const useDark = () => {
+const ThemeModeContext = createContext()
+
+export const ThemeModeProvider = props => {
   const preset =
     localStorage.getItem('isDark') === 'true' ||
     (window.matchMedia &&
       window.matchMedia('(prefers-color-scheme: dark)').matches)
       ? true
       : false
-  console.log(preset)
   const [isDark, setIsDark] = useState(preset)
   const toggle = useCallback(
     () => setIsDark(!isDark) || localStorage.setItem('isDark', !isDark),
     [isDark]
   )
-  return {isDark, toggle}
+  return (
+    <ThemeModeContext.Provider value={{isDark, toggle}}>
+      {props.children}
+    </ThemeModeContext.Provider>
+  )
 }
 
-export default useDark
+export default ThemeModeContext

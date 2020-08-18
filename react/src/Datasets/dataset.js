@@ -44,6 +44,6 @@ export default Dataset
 
 const S = {}
 S.Card = styled(Card)`
-  margin-bottom: ${props => props.theme.space[2]};
+  margin-bottom: ${props => props.theme.space[3]}px;
   opacity: ${props => (props.isDragging ? 0.5 : 1)};
 `
