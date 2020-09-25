@@ -23,7 +23,6 @@ const Search = ({setQueryObject}) => {
 
   const resetForm = () => {
     setFields({})
-    console.log(baseQuery)
     setQueryObject(baseQuery)
   }
 

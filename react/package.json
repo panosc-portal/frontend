@@ -9,6 +9,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "immer": "^7.0.8",
     "moment": "^2.27.0",
     "normalize.css": "^8.0.1",
     "query-string": "^6.13.1",
@@ -28,7 +29,8 @@
     "react-window-infinite-loader": "^1.0.5",
     "rebass": "^4.0.7",
     "styled-components": "^5.1.1",
-    "swr": "^0.3.0"
+    "swr": "^0.3.0",
+    "zustand": "^3.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

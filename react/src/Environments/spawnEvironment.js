@@ -1,8 +1,10 @@
 import React, {Suspense} from 'react'
 
+import produce from 'immer'
 import {Box, Card, Text} from 'rebass/styled-components'
 import styled from 'styled-components'
 import useSWR, {mutate} from 'swr'
+import {v4 as uuid} from 'uuid'
 
 import Spinner from '../App/spinner'
 import useFetch from '../App/useFetch'
@@ -15,9 +17,16 @@ const SpawnEnvironment = () => {
     const payload = {
       flavour,
       name: 'test',
+      datasets: [],
     }
-    await doFetch('/instances', 'post', payload)
-    mutate('/instances')
+    mutate(
+      '/instances',
+      produce(draft => {
+        draft.push({...payload, _id: uuid()})
+      }),
+      false
+    )
+    mutate('/instances', await doFetch('/instances', 'post', payload))
   }
 
   return (

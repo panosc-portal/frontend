@@ -14,8 +14,12 @@ const Environments = () => {
     <Box>
       <Heading>Environments</Heading>
       <Suspense fallback={<Spinner />}>
-        {data.map(environment => (
-          <Environment key={environment._id} environment={environment} />
+        {data.map((environment, index) => (
+          <Environment
+            key={environment._id}
+            index={index}
+            environment={environment}
+          />
         ))}
         <SpawnEnvironment />
       </Suspense>

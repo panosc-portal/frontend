@@ -1,5 +1,6 @@
 import React from 'react'
 
+import produce from 'immer'
 import {useDrop} from 'react-dnd'
 import {Box, Button, Card, Heading} from 'rebass/styled-components'
 import styled from 'styled-components'
@@ -8,20 +9,34 @@ import {mutate} from 'swr'
 import useFetch from '../App/useFetch'
 import Dataset from './dataset'
 
-const Environment = ({environment}) => {
+const Environment = ({index, environment}) => {
   const [doFetch] = useFetch()
   const removeDataset = async id => {
     const uri = `/instances/${encodeURIComponent(
       environment._id
     )}/dataset/${encodeURIComponent(id)}`
-    await doFetch(uri, 'delete')
-    mutate('/instances')
+    mutate(
+      '/instances',
+      produce(draftInstances => {
+        draftInstances[index].datasets = draftInstances[index].datasets.filter(
+          dataset => dataset !== id
+        )
+      }),
+      false
+    )
+    mutate('/instances', await doFetch(uri, 'delete'))
   }
 
   const removeMe = async () => {
     const uri = `/instances/${encodeURIComponent(environment._id)}`
-    await doFetch(uri, 'delete')
-    mutate('/instances')
+    mutate(
+      '/instances',
+      produce(draftInstances => {
+        draftInstances.splice(index, 1)
+      }),
+      false
+    )
+    mutate('/instances', await doFetch(uri, 'delete'))
   }
 
   const [{canDrop, isOver}, drop] = useDrop({
