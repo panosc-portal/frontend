@@ -1,67 +1,27 @@
 import React from 'react'
 
-import produce from 'immer'
-import {useDrop} from 'react-dnd'
 import {Box, Button, Card, Heading} from 'rebass/styled-components'
 import styled from 'styled-components'
 import {mutate} from 'swr'
 
 import useFetch from '../App/useFetch'
-import Dataset from './dataset'
 
-const Environment = ({index, environment}) => {
+const Environment = ({environment}) => {
   const [doFetch] = useFetch()
-  const removeDataset = async id => {
-    const uri = `/instances/${encodeURIComponent(
-      environment._id
-    )}/dataset/${encodeURIComponent(id)}`
-    mutate(
-      '/instances',
-      produce(draftInstances => {
-        draftInstances[index].datasets = draftInstances[index].datasets.filter(
-          dataset => dataset !== id
-        )
-      }),
-      false
-    )
-    mutate('/instances', await doFetch(uri, 'delete'))
-  }
-
   const removeMe = async () => {
-    const uri = `/instances/${encodeURIComponent(environment._id)}`
     mutate(
-      '/instances',
-      produce(draftInstances => {
-        draftInstances.splice(index, 1)
-      }),
-      false
+      '/account/instances',
+      await doFetch(`/account/instances/${environment.id}`, 'delete')
     )
-    mutate('/instances', await doFetch(uri, 'delete'))
   }
-
-  const [{canDrop, isOver}, drop] = useDrop({
-    accept: 'dataset',
-    drop: () => ({name: environment.name, id: environment._id}),
-    collect: monitor => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  })
   return (
     <S.Card
-      key={environment._id}
-      ref={drop}
-      flavourType={environment.flavour.type}
-      isOver={isOver}
-      canDrop={canDrop}
+      flavourType={environment.image.name === 'jupyter' ? 'jupyter' : 'vm'}
     >
       <Heading>{environment.name}</Heading>
-      <Box>
-        {environment.datasets.map(dataset => (
-          <Dataset key={dataset} id={dataset} removeMe={removeDataset} />
-        ))}
-        <Button onClick={() => removeMe()}>rm instance</Button>
-      </Box>
+      <Box>plan: {environment.plan.name}</Box>
+      <Button>{environment.state.status}</Button>
+      <Button onClick={() => removeMe()}>Remove</Button>
     </S.Card>
   )
 }

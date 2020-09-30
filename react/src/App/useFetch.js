@@ -1,13 +1,12 @@
-import {useState, useContext, useCallback} from 'react'
+import {useState, useCallback} from 'react'
 
+import {useKeycloak} from '@react-keycloak/web'
 import {useErrorHandler} from 'react-error-boundary'
 
-import SessionContext from '../Auth/sessionContext'
-
 const useFetch = () => {
+  const {keycloak} = useKeycloak()
   const [error, setError] = useState()
   const [data, setData] = useState()
-  const {bearer} = useContext(SessionContext)
   useErrorHandler(error)
   const doFetch = useCallback(
     async (uri, method, payload) => {
@@ -15,7 +14,7 @@ const useFetch = () => {
         method,
         headers: {
           'Content-Type': 'application/json',
-          Authorization: bearer,
+          access_token: keycloak.authenticated ? keycloak.token : '',
         },
         //why send refresh token when not refreshing...
         credentials: 'omit',
@@ -24,7 +23,7 @@ const useFetch = () => {
         params.body = JSON.stringify(payload)
       }
       try {
-        const call = await fetch(process.env.REACT_APP_CLOUD + uri, params)
+        const call = await fetch(process.env.REACT_APP_API + uri, params)
         if (call.ok) {
           const data = await call.json()
           setData(data)
@@ -35,7 +34,7 @@ const useFetch = () => {
         setError(e)
       }
     },
-    [bearer]
+    [keycloak.token, keycloak.authenticated]
   )
   return [doFetch, data]
 }

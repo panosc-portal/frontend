@@ -4,8 +4,8 @@ import {Link as RouterLink} from 'react-router-dom'
 import {Flex, Link, Box} from 'rebass/styled-components'
 import styled from 'styled-components'
 
-import LoginLogoutButton from '../Auth/loginLogoutButton'
 import ToggleThemeButton from '../Theme/toggleThemeButton'
+import LoginLogoutButton from './loginLogoutButton'
 
 const Navigation = () => {
   return (

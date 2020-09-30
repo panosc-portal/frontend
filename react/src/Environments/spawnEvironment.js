@@ -10,32 +10,41 @@ import Spinner from '../App/spinner'
 import useFetch from '../App/useFetch'
 
 const SpawnEnvironment = () => {
-  const {data} = useSWR('/flavours')
+  const {data} = useSWR('/plans')
   const [doFetch] = useFetch()
 
   const spawn = async flavour => {
     const payload = {
-      flavour,
+      planId: flavour.id,
       name: 'test',
-      datasets: [],
+      description: '',
     }
     mutate(
-      '/instances',
+      '/account/instances',
       produce(draft => {
-        draft.push({...payload, _id: uuid()})
+        draft.push({
+          ...payload,
+          id: uuid(),
+          plan: {name: flavour.name},
+          state: {status: 'PENDING'},
+          image: {name: flavour.image.name},
+        })
       }),
       false
     )
-    mutate('/instances', await doFetch('/instances', 'post', payload))
+    mutate(
+      '/account/instances',
+      await doFetch('/account/instances', 'post', payload)
+    )
   }
 
   return (
     <S.Box>
       <Suspense fallback={<Spinner />}>
         {data.map(flavour => (
-          <S.Card onClick={() => spawn(flavour)} key={flavour._id}>
-            <Text>{flavour.type}</Text>
+          <S.Card onClick={() => spawn(flavour)} key={flavour.id}>
             <Text>{flavour.name}</Text>
+            <Text>{flavour.image.name}</Text>
           </S.Card>
         ))}
       </Suspense>

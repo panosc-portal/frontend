@@ -1,19 +1,18 @@
-import React, {useContext} from 'react'
+import React from 'react'
 
+import {useKeycloak} from '@react-keycloak/web'
 import {SWRConfig} from 'swr'
 
-import SessionContext from '../Auth/sessionContext'
-
 const SWRProvider = ({children}) => {
-  const {bearer} = useContext(SessionContext)
+  const {keycloak} = useKeycloak()
   const getUrlWithBase = url =>
-    url.startsWith('/instances') || url.startsWith('/flavours')
-      ? process.env.REACT_APP_CLOUD + url
+    url.startsWith('/account') || url.startsWith('/plans')
+      ? process.env.REACT_APP_API + url
       : process.env.REACT_APP_SEARCH + url
   const fetcher = url =>
-    fetch(getUrlWithBase(url), {headers: {Authorization: bearer}}).then(r =>
-      r.json()
-    )
+    fetch(getUrlWithBase(url), {
+      headers: {access_token: keycloak.authenticated ? keycloak.token : ''},
+    }).then(r => r.json())
   return (
     <SWRConfig
       value={{

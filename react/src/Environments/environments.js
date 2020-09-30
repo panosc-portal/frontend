@@ -9,14 +9,14 @@ import Environment from './environment'
 import SpawnEnvironment from './spawnEvironment'
 
 const Environments = () => {
-  const {data} = useSWR('/instances')
+  const {data} = useSWR('/account/instances')
   return (
     <Box>
       <Heading>Environments</Heading>
       <Suspense fallback={<Spinner />}>
         {data.map((environment, index) => (
           <Environment
-            key={environment._id}
+            key={environment.id}
             index={index}
             environment={environment}
           />

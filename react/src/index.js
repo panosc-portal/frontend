@@ -1,19 +1,20 @@
 import React from 'react'
 
+import {KeycloakProvider} from '@react-keycloak/web'
 import ReactDOM from 'react-dom'
 import {BrowserRouter} from 'react-router-dom'
 
 import App from './App/app'
 import ErrorBoundary from './App/errorBoundary'
 import SWRProvider from './App/swrProvider'
-import {SessionProvider} from './Auth/sessionContext'
+import keycloak from './keycloak'
 import * as serviceWorker from './serviceWorker'
 import {ThemeModeProvider} from './Theme/themeModeContext'
 
 ReactDOM.render(
   <React.StrictMode>
     <ErrorBoundary>
-      <SessionProvider>
+      <KeycloakProvider keycloak={keycloak} initConfig={{pkceMethod: 'S256'}}>
         <SWRProvider>
           <ThemeModeProvider>
             <BrowserRouter>
@@ -21,7 +22,7 @@ ReactDOM.render(
             </BrowserRouter>
           </ThemeModeProvider>
         </SWRProvider>
-      </SessionProvider>
+      </KeycloakProvider>
     </ErrorBoundary>
   </React.StrictMode>,
   document.getElementById('root')
