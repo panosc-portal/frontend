@@ -1,40 +1,33 @@
 import React, {Suspense, useContext} from 'react'
 
+import styled from '@emotion/styled'
 import {useKeycloak} from '@react-keycloak/web'
-import normalize from 'normalize.css'
+import css from '@styled-system/css'
+import {ThemeProvider} from 'emotion-theming'
 import {Route, Switch} from 'react-router-dom'
-import {Box} from 'rebass/styled-components'
-import styled from 'styled-components'
-import {ThemeProvider, createGlobalStyle} from 'styled-components'
 
 import Dashboard from '../Dashboard/dashboard'
 import DocumentPage from '../Document/documentPage'
 import DocumentsPage from '../Documents/documentsPage'
 import Navigation from '../Navigation/navigation'
+import {Box} from '../Primitives'
 import dark from '../Theme/dark'
+import Global from '../Theme/global'
 import light from '../Theme/light'
 import ThemeModeContext from '../Theme/themeModeContext'
 import Spinner from './spinner'
 
-const GlobalStyle = createGlobalStyle`
-  ${normalize}
-  body {
-  color: ${props => props.theme.colors.text};
-  background-color: ${props => props.theme.colors.background};
-  font-size: ${props => props.theme.fontSizes[1]}px;
-  }
-`
-function App() {
+const App = () => {
   const {isDark} = useContext(ThemeModeContext)
   const {initialized} = useKeycloak()
   return (
     <ThemeProvider theme={isDark ? dark : light}>
-      <GlobalStyle />
+      <Global />
       <nav>
         <Navigation />
       </nav>
       {initialized && (
-        <S.Box as="main">
+        <S.Main as="main">
           <Suspense fallback={<Spinner />}>
             <Switch>
               <Route exact path="/" component={DocumentsPage} />
@@ -47,7 +40,7 @@ function App() {
               <Route path="/dashboard" component={Dashboard} />
             </Switch>
           </Suspense>
-        </S.Box>
+        </S.Main>
       )}
     </ThemeProvider>
   )
@@ -56,6 +49,12 @@ function App() {
 export default App
 
 const S = {}
-S.Box = styled(Box)`
-  padding: ${props => props.theme.space[4]}px;
+
+S.Box = styled(Box)(
+  css({
+    padding: [4],
+  })
+)
+S.Main = styled(S.Box)`
+  height: calc(100% - ${props => props.theme.sizes.nav}px);
 `

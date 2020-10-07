@@ -1,7 +1,8 @@
 import React from 'react'
 
 import {useKeycloak} from '@react-keycloak/web'
-import {Link} from 'rebass/styled-components'
+
+import {Link} from '../Primitives'
 
 const LoginLogoutButton = () => {
   const {keycloak} = useKeycloak()

@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {Box, Button, Card, Heading} from 'rebass/styled-components'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import {mutate} from 'swr'
 
 import useFetch from '../App/useFetch'
+import {Box, Link, Button, Card, Heading} from '../Primitives'
 
 const Environment = ({environment}) => {
   const [doFetch] = useFetch()
@@ -24,7 +24,7 @@ const Environment = ({environment}) => {
       <Heading>{environment.name}</Heading>
       <Box>plan: {environment.plan.name}</Box>
       <Button>
-        <a
+        <Link
           target="_blank"
           href={
             environment.state.status === 'ACTIVE'
@@ -36,7 +36,7 @@ const Environment = ({environment}) => {
           }
         >
           {environment.state.status}
-        </a>
+        </Link>
       </Button>
       <Button onClick={() => remove()}>Remove</Button>
       <Button onClick={() => action('REBOOT')}>Reboot</Button>

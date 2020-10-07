@@ -1,7 +1,6 @@
 import React, {useContext} from 'react'
 
-import {Link} from 'rebass/styled-components'
-
+import {Link} from '../Primitives'
 import ThemeModeContext from './themeModeContext'
 
 const ToggleThemeButton = () => {

@@ -1,13 +1,13 @@
 import React, {Suspense} from 'react'
 
+import styled from '@emotion/styled'
 import produce from 'immer'
-import {Box, Card, Text} from 'rebass/styled-components'
-import styled from 'styled-components'
 import useSWR, {mutate} from 'swr'
 import {v4 as uuid} from 'uuid'
 
 import Spinner from '../App/spinner'
 import useFetch from '../App/useFetch'
+import {Box, Card, Text} from '../Primitives'
 
 const SpawnEnvironment = () => {
   const {data} = useSWR('/plans')

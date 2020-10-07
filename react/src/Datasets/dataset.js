@@ -1,7 +1,8 @@
 import React from 'react'
 
-import {Card, Heading, Text} from 'rebass/styled-components'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
+
+import {Card, Heading, Text} from '../Primitives'
 
 const Dataset = ({dataset}) => {
   return (
@@ -19,4 +20,5 @@ export default Dataset
 const S = {}
 S.Card = styled(Card)`
   margin-bottom: ${props => props.theme.space[3]}px;
+  ${({inUse}) => inUse && 'background-color: rebeccapurple'}
 `

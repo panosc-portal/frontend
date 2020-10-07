@@ -1,9 +1,8 @@
 import React from 'react'
 
-import {Box, Heading} from 'rebass/styled-components'
-
 import ErrorBoundary from '../App/errorBoundary'
 import Dataset from '../Datasets/dataset'
+import {Box, Heading} from '../Primitives'
 
 const Datasets = ({data}) => (
   <Box>

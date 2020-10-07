@@ -1,20 +1,21 @@
 import React, {Suspense, useCallback, useEffect, useState} from 'react'
 
+import styled from '@emotion/styled'
+import css from '@styled-system/css'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import {FixedSizeList} from 'react-window'
 import InfiniteLoader from 'react-window-infinite-loader'
-import {Box} from 'rebass/styled-components'
-import styled from 'styled-components'
 import {useSWRInfinite} from 'swr'
 
 import ErrorBoundary from '../App/errorBoundary'
 import {baseQuery, parseObjectToUri} from '../App/helpers'
 import Spinner from '../App/spinner'
+import {Box} from '../Primitives'
 import Document from './document'
 
 const Search = React.lazy(() => import('../Search/search'))
 
-const DocumentsPage = () => {
+const DocumentsPage = props => {
   const [queryObject, setQueryObject] = useState(baseQuery)
   const [hasMore, setHasMore] = useState(true)
 
@@ -43,7 +44,7 @@ const DocumentsPage = () => {
   const Row = ({index, style}) => (
     <Document
       style={style}
-      document={isItemLoaded(index) ? documents[index] : null}
+      document={isItemLoaded(index) && documents[index]}
     />
   )
 
@@ -56,7 +57,7 @@ const DocumentsPage = () => {
       </ErrorBoundary>
       <ErrorBoundary>
         <Suspense fallback={<Spinner />}>
-          <VWindowWrapper>
+          <S.Wrapper>
             <AutoSizer>
               {({height, width}) => (
                 <InfiniteLoader
@@ -79,7 +80,7 @@ const DocumentsPage = () => {
                 </InfiniteLoader>
               )}
             </AutoSizer>
-          </VWindowWrapper>
+          </S.Wrapper>
         </Suspense>
       </ErrorBoundary>
     </S.Box>
@@ -87,15 +88,19 @@ const DocumentsPage = () => {
 }
 export default DocumentsPage
 
-const VWindowWrapper = styled(Box)`
-  grid-column: 2/3;
-  grid-row: 1/3;
-`
 const S = {}
-S.Box = styled(Box)`
-  display: grid;
-  grid-gap: 2rem;
-  grid-template-columns: 1fr 3fr;
-  grid-template-rows: min-content 1fr;
-  height: 90vh;
-`
+S.Box = styled(Box)(
+  css({
+    display: 'grid',
+    gridGap: [4],
+    gridTemplateColumns: '1fr 3fr',
+    gridTemplateRows: 'min-content 1fr',
+    height: '100%',
+  })
+)
+S.Wrapper = styled(Box)(
+  css({
+    gridColumn: '2/3',
+    gridRow: '1/3',
+  })
+)

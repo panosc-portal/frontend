@@ -1,9 +1,10 @@
 import React from 'react'
 
+import styled from '@emotion/styled'
+import css from '@styled-system/css'
 import {Link as RouterLink} from 'react-router-dom'
-import {Flex, Link, Box} from 'rebass/styled-components'
-import styled from 'styled-components'
 
+import {Flex, Link, Box} from '../Primitives'
 import ToggleThemeButton from '../Theme/toggleThemeButton'
 import LoginLogoutButton from './loginLogoutButton'
 
@@ -26,6 +27,10 @@ const Navigation = () => {
 export default Navigation
 
 const S = {}
-S.Flex = styled(Flex)`
-  background-color: ${props => props.theme.colors.middleground};
-`
+
+S.Flex = styled(Flex)(
+  css({
+    bg: 'middleground',
+    height: 'nav',
+  })
+)

@@ -1,7 +1,8 @@
 import React from 'react'
 
-import {Box, Card, Heading, Image, Link, Text} from 'rebass/styled-components'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
+
+import {Box, Card, Heading, Image, Link, Text} from '../Primitives'
 
 const Document = ({data}) => {
   return (
@@ -10,7 +11,7 @@ const Document = ({data}) => {
       <Card>
         <Text>{data.summary}</Text>
         <S.Image src={data.img} />
-        <Link href={'http://doi.org/' + data.doi} target="_blank">
+        <Link to={'http://doi.org/' + data.doi} target="_blank">
           {data.citation}
         </Link>
       </Card>

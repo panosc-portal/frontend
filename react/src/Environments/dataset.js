@@ -1,8 +1,9 @@
 import React from 'react'
 
-import {Card, Button, Heading} from 'rebass/styled-components'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import useSWR from 'swr'
+
+import {Card, Button, Heading} from '../Primitives'
 
 const Dataset = ({id, removeMe}) => {
   const {data} = useSWR(`/Datasets/${encodeURIComponent(id)}`)

@@ -1,10 +1,10 @@
 import React, {Suspense} from 'react'
 
-import {Box, Card, Heading} from 'rebass/styled-components'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import useSWR from 'swr'
 
 import Spinner from '../App/spinner'
+import {Box, Card, Heading} from '../Primitives'
 import Environment from './environment'
 import SpawnEnvironment from './spawnEvironment'
 
