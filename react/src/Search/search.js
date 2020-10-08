@@ -4,7 +4,7 @@ import {Input, Label, Radio} from '@rebass/forms'
 import {useForm} from 'react-hook-form'
 
 import {baseQuery, mockTechniques} from '../App/helpers'
-import {Box, Button, Card} from '../Primitives'
+import {Heading, Box, Button, Card} from '../Primitives'
 
 const Search = ({setQueryObject}) => {
   const [fields, setFields] = useState({})
@@ -56,16 +56,19 @@ const Search = ({setQueryObject}) => {
     </Box>
   )
   return (
-    <Card as="form" onSubmit={handleSubmit(submitForm)}>
-      <SearchTitles />
-      <SearchTechniques />
-      <Button type="submit" mx={4}>
-        Search
-      </Button>
-      <Button type="reset" onClick={() => resetForm()}>
-        Reset
-      </Button>
-    </Card>
+    <Box>
+      <Heading>Search</Heading>
+      <Card as="form" onSubmit={handleSubmit(submitForm)}>
+        <SearchTitles />
+        <SearchTechniques />
+        <Button type="submit" mx={4}>
+          Search
+        </Button>
+        <Button type="reset" onClick={() => resetForm()}>
+          Reset
+        </Button>
+      </Card>
+    </Box>
   )
 }
 

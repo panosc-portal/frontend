@@ -28,6 +28,7 @@ const theme = {
   },
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
   sizes: {
+    icon: 20,
     nav: 32,
     image: 270,
   },
@@ -70,7 +71,7 @@ const theme = {
       color: 'primary',
       textDecoration: 'none',
       ':hover,:focus,.active': {
-        color: 'primary',
+        color: 'text',
         textDecoration: 'none',
       },
     },
@@ -90,9 +91,12 @@ const theme = {
     primary: {
       fontSize: 2,
       fontWeight: 'bold',
-      color: 'text',
+      color: 'primary',
       bg: 'foreground',
       borderRadius: 'default',
+      ':hover': {
+        color: 'text',
+      },
     },
     outline: {
       variant: 'buttons.primary',

@@ -1,39 +1,37 @@
 import React, {Suspense} from 'react'
 
-import styled from '@emotion/styled'
+import {useKeycloak} from '@react-keycloak/web'
 import useSWR from 'swr'
 
 import Spinner from '../App/spinner'
-import {Box, Card, Heading} from '../Primitives'
+import {Box, Heading, Card} from '../Primitives'
 import Environment from './environment'
-import SpawnEnvironment from './spawnEvironment'
 
 const Environments = () => {
-  const {data} = useSWR('/account/instances')
+  const {keycloak} = useKeycloak()
+  const {data} = useSWR(keycloak.authenticated ? '/account/instances' : null, {
+    refreshInterval: 3000,
+  })
   return (
     <Box>
       <Heading>Environments</Heading>
-      <Suspense fallback={<Spinner />}>
-        {data.map((environment, index) => (
-          <Environment
-            key={environment.id}
-            index={index}
-            environment={environment}
-          />
-        ))}
-        <SpawnEnvironment />
-      </Suspense>
+      {!keycloak.authenticated ? (
+        <Card>
+          Sorry you need to be authenticated to use the cloud service :-(
+        </Card>
+      ) : (
+        <Suspense fallback={<Spinner />}>
+          {data.map((environment, index) => (
+            <Environment
+              key={environment.id}
+              index={index}
+              environment={environment}
+            />
+          ))}
+        </Suspense>
+      )}
     </Box>
   )
 }
 
 export default Environments
-
-const S = {}
-S.Card = styled(Card)`
-  background-color: ${props =>
-    props.flavourType === 'jupyter'
-      ? props.theme.colors.jupyter
-      : props.theme.colors.vm};
-  margin-bottom: ${props => props.theme.space[3]}px;
-`

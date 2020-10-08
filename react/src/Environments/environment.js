@@ -1,11 +1,31 @@
 import React from 'react'
 
+import {
+  PlayCircle as Play,
+  DeleteBin2,
+  Refresh as Restart,
+  ShutDown,
+} from '@emotion-icons/remix-line'
 import styled from '@emotion/styled'
+import css from '@styled-system/css'
+import produce from 'immer'
 import {mutate} from 'swr'
 
 import useFetch from '../App/useFetch'
-import {Box, Link, Button, Card, Heading} from '../Primitives'
+import {Flex, Text, Link, Box, Card, Heading} from '../Primitives'
 
+const Icon = props => (
+  <Link
+    mx={2}
+    size={28}
+    title={props.title}
+    as={props.icon}
+    onClick={props.action}
+    bg="foreground"
+    p={1}
+    flex="1"
+  />
+)
 const Environment = ({environment}) => {
   const [doFetch] = useFetch()
   const remove = async () => {
@@ -15,33 +35,66 @@ const Environment = ({environment}) => {
     )
   }
   const action = async type => {
-    doFetch(`/account/instances/${environment.id}/actions`, 'post', {type})
+    mutate(
+      '/account/instances',
+      produce(draft => {
+        const index = draft.findIndex(obj => obj.id === environment.id)
+        if (index !== -1) draft[index].state.status = 'PENDING'
+      }),
+      false
+    )
+    mutate(
+      '/account/instances',
+      await doFetch(`/account/instances/${environment.id}/actions`, 'post', {
+        type,
+      })
+    )
   }
   return (
-    <S.Card
-      flavourType={environment.image.name === 'jupyter' ? 'jupyter' : 'vm'}
-    >
+    <S.Card>
       <Heading>{environment.name}</Heading>
-      <Box>plan: {environment.plan.name}</Box>
-      <Button>
-        <Link
-          target="_blank"
-          href={
-            environment.state.status === 'ACTIVE'
-              ? 'http://' +
-                environment.hostname +
-                ':' +
-                environment.protocols[0].port
-              : ''
-          }
-        >
-          {environment.state.status}
-        </Link>
-      </Button>
-      <Button onClick={() => remove()}>Remove</Button>
-      <Button onClick={() => action('REBOOT')}>Reboot</Button>
-      <Button onClick={() => action('START')}>Start</Button>
-      <Button onClick={() => action('SHUTDOWN')}>Shutdown</Button>
+      <Box>
+        <Text fontWeight="bold">Description</Text>
+        <Text>{environment.description}</Text>
+      </Box>
+      <Box>
+        <b>Status </b>
+        {environment.state.status === 'ACTIVE' ? (
+          <Link
+            href={
+              environment.state.status === 'ACTIVE'
+                ? 'http://' +
+                  environment.hostname +
+                  ':' +
+                  environment.protocols[0].port +
+                  '?token=""'
+                : ''
+            }
+            target="_blank"
+          >
+            {environment.state.status}
+          </Link>
+        ) : (
+          environment.state.status
+        )}
+      </Box>
+      <Box>
+        <b>Plan </b>
+        {environment.plan.name}
+      </Box>
+      <S.Flex>
+        {environment.state.status === 'STOPPED' ? (
+          <Icon icon={Play} title="Start" action={() => action('START')} />
+        ) : (
+          <Icon
+            icon={ShutDown}
+            title="Shutdown"
+            action={() => action('SHUTDOWN')}
+          />
+        )}
+        <Icon icon={Restart} title="Restart" action={() => action('REBOOT')} />
+        <Icon icon={DeleteBin2} title="Remove" action={() => remove()} />
+      </S.Flex>
     </S.Card>
   )
 }
@@ -49,10 +102,15 @@ const Environment = ({environment}) => {
 export default Environment
 
 const S = {}
-S.Card = styled(Card)`
-  background-color: ${props =>
-    props.flavourType === 'jupyter'
-      ? props.theme.colors.jupyter
-      : props.theme.colors.vm};
-  margin-bottom: ${props => props.theme.space[3]}px;
-`
+S.Card = styled(Card)(
+  css({
+    marginBottom: [3],
+  })
+)
+S.Flex = styled(Flex)(
+  css({
+    marginTop: [3],
+    justifyContent: 'space-around',
+    width: '100%',
+  })
+)

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {Suspense} from 'react'
 
 import ErrorBoundary from '../App/errorBoundary'
+import Spinner from '../App/spinner'
 import Dataset from '../Datasets/dataset'
 import {Box, Heading} from '../Primitives'
 
@@ -8,9 +9,11 @@ const Datasets = ({data}) => (
   <Box>
     <Heading>Datasets</Heading>
     <ErrorBoundary>
-      {data.map(dataset => (
-        <Dataset dataset={dataset} key={dataset.pid} />
-      ))}
+      <Suspense fallback={<Spinner />}>
+        {data.map(dataset => (
+          <Dataset dataset={dataset} key={dataset.pid} />
+        ))}
+      </Suspense>
     </ErrorBoundary>
   </Box>
 )

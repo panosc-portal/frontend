@@ -1,15 +1,12 @@
 import React, {Suspense} from 'react'
 
 import styled from '@emotion/styled'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
+import css from '@styled-system/css'
 import useSWR from 'swr'
 
 import ErrorBoundary from '../App/errorBoundary'
 import {baseQuery, parseObjectToUri} from '../App/helpers'
 import Spinner from '../App/spinner'
-import Datasets from '../Datasets/datasets'
-import Environments from '../Environments/environments'
 import {Box} from '../Primitives'
 import Document from './document'
 
@@ -25,19 +22,11 @@ const DocumentPage = props => {
   )
   return (
     <S.Box>
-      <DndProvider backend={HTML5Backend}>
-        <ErrorBoundary>
-          <Suspense fallback={<Spinner />}>
-            <Document data={data} />
-            <Datasets data={data.datasets} />
-          </Suspense>
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Suspense fallback={<Spinner />}>
-            <Environments />
-          </Suspense>
-        </ErrorBoundary>
-      </DndProvider>
+      <ErrorBoundary>
+        <Suspense fallback={<Spinner />}>
+          <Document data={data} />
+        </Suspense>
+      </ErrorBoundary>
     </S.Box>
   )
 }
@@ -45,8 +34,4 @@ const DocumentPage = props => {
 export default DocumentPage
 
 const S = {}
-S.Box = styled(Box)`
-  display: grid;
-  grid-gap: ${props => props.theme.space[3]}px;
-  grid-template-columns: 2fr 1fr 1fr;
-`
+S.Box = styled(Box)(css({}))

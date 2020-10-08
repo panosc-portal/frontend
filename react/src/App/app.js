@@ -6,9 +6,11 @@ import css from '@styled-system/css'
 import {ThemeProvider} from 'emotion-theming'
 import {Route, Switch} from 'react-router-dom'
 
+import ErrorBoundary from '../App/errorBoundary'
 import Dashboard from '../Dashboard/dashboard'
 import DocumentPage from '../Document/documentPage'
 import DocumentsPage from '../Documents/documentsPage'
+import Environments from '../Environments/environments'
 import Navigation from '../Navigation/navigation'
 import {Box} from '../Primitives'
 import dark from '../Theme/dark'
@@ -40,6 +42,11 @@ const App = () => {
               <Route path="/dashboard" component={Dashboard} />
             </Switch>
           </Suspense>
+          <ErrorBoundary>
+            <Suspense fallback={<Spinner />}>
+              <Environments />
+            </Suspense>
+          </ErrorBoundary>
         </S.Main>
       )}
     </ThemeProvider>
@@ -53,6 +60,9 @@ const S = {}
 S.Box = styled(Box)(
   css({
     padding: [4],
+    gridTemplateColumns: '1fr 256px',
+    display: 'grid',
+    gridGap: [4],
   })
 )
 S.Main = styled(S.Box)`

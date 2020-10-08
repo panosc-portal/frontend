@@ -2,7 +2,7 @@ import React from 'react'
 
 import styled from '@emotion/styled'
 import css from '@styled-system/css'
-import {Link as IntLink} from 'react-router-dom'
+import {Link as RouterLink} from 'react-router-dom'
 
 import {momented} from '../App/helpers'
 import Spinner from '../App/spinner'
@@ -22,60 +22,63 @@ const Detail = ({title, data}) => (
     <Text>{data}</Text>
   </S.Detail>
 )
-const Document = ({style, document}) => {
-  if (!document) {
-    return <Spinner />
-  }
-  return (
-    <S.Wrapper key={document.pid} style={style} id={document.pid}>
-      <S.Flex>
-        <Link
-          as={IntLink}
-          to={'/documents/' + encodeURIComponent(document.pid)}
-        >
-          <Heading>{document.title}</Heading>
-        </Link>
-        <Flex>
-          {document.members.map(member => (
-            <Member key={member.id} data={member} />
-          ))}
-        </Flex>
-        <Text>{document.summary.substring(0, 550)}...</Text>
-        <Link href={'http://doi.org/' + document.doi}>{document.citation}</Link>
-        <Flex>
-          {document.keywords.map((keyword, index) => (
-            <S.Tag key={index}>{keyword}</S.Tag>
-          ))}
-        </Flex>
-      </S.Flex>
-      <S.Details>
-        <Detail title="Type" data={document.type} />
-        <Detail
-          title="Licence / Visibility"
-          data={`${document.licence} / ${
-            document.isPublic ? 'Public' : 'Non-Public'
-          }`}
-        />
-        <Detail title="Started on" data={momented(document.startDate)} />
-        <Detail title="Ended on" data={momented(document.endDate)} />
-        <Detail title="Released on" data={momented(document.releaseDate)} />
-      </S.Details>
-      <Image src={document.img} />
-    </S.Wrapper>
+const Document = ({document}) =>
+  !document ? (
+    <Spinner />
+  ) : (
+    <Box key={document.pid}>
+      <S.Layout>
+        <S.Flex>
+          <Link
+            as={RouterLink}
+            to={'/documents/' + encodeURIComponent(document.pid)}
+          >
+            <Heading>
+              {(document.title + document.title).substring(0, 90)}
+            </Heading>
+          </Link>
+          <Flex>
+            {document.members.map(member => (
+              <Member key={member.id} data={member} />
+            ))}
+          </Flex>
+          <Text>{document.summary.substring(0, 350)}...</Text>
+          <Link href={'http://doi.org/' + document.doi}>
+            {document.citation}
+          </Link>
+          <Flex>
+            {document.keywords.map((keyword, index) => (
+              <S.Tag key={index}>{keyword}</S.Tag>
+            ))}
+          </Flex>
+        </S.Flex>
+        <S.Details>
+          <Detail title="Type" data={document.type} />
+          <Detail
+            title="Licence / Visibility"
+            data={`${document.licence} / ${
+              document.isPublic ? 'Public' : 'Non-Public'
+            }`}
+          />
+          <Detail title="Started on" data={momented(document.startDate)} />
+          <Detail title="Ended on" data={momented(document.endDate)} />
+          <Detail title="Released on" data={momented(document.releaseDate)} />
+        </S.Details>
+        <Image src={document.img} />
+      </S.Layout>
+    </Box>
   )
-}
-export default Document
+export default React.memo(Document)
 
 const S = {}
-S.Box = styled(Box)(
+S.PreLayout = styled(Box)(
   css({
     display: 'grid',
     gridGap: [1],
     marginBottom: [4],
-    maxHeight: 'image',
   })
 )
-S.Wrapper = styled(S.Box)`
+S.Layout = styled(S.PreLayout)`
   grid-template-columns: 1fr max-content ${({theme}) => theme.sizes.image}px;
 `
 S.Flex = styled(Flex)(

@@ -1,19 +1,19 @@
 export const authParams = {
-  issuer: 'http://keycloak:8080/auth/realms/master',
+  issuer: 'http://10.36.0.42:8080/auth/realms/master',
   authorization_endpoint:
-    'http://keycloak:8080/auth/realms/master/protocol/openid-connect/auth',
+    'http://10.36.0.42:8080/auth/realms/master/protocol/openid-connect/auth',
   token_endpoint:
-    'http://keycloak:8080/auth/realms/master/protocol/openid-connect/token',
+    'http://10.36.0.42:8080/auth/realms/master/protocol/openid-connect/token',
   introspection_endpoint:
-    'http://keycloak:8080/auth/realms/master/protocol/openid-connect/token/introspect',
+    'http://10.36.0.42:8080/auth/realms/master/protocol/openid-connect/token/introspect',
   userinfo_endpoint:
-    'http://keycloak:8080/auth/realms/master/protocol/openid-connect/userinfo',
+    'http://10.36.0.42:8080/auth/realms/master/protocol/openid-connect/userinfo',
   end_session_endpoint:
-    'http://keycloak:8080/auth/realms/master/protocol/openid-connect/logout',
+    'http://10.36.0.42:8080/auth/realms/master/protocol/openid-connect/logout',
   jwks_uri:
-    'http://keycloak:8080/auth/realms/master/protocol/openid-connect/certs',
+    'http://10.36.0.42:8080/auth/realms/master/protocol/openid-connect/certs',
   check_session_iframe:
-    'http://keycloak:8080/auth/realms/master/protocol/openid-connect/login-status-iframe.html',
+    'http://10.36.0.42:8080/auth/realms/master/protocol/openid-connect/login-status-iframe.html',
   grant_types_supported: [
     'authorization_code',
     'implicit',
@@ -87,7 +87,7 @@ export const authParams = {
   ],
   response_modes_supported: ['query', 'fragment', 'form_post'],
   registration_endpoint:
-    'http://keycloak:8080/auth/realms/master/clients-registrations/openid-connect',
+    'http://10.36.0.42:8080/auth/realms/master/clients-registrations/openid-connect',
   token_endpoint_auth_methods_supported: [
     'private_key_jwt',
     'client_secret_basic',

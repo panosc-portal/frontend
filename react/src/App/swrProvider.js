@@ -7,11 +7,14 @@ const SWRProvider = ({children}) => {
   const {keycloak} = useKeycloak()
   const getUrlWithBase = url =>
     url.startsWith('/account') || url.startsWith('/plans')
-      ? process.env.REACT_APP_API + url
+      ? keycloak.authenticated
+        ? process.env.REACT_APP_API + url
+        : false
       : process.env.REACT_APP_SEARCH + url
   const fetcher = url =>
+    url &&
     fetch(getUrlWithBase(url), {
-      headers: {access_token: keycloak.authenticated ? keycloak.token : ''},
+      headers: {access_token: keycloak.token},
     }).then(r => r.json())
   return (
     <SWRConfig

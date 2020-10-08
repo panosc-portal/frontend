@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion-icons/remix-line": "^2.10.0",
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
     "@react-keycloak/web": "^2.1.4",

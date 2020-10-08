@@ -1,33 +1,39 @@
 import React, {Suspense} from 'react'
 
 import styled from '@emotion/styled'
+import {Input, Label, Select} from '@rebass/forms'
+import css from '@styled-system/css'
 import produce from 'immer'
+import {useForm} from 'react-hook-form'
 import useSWR, {mutate} from 'swr'
 import {v4 as uuid} from 'uuid'
 
 import Spinner from '../App/spinner'
 import useFetch from '../App/useFetch'
-import {Box, Card, Text} from '../Primitives'
+import {Button, Card} from '../Primitives'
 
-const SpawnEnvironment = () => {
+const SpawnEnvironment = ({setFold}) => {
   const {data} = useSWR('/plans')
   const [doFetch] = useFetch()
+  const {register, handleSubmit} = useForm()
 
-  const spawn = async flavour => {
+  const spawn = async formData => {
     const payload = {
-      planId: flavour.id,
-      name: 'test',
-      description: '',
+      planId: parseInt(formData.flavour),
+      name: formData.name,
+      description: formData.description,
     }
     mutate(
       '/account/instances',
       produce(draft => {
+        const indexOfFlavour = data.findIndex(
+          flv => flv.id === parseInt(formData.flavour)
+        )
         draft.push({
           ...payload,
           id: uuid(),
-          plan: {name: flavour.name},
+          plan: {name: data[indexOfFlavour].name},
           state: {status: 'PENDING'},
-          image: {name: flavour.image.name},
         })
       }),
       false
@@ -36,29 +42,41 @@ const SpawnEnvironment = () => {
       '/account/instances',
       await doFetch('/account/instances', 'post', payload)
     )
+    setFold(true)
   }
 
   return (
-    <S.Box>
-      <Suspense fallback={<Spinner />}>
-        {data.map(flavour => (
-          <S.Card onClick={() => spawn(flavour)} key={flavour.id}>
-            <Text>{flavour.name}</Text>
-            <Text>{flavour.image.name}</Text>
-          </S.Card>
-        ))}
-      </Suspense>
-    </S.Box>
+    <S.Card>
+      <form onSubmit={handleSubmit(spawn)}>
+        <Suspense fallback={<Spinner />}>
+          <Label>Name</Label>
+          <Input id="name" name="name" ref={register({required: true})} />
+          <Label>Descritption</Label>
+          <Input
+            id="description"
+            name="description"
+            ref={register({required: true})}
+          />
+          <Label>Flavour</Label>
+          <Select id="flavour" ref={register({required: true})} name="flavour">
+            {data.map(flavour => (
+              <option key={flavour.id} value={flavour.id}>
+                {flavour.name}
+              </option>
+            ))}
+          </Select>
+          <Button type="submit">Spawn</Button>
+        </Suspense>
+      </form>
+    </S.Card>
   )
 }
 
 export default SpawnEnvironment
 
 const S = {}
-S.Box = styled(Box)`
-  display: grid;
-  grid-gap: ${props => props.theme.space[3]}px;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, 64px);
-`
-S.Card = styled(Card)``
+S.Card = styled(Card)(
+  css({
+    bg: 'background',
+  })
+)
