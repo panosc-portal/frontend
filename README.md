@@ -1,5 +1,6 @@
  # Actually working frontend
  - to some extend
+ - please use on widescreen for now. otherwise will look shamefully terrible
  ## local setup
  - `yarn install`
  - `yarn start`
