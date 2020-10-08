@@ -1,4 +1,5 @@
  # Actually working frontend
+ - to some extend
  ## local setup
  - `yarn install`
  - `yarn start`
