@@ -16,4 +16,4 @@ REACT_APP_KEYCLOAK_CLIENT_ID=account
  - coming asap
 
  # note regarding keycloak
- - the hostnames must match with the ones account service gets or the tokens will not be considered valid
+ - keycloak's hostname must match with the one account service gets or the tokens will not be considered valid
