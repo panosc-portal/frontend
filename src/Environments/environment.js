@@ -104,7 +104,7 @@ export default Environment
 const S = {}
 S.Card = styled(Card)(
   css({
-    marginBottom: [3],
+    marginBottom: [4],
   })
 )
 S.Flex = styled(Flex)(

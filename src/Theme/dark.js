@@ -12,7 +12,7 @@ const theme = {
     heading: 'hsl(0, 0%, 100%)',
   },
   fonts: {
-    body: 'system-ui, sans-serif',
+    body: 'Ubuntu, system-ui, sans-serif',
     heading: 'inherit',
     monospace: 'Menlo, monospace',
   },
@@ -28,7 +28,9 @@ const theme = {
   },
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
   sizes: {
-    avatar: 48,
+    icon: 20,
+    nav: 32,
+    image: 270,
   },
   radii: {
     default: 0,
@@ -62,12 +64,16 @@ const theme = {
       borderRadius: 'circle',
     },
     card: {
-      p: 2,
+      p: 3,
       bg: 'middleground',
-      boxShadow: 'card',
     },
     link: {
       color: 'primary',
+      textDecoration: 'none',
+      ':hover,:focus,.active': {
+        color: 'text',
+        textDecoration: 'none',
+      },
     },
     nav: {
       fontSize: 1,
@@ -85,9 +91,12 @@ const theme = {
     primary: {
       fontSize: 2,
       fontWeight: 'bold',
-      color: 'text',
+      color: 'primary',
       bg: 'foreground',
       borderRadius: 'default',
+      ':hover': {
+        color: 'text',
+      },
     },
     outline: {
       variant: 'buttons.primary',
@@ -106,9 +115,6 @@ const theme = {
       fontFamily: 'body',
       fontWeight: 'body',
       lineHeight: 'body',
-    },
-    body: {
-      color: 'text',
     },
   },
 }

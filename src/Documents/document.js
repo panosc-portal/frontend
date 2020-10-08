@@ -33,9 +33,7 @@ const Document = ({document}) =>
             as={RouterLink}
             to={'/documents/' + encodeURIComponent(document.pid)}
           >
-            <Heading>
-              {(document.title + document.title).substring(0, 90)}
-            </Heading>
+            <Heading>{document.title.substring(0, 90)}</Heading>
           </Link>
           <Flex>
             {document.members.map(member => (
