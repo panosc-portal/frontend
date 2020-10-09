@@ -3,11 +3,11 @@
  ## local setup
   - .env file, replace values according to your setup
 ```
-REACT_APP_SEARCH=http://localhost:5000/api
-REACT_APP_API=http://cloud:9080/portal/api/v1
-REACT_APP_KEYCLOAK_URL=http://keycloak:8080/auth
-REACT_APP_KEYCLOAK_REALM=master
-REACT_APP_KEYCLOAK_CLIENT_ID=account
+REACT_APP_SEARCH=http://SEARCHAPI/api
+REACT_APP_API=http://APISERVICE/portal/api/v1
+REACT_APP_KEYCLOAK_URL=http://KEYCLOAK/auth
+REACT_APP_KEYCLOAK_REALM=REALM
+REACT_APP_KEYCLOAK_CLIENT_ID=CLIENTID
 ```
  - `yarn install`
  - `yarn start`

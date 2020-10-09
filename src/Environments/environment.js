@@ -61,15 +61,7 @@ const Environment = ({environment}) => {
         <b>Status </b>
         {environment.state.status === 'ACTIVE' ? (
           <Link
-            href={
-              environment.state.status === 'ACTIVE'
-                ? 'http://' +
-                  environment.hostname +
-                  ':' +
-                  environment.protocols[0].port +
-                  '?token=""'
-                : ''
-            }
+            href={`http://${environment.hostname}:${environment.protocols[0].port}?token=""`}
             target="_blank"
           >
             {environment.state.status}
