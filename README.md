@@ -1,4 +1,6 @@
  # frontend
+ - to some extend
+ - please use on widescreen for now. otherwise will look shamefully terrible
  ## local setup
   - .env file, replace values according to your setup
 ```
