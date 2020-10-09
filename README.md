@@ -1,8 +1,8 @@
  # Frontend
- - Now compatible both with Search API and API Service to some extend. Please feel free to test and provide feedback.
+ - Now compatible both with Search API and API Service to some extent. Please feel free to test and provide feedback.
  - Please use on wider screens for now.
  ## Local setup
-  - .env file, replace values according to your setup
+  - .env file, replace values accordingly to your setup
 ```
 REACT_APP_SEARCH=http://SEARCHAPI/api
 REACT_APP_API=http://APISERVICE/portal/api/v1
