@@ -15,7 +15,6 @@ const Detail = props => (
 )
 
 const Document = ({data}) => {
-  console.log(data)
   return (
     <S.Box>
       <S.Heading>{data.title}</S.Heading>

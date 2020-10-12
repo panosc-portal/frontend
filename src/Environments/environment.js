@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import {
   PlayCircle as Play,
@@ -28,12 +28,24 @@ const Icon = props => (
 )
 const Environment = ({environment}) => {
   const [doFetch] = useFetch()
+  const [generateToken, token] = useFetch()
+  useEffect(() => {
+    const getToken = async () => {
+      await generateToken(`/account/instances/${environment.id}/token`, 'post')
+    }
+
+    environment.state.status === 'ACTIVE' && getToken()
+  }, [generateToken, environment.id, environment.state.status])
   const remove = async () => {
     mutate(
       '/account/instances',
       await doFetch(`/account/instances/${environment.id}`, 'delete')
     )
   }
+  const getLink = () =>
+    environment.image.name === 'jupyter'
+      ? `http://${environment.hostname}:${environment.protocols[0].port}?token=""`
+      : `${process.env.REACT_APP_DESKTOP_WEB}/${environment.id}?token=${token?.token}`
   const action = async type => {
     mutate(
       '/account/instances',
@@ -60,10 +72,7 @@ const Environment = ({environment}) => {
       <Box>
         <b>Status </b>
         {environment.state.status === 'ACTIVE' ? (
-          <Link
-            href={`http://${environment.hostname}:${environment.protocols[0].port}?token=""`}
-            target="_blank"
-          >
+          <Link href={getLink()} target="_blank">
             {environment.state.status}
           </Link>
         ) : (

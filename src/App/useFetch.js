@@ -16,19 +16,17 @@ const useFetch = () => {
           'Content-Type': 'application/json',
           access_token: keycloak.authenticated ? keycloak.token : '',
         },
-        //why send refresh token when not refreshing...
-        credentials: 'omit',
       }
       if (payload) {
         params.body = JSON.stringify(payload)
       }
       try {
         const call = await fetch(process.env.REACT_APP_API + uri, params)
-        if (call.ok) {
+        if (!call.ok) {
+          setError(call.status)
+        } else {
           const data = await call.json()
           setData(data)
-        } else {
-          setError(call.status)
         }
       } catch (e) {
         setError(e)
