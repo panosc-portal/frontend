@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
 
 import {
   PlayCircle as Play,
@@ -28,24 +28,21 @@ const Icon = props => (
 )
 const Environment = ({environment}) => {
   const [doFetch] = useFetch()
-  const [generateToken, token] = useFetch()
-  useEffect(() => {
-    const getToken = async () => {
-      await generateToken(`/account/instances/${environment.id}/token`, 'post')
-    }
+  const [doFetchToken, data] = useFetch()
 
+  const getToken = useCallback(async () => {
+    await doFetchToken(`/account/instances/${environment.id}/token`, 'post')
+  }, [doFetchToken, environment.id])
+
+  useEffect(() => {
     environment.state.status === 'ACTIVE' && getToken()
-  }, [generateToken, environment.id, environment.state.status])
-  const remove = async () => {
-    mutate(
-      '/account/instances',
-      await doFetch(`/account/instances/${environment.id}`, 'delete')
-    )
-  }
-  const getLink = () =>
+  }, [getToken, environment.state.status])
+
+  const makeLink = () =>
     environment.image.name === 'jupyter'
       ? `http://${environment.hostname}:${environment.protocols[0].port}?token=""`
-      : `${process.env.REACT_APP_DESKTOP_WEB}/${environment.id}?token=${token?.token}`
+      : `${process.env.REACT_APP_DESKTOP_WEB}/${environment.id}?token=${data?.token}`
+
   const action = async type => {
     mutate(
       '/account/instances',
@@ -62,6 +59,14 @@ const Environment = ({environment}) => {
       })
     )
   }
+
+  const remove = async () => {
+    mutate(
+      '/account/instances',
+      await doFetch(`/account/instances/${environment.id}`, 'delete')
+    )
+  }
+
   return (
     <S.Card>
       <Heading>{environment.name}</Heading>
@@ -72,7 +77,7 @@ const Environment = ({environment}) => {
       <Box>
         <b>Status </b>
         {environment.state.status === 'ACTIVE' ? (
-          <Link href={getLink()} target="_blank">
+          <Link href={makeLink()} target="_blank">
             {environment.state.status}
           </Link>
         ) : (
