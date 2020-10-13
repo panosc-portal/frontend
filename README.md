@@ -10,6 +10,7 @@ REACT_APP_DESKTOP_WEB=http://DESKTOPSERVICEWEBTESTCLIENT/instances
 REACT_APP_KEYCLOAK_URL=http://KEYCLOAK/auth
 REACT_APP_KEYCLOAK_REALM=REALM
 REACT_APP_KEYCLOAK_CLIENT_ID=CLIENTID
+REACT_APP_TOKEN_VALID_DURATION_S=10
 ```
   - Keycloak's hostname must match with the one account service gets or the tokens will not be considered valid.
  - `yarn install`

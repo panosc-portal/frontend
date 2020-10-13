@@ -29,9 +29,13 @@ const Icon = props => (
 const Environment = ({environment}) => {
   const [doFetch] = useFetch()
 
-  const {data} = useSWR(`/account/instances/${environment.id}/token`, {
-    refreshInterval: process.env.REACT_APP_TOKEN_VALID_DURATION_S * 1000,
-  })
+  const {data} = useSWR(
+    environment.state.status === 'ACTIVE' &&
+      `/account/instances/${environment.id}/token`,
+    {
+      refreshInterval: process.env.REACT_APP_TOKEN_VALID_DURATION_S * 1000,
+    }
+  )
 
   const makeLink = () =>
     environment.image.name === 'jupyter'
