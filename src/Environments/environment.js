@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react'
+import React from 'react'
 
 import {
   PlayCircle as Play,
@@ -9,7 +9,7 @@ import {
 import styled from '@emotion/styled'
 import css from '@styled-system/css'
 import produce from 'immer'
-import {mutate} from 'swr'
+import useSWR, {mutate} from 'swr'
 
 import useFetch from '../App/useFetch'
 import {Flex, Text, Link, Box, Card, Heading} from '../Primitives'
@@ -28,15 +28,10 @@ const Icon = props => (
 )
 const Environment = ({environment}) => {
   const [doFetch] = useFetch()
-  const [doFetchToken, data] = useFetch()
 
-  const getToken = useCallback(async () => {
-    await doFetchToken(`/account/instances/${environment.id}/token`, 'post')
-  }, [doFetchToken, environment.id])
-
-  useEffect(() => {
-    environment.state.status === 'ACTIVE' && getToken()
-  }, [getToken, environment.state.status])
+  const {data} = useSWR(`/account/instances/${environment.id}/token`, {
+    refreshInterval: process.env.REACT_APP_TOKEN_VALID_DURATION_S * 1000,
+  })
 
   const makeLink = () =>
     environment.image.name === 'jupyter'
