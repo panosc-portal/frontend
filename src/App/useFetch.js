@@ -14,7 +14,7 @@ const useFetch = () => {
         method,
         headers: {
           'Content-Type': 'application/json',
-          access_token: keycloak.authenticated ? keycloak.token : '',
+          access_token: keycloak?.token ?? '',
         },
       }
       if (payload) {
@@ -32,7 +32,7 @@ const useFetch = () => {
         setError(e)
       }
     },
-    [keycloak.token, keycloak.authenticated]
+    [keycloak.token]
   )
   return [doFetch, data]
 }

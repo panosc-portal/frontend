@@ -14,7 +14,10 @@ import {ThemeModeProvider} from './Theme/themeModeContext'
 ReactDOM.render(
   <React.StrictMode>
     <ErrorBoundary>
-      <KeycloakProvider keycloak={keycloak} initConfig={{pkceMethod: 'S256'}}>
+      <KeycloakProvider
+        keycloak={keycloak}
+        initConfig={{pkceMethod: 'S256', onLoad: 'check-sso'}}
+      >
         <SWRProvider>
           <ThemeModeProvider>
             <BrowserRouter>
