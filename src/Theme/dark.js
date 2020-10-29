@@ -1,3 +1,4 @@
+const breakpoints = ['750', '1550']
 const theme = {
   colors: {
     text: 'hsl(0, 0%, 80%)',
@@ -116,6 +117,11 @@ const theme = {
       fontWeight: 'body',
       lineHeight: 'body',
     },
+  },
+  breakpoints,
+  mediaQueries: {
+    medium: `@media (min-width: ${breakpoints[0]})`,
+    large: `@media (min-width: ${breakpoints[1]})`,
   },
 }
 export default theme

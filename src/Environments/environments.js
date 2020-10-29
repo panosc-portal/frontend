@@ -19,16 +19,14 @@ const Environments = () => {
         <Card>
           Sorry you need to be authenticated to use the cloud service :-(
         </Card>
-      ) : (
+      ) : data.length ? (
         <Suspense fallback={<Spinner />}>
-          {data.map((environment, index) => (
-            <Environment
-              key={environment.id}
-              index={index}
-              environment={environment}
-            />
+          {data.map(environment => (
+            <Environment key={environment.id} environment={environment} />
           ))}
         </Suspense>
+      ) : (
+        <Card>No running environments.</Card>
       )}
     </Box>
   )
