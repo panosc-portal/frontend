@@ -1,8 +1,11 @@
-import React, {Suspense, useCallback, useState} from 'react'
+import React, {useRef, Suspense, useCallback, useState, useEffect} from 'react'
 
 import styled from '@emotion/styled'
 import css from '@styled-system/css'
-import {Virtuoso} from 'react-virtuoso'
+import debounce from 'lodash.debounce'
+import AutoSizer from 'react-virtualized-auto-sizer'
+import {FixedSizeList} from 'react-window'
+import InfiniteLoader from 'react-window-infinite-loader'
 import {useSWRInfinite} from 'swr'
 
 import ErrorBoundary from '../App/errorBoundary'
@@ -28,10 +31,16 @@ const DocumentsPage = () => {
 
   //took some of these from https://swr.vercel.app/examples
   const documents = data ? [].concat(...data) : []
+
   const isLoadingInitialData = !data && !error
   const isLoadingMore =
     isLoadingInitialData ||
     (size > 0 && data && typeof data[size - 1] === 'undefined')
+  const hasMore = !!data[data.length - 1].length
+  const isItemLoaded = index => !hasMore || index < documents.length
+
+  const itemCount = () => (hasMore ? documents.length + 1 : documents.length)
+
   const loadMore = useCallback(
     () =>
       isLoadingMore
@@ -40,31 +49,84 @@ const DocumentsPage = () => {
     [data, setSize, isLoadingMore]
   )
 
+  const Row = ({index, style}) => (
+    <Document
+      style={style}
+      document={isItemLoaded(index) && documents[index]}
+    />
+  )
+  const breakpoints = () => (window.innerWidth < 1550 ? 552 : 300)
+
+  const [scrollPosition, setScrollPosition] = useState(0)
+  const [itemSize, setItemSize] = useState(breakpoints())
+  const scrollIndex = useRef(0)
+
+  useEffect(() => {
+    const handleResize = () => {
+      const getItemSize = () => breakpoints()
+      const newSize = getItemSize()
+      // const offset = scrollIndex.current * newSize
+      setItemSize(newSize)
+      // setScrollPosition(offset)
+    }
+    window.addEventListener('resize', debounce(handleResize, 500))
+    return () =>
+      window.removeEventListener('resize', debounce(handleResize, 500))
+  }, [])
+
   return (
     <S.Box>
-      <ErrorBoundary>
-        <Suspense fallback={<Spinner />}>
-          <Search setQueryObject={setQueryObject} />
-        </Suspense>
-      </ErrorBoundary>
+      <S.Hidden>
+        <ErrorBoundary>
+          <Suspense fallback={<Spinner />}>
+            <Search setQueryObject={setQueryObject} />
+          </Suspense>
+        </ErrorBoundary>
+      </S.Hidden>
       <S.Wrapper>
         <Heading>Documents</Heading>
         <ErrorBoundary>
           <Suspense fallback={<Spinner />}>
-            {/*Virtuoso supports dynamic height of items in the list,
-		  performance wise it's inferior to react-window :-/ */}
-            <Virtuoso
-              totalCount={documents.length}
-              item={index => (
-                <Document
-                  key={documents[index].pid}
-                  document={documents[index]}
-                />
-              )}
-              overscan={3000}
-              endReached={() => loadMore()}
-              footer={() => isLoadingMore && <Spinner />}
-            />
+            <S.MaxHeight>
+              <AutoSizer>
+                {({height, width}) => (
+                  <InfiniteLoader
+                    isItemLoaded={isItemLoaded}
+                    itemCount={itemCount()}
+                    loadMoreItems={loadMore}
+                  >
+                    {({onItemsRendered, ref}) => {
+                      return (
+                        <FixedSizeList
+                          height={height}
+                          width={width}
+                          itemCount={itemCount()}
+                          onItemsRendered={({
+                            overscanStartIndex,
+                            overscanStopIndex,
+                            visibleStartIndex,
+                            visibleStopIndex,
+                          }) => {
+                            onItemsRendered({
+                              overscanStartIndex,
+                              overscanStopIndex,
+                              visibleStartIndex,
+                              visibleStopIndex,
+                            })
+                            scrollIndex.current = visibleStartIndex
+                          }}
+                          ref={ref}
+                          itemSize={itemSize}
+                          initialScrollOffset={scrollPosition}
+                        >
+                          {Row}
+                        </FixedSizeList>
+                      )
+                    }}
+                  </InfiniteLoader>
+                )}
+              </AutoSizer>
+            </S.MaxHeight>
           </Suspense>
         </ErrorBoundary>
       </S.Wrapper>
@@ -74,22 +136,37 @@ const DocumentsPage = () => {
 export default DocumentsPage
 
 const S = {}
-S.HeightBox = styled(Box)(
+S.MaxHeight = styled(Box)(
   css({
     height: '100%',
   })
 )
-S.Box = styled(S.HeightBox)(
+S.Hidden = styled(Box)(
   css({
+    '@media (max-width: 1550px)': {
+      display: 'none',
+    },
+  })
+)
+S.Box = styled(Box)(
+  css({
+    height: '100%',
     display: 'grid',
     gridGap: [4],
     gridTemplateColumns: '256px 1fr',
     gridTemplateRows: 'min-content 1fr',
+
+    '@media (max-width: 1550px)': {
+      gridTemplateColumns: '1fr',
+    },
   })
 )
 S.Wrapper = styled(Box)(
   css({
     gridColumn: '2/3',
     gridRow: '1/3',
+    '@media (max-width: 1550px)': {
+      gridColumn: '1/2',
+    },
   })
 )

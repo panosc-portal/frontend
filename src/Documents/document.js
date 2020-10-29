@@ -22,11 +22,12 @@ const Detail = ({title, data}) => (
     <Text>{data}</Text>
   </S.Detail>
 )
-const Document = ({document}) =>
+
+const Document = ({document, style}) =>
   !document ? (
     <Spinner />
   ) : (
-    <Box key={document.pid}>
+    <Box key={document.pid} style={style}>
       <S.Layout>
         <S.Flex>
           <Link
@@ -35,21 +36,26 @@ const Document = ({document}) =>
           >
             <Heading>{document.title.substring(0, 90)}</Heading>
           </Link>
+
           <Flex>
             {document.members.map(member => (
               <Member key={member.id} data={member} />
             ))}
           </Flex>
-          <Text>{document.summary.substring(0, 350)}...</Text>
+
+          <Text>{document.summary.substring(0, 150)}...</Text>
+
           <Link href={'http://doi.org/' + document.doi}>
             {document.citation}
           </Link>
+
           <Flex>
             {document.keywords.map((keyword, index) => (
               <S.Tag key={index}>{keyword}</S.Tag>
             ))}
           </Flex>
         </S.Flex>
+
         <S.Details>
           <Detail title="Type" data={document.type} />
           <Detail
@@ -62,11 +68,12 @@ const Document = ({document}) =>
           <Detail title="Ended on" data={momented(document.endDate)} />
           <Detail title="Released on" data={momented(document.releaseDate)} />
         </S.Details>
+
         <Image src={document.img} />
       </S.Layout>
     </Box>
   )
-export default React.memo(Document)
+export default Document
 
 const S = {}
 S.PreLayout = styled(Box)(
@@ -74,10 +81,17 @@ S.PreLayout = styled(Box)(
     display: 'grid',
     gridGap: [1],
     marginBottom: [4],
+    '@media (max-width: 1550px)': {
+      height: '500px',
+    },
   })
 )
 S.Layout = styled(S.PreLayout)`
   grid-template-columns: 1fr max-content ${({theme}) => theme.sizes.image}px;
+  @media (max-width: 1550px) {
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: 220px 300px;
+  }
 `
 S.Flex = styled(Flex)(
   css({
@@ -85,12 +99,14 @@ S.Flex = styled(Flex)(
     justifyContent: 'space-between',
     bg: 'middleground',
     p: 3,
+    '@media (max-width: 1550px)': {gridRow: '2/3', gridColumn: '1/3'},
   })
 )
 S.Details = styled(S.Flex)(
   css({
     bg: 'background',
     p: 0,
+    '@media (max-width: 1550px)': {gridRow: '1/2', gridColumn: '2/3'},
   })
 )
 
@@ -112,6 +128,11 @@ S.Detail = styled(Flex)(
     flex: 'auto',
     '&:last-of-type': {
       marginBottom: 0,
+    },
+    '@media (max-width: 1550px)': {
+      '&:last-of-type': {
+        marginBottom: 0,
+      },
     },
   })
 )

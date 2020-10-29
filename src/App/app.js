@@ -42,11 +42,13 @@ const App = () => {
               <Route path="/dashboard" component={Dashboard} />
             </Switch>
           </Suspense>
-          <ErrorBoundary>
-            <Suspense fallback={<Spinner />}>
-              <Environments />
-            </Suspense>
-          </ErrorBoundary>
+          <S.Hidden>
+            <ErrorBoundary>
+              <Suspense fallback={<Spinner />}>
+                <Environments />
+              </Suspense>
+            </ErrorBoundary>
+          </S.Hidden>
         </S.Main>
       )}
     </ThemeProvider>
@@ -57,12 +59,22 @@ export default App
 
 const S = {}
 
+S.Hidden = styled(Box)(
+  css({
+    '@media (max-width: 1550px)': {
+      display: 'none',
+    },
+  })
+)
 S.Box = styled(Box)(
   css({
     padding: [4],
     gridTemplateColumns: '1fr 256px',
     display: 'grid',
     gridGap: [4],
+    '@media (max-width: 1550px)': {
+      gridTemplateColumns: '1fr',
+    },
   })
 )
 S.Main = styled(S.Box)`
