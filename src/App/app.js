@@ -72,10 +72,8 @@ S.Box = styled(Box)(
     gridTemplateColumns: '1fr 256px',
     display: 'grid',
     gridGap: [4],
-    '@media (max-width: 1550px)': {
-      gridTemplateColumns: '1fr',
-    },
-  })
+  }
+)
 )
 S.Main = styled(S.Box)`
   height: calc(100% - ${props => props.theme.sizes.nav}px);
