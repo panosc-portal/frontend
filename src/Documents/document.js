@@ -118,8 +118,7 @@ S.Tag = styled(Box)(
     marginLeft: 0,
   })
 )
-S.Detail = styled(Flex)(
-  css({
+S.Detail = styled(Flex).attrs({
     bg: 'middleground',
     p: 1,
     flexDirection: 'column',
@@ -134,5 +133,5 @@ S.Detail = styled(Flex)(
         marginBottom: 0,
       },
     },
-  })
+  }
 )
