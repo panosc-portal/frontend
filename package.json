@@ -4,8 +4,6 @@
   "private": true,
   "dependencies": {
     "@emotion-icons/remix-line": "^2.10.0",
-    "@emotion/core": "^10.0.35",
-    "@emotion/styled": "^10.0.27",
     "@react-keycloak/web": "^2.1.4",
     "@rebass/forms": "^4.0.6",
     "@rebass/preset": "^4.0.5",
@@ -14,7 +12,6 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "emotion-theming": "^10.0.27",
     "immer": "^7.0.8",
     "jwt-decode": "^3.0.0-beta.2",
     "keycloak-js": "11.0.2",
@@ -36,6 +33,7 @@
     "react-window": "^1.8.5",
     "react-window-infinite-loader": "^1.0.5",
     "rebass": "^4.0.7",
+    "styled-components": "^5.2.1",
     "swr": "^0.3.0",
     "zustand": "^3.0.3"
   },
