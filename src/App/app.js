@@ -1,10 +1,9 @@
 import React, {Suspense, useContext} from 'react'
 
-import styled from '@emotion/styled'
 import {useKeycloak} from '@react-keycloak/web'
-import css from '@styled-system/css'
-import {ThemeProvider} from 'emotion-theming'
+// import {ThemeProvider} from 'emotion-theming'
 import {Route, Switch} from 'react-router-dom'
+import styled, {ThemeProvider} from 'styled-components'
 
 import ErrorBoundary from '../App/errorBoundary'
 import Dashboard from '../Dashboard/dashboard'
@@ -59,22 +58,17 @@ export default App
 
 const S = {}
 
-S.Hidden = styled(Box)(
-  css({
+S.Hidden = styled(Box).attrs({
+  sx: {
     '@media (max-width: 1550px)': {
       display: 'none',
     },
-  })
-)
-S.Box = styled(Box)(
-  css({
-    padding: [4],
-    gridTemplateColumns: '1fr 256px',
-    display: 'grid',
-    gridGap: [4],
-  }
-)
-)
+  },
+})``
+S.Box = styled(Box).attrs({
+  padding: [4],
+  sx: {gridTemplateColumns: '1fr 256px', display: 'grid', gridGap: [4]},
+})``
 S.Main = styled(S.Box)`
   height: calc(100% - ${props => props.theme.sizes.nav}px);
 `

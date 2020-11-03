@@ -1,10 +1,9 @@
 import React, {Suspense} from 'react'
 
-import styled from '@emotion/styled'
 import {Input, Label, Select} from '@rebass/forms'
-import css from '@styled-system/css'
 import produce from 'immer'
 import {useForm} from 'react-hook-form'
+import styled from 'styled-components'
 import useSWR, {mutate} from 'swr'
 import {v4 as uuid} from 'uuid'
 
@@ -75,8 +74,6 @@ const SpawnEnvironment = ({setFold}) => {
 export default SpawnEnvironment
 
 const S = {}
-S.Card = styled(Card)(
-  css({
-    bg: 'background',
-  })
-)
+S.Card = styled(Card).attrs({
+  bg: 'background',
+})``

@@ -1,1 +1,1 @@
-export {Flex as default} from 'rebass'
+export {Flex as default} from 'rebass/styled-components'

@@ -1,8 +1,6 @@
 import React, {Suspense, useState} from 'react'
 
-import styled from '@emotion/styled'
 import {useKeycloak} from '@react-keycloak/web'
-import css from '@styled-system/css'
 
 import ErrorBoundary from '../App/errorBoundary'
 import Spinner from '../App/spinner'
@@ -13,7 +11,7 @@ const Dataset = ({dataset}) => {
   const {keycloak} = useKeycloak()
   const [fold, setFold] = useState(true)
   return (
-    <S.Card key={dataset.pid}>
+    <Card key={dataset.pid}>
       <Heading onClick={() => keycloak.authenticated && setFold(!fold)}>
         {dataset.title}
       </Heading>
@@ -27,16 +25,8 @@ const Dataset = ({dataset}) => {
           </Suspense>
         </ErrorBoundary>
       )}
-    </S.Card>
+    </Card>
   )
 }
 
 export default Dataset
-
-const S = {}
-S.Card = styled(Card)(
-  css({
-    marginBottom: [4],
-    '&:last-of-type': {marginBottom: 0},
-  })
-)

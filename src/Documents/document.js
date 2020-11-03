@@ -1,8 +1,7 @@
 import React from 'react'
 
-import styled from '@emotion/styled'
-import css from '@styled-system/css'
 import {Link as RouterLink} from 'react-router-dom'
+import styled from 'styled-components'
 
 import {momented} from '../App/helpers'
 import Spinner from '../App/spinner'
@@ -76,62 +75,43 @@ const Document = ({document, style}) =>
 export default Document
 
 const S = {}
-S.PreLayout = styled(Box)(
-  css({
-    display: 'grid',
-    gridGap: [1],
-    marginBottom: [4],
-    '@media (max-width: 1550px)': {
-      height: '500px',
-    },
-  })
-)
-S.Layout = styled(S.PreLayout)`
+S.Layout = styled(Box).attrs({
+  display: 'grid',
+  marginBottom: [4],
+  sx: {gridGap: [1]},
+})`
   grid-template-columns: 1fr max-content ${({theme}) => theme.sizes.image}px;
   @media (max-width: 1550px) {
     grid-template-columns: 220px 1fr;
     grid-template-rows: 220px 300px;
   }
 `
-S.Flex = styled(Flex)(
-  css({
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    bg: 'middleground',
-    p: 3,
-    '@media (max-width: 1550px)': {gridRow: '2/3', gridColumn: '1/3'},
-  })
-)
-S.Details = styled(S.Flex)(
-  css({
-    bg: 'background',
-    p: 0,
-    '@media (max-width: 1550px)': {gridRow: '1/2', gridColumn: '2/3'},
-  })
-)
+S.Flex = styled(Flex).attrs({
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  bg: 'middleground',
+  p: 3,
+})``
+S.Details = styled(S.Flex).attrs({
+  bg: 'background',
+  p: 0,
+})``
 
-S.Tag = styled(Box)(
-  css({
-    bg: 'foreground',
-    p: 1,
-    m: 1,
-    marginLeft: 0,
-  })
-)
+S.Tag = styled(Box).attrs({
+  bg: 'foreground',
+  p: 1,
+  m: 1,
+  marginLeft: 0,
+})``
 S.Detail = styled(Flex).attrs({
-    bg: 'middleground',
-    p: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    marginBottom: 1,
-    flex: 'auto',
-    '&:last-of-type': {
-      marginBottom: 0,
-    },
-    '@media (max-width: 1550px)': {
-      '&:last-of-type': {
-        marginBottom: 0,
-      },
-    },
+  bg: 'middleground',
+  p: 1,
+  flexDirection: 'column',
+  justifyContent: 'space-evenly',
+  marginBottom: 1,
+  flex: 'auto',
+})`
+  &:last-of-type {
+    margin-bottom: 0;
   }
-)
+`
