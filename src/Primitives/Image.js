@@ -1,1 +1,1 @@
-export {Image as default} from 'rebass'
+export {Image as default} from 'rebass/styled-components'

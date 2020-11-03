@@ -1,4 +1,3 @@
-const breakpoints = ['750', '1550']
 const theme = {
   colors: {
     text: 'hsl(0, 0%, 80%)',
@@ -67,6 +66,8 @@ const theme = {
     card: {
       p: 3,
       bg: 'middleground',
+      mb: 4,
+      '&:last-of-type': {mb: 0},
     },
     link: {
       color: 'primary',
@@ -118,10 +119,6 @@ const theme = {
       lineHeight: 'body',
     },
   },
-  breakpoints,
-  mediaQueries: {
-    medium: `@media (min-width: ${breakpoints[0]})`,
-    large: `@media (min-width: ${breakpoints[1]})`,
-  },
+  breakpoints: ['750', '1550'],
 }
 export default theme

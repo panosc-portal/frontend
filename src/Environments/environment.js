@@ -6,9 +6,8 @@ import {
   Refresh as Restart,
   ShutDown,
 } from '@emotion-icons/remix-line'
-import styled from '@emotion/styled'
-import css from '@styled-system/css'
 import produce from 'immer'
+import styled from 'styled-components'
 import useSWR, {mutate} from 'swr'
 
 import useFetch from '../App/useFetch'
@@ -67,7 +66,7 @@ const Environment = ({environment}) => {
   }
 
   return (
-    <S.Card>
+    <Card>
       <Heading>{environment.name}</Heading>
       <Box>
         <Text fontWeight="bold">Description</Text>
@@ -100,22 +99,15 @@ const Environment = ({environment}) => {
         <Icon icon={Restart} title="Restart" action={() => action('REBOOT')} />
         <Icon icon={DeleteBin2} title="Remove" action={() => remove()} />
       </S.Flex>
-    </S.Card>
+    </Card>
   )
 }
 
 export default Environment
 
 const S = {}
-S.Card = styled(Card)(
-  css({
-    marginBottom: [4],
-  })
-)
-S.Flex = styled(Flex)(
-  css({
-    marginTop: [3],
-    justifyContent: 'space-around',
-    width: '100%',
-  })
-)
+S.Flex = styled(Flex).attrs({
+  marginTop: [3],
+  justifyContent: 'space-around',
+  width: '100%',
+})``

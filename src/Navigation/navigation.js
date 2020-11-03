@@ -1,8 +1,7 @@
 import React from 'react'
 
-import styled from '@emotion/styled'
-import css from '@styled-system/css'
 import {Link as RouterLink} from 'react-router-dom'
+import styled from 'styled-components'
 
 import {Flex, Link, Box} from '../Primitives'
 import ToggleThemeButton from '../Theme/toggleThemeButton'
@@ -28,9 +27,7 @@ export default Navigation
 
 const S = {}
 
-S.Flex = styled(Flex)(
-  css({
-    bg: 'middleground',
-    height: 'nav',
-  })
-)
+S.Flex = styled(Flex).attrs({
+  bg: 'middleground',
+  height: 'nav',
+})``

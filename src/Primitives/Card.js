@@ -1,1 +1,1 @@
-export {Card as default} from 'rebass'
+export {Card as default} from 'rebass/styled-components'

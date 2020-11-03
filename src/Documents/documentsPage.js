@@ -1,11 +1,10 @@
 import React, {useRef, Suspense, useCallback, useState, useEffect} from 'react'
 
-import styled from '@emotion/styled'
-import css from '@styled-system/css'
 import debounce from 'lodash.debounce'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import {FixedSizeList} from 'react-window'
 import InfiniteLoader from 'react-window-infinite-loader'
+import styled from 'styled-components'
 import {useSWRInfinite} from 'swr'
 
 import ErrorBoundary from '../App/errorBoundary'
@@ -77,6 +76,7 @@ const DocumentsPage = () => {
   return (
     <S.Box>
       <S.Hidden>
+        <Heading>Search</Heading>
         <ErrorBoundary>
           <Suspense fallback={<Spinner />}>
             <Search setQueryObject={setQueryObject} />
@@ -136,20 +136,18 @@ const DocumentsPage = () => {
 export default DocumentsPage
 
 const S = {}
-S.MaxHeight = styled(Box)(
-  css({
-    height: '100%',
-  })
-)
-S.Hidden = styled(Box)(
-  css({
+S.MaxHeight = styled(Box).attrs({
+  height: '100%',
+})``
+S.Hidden = styled(Box).attrs({
+  sx: {
     '@media (max-width: 1550px)': {
       display: 'none',
     },
-  })
-)
-S.Box = styled(Box)(
-  css({
+  },
+})``
+S.Box = styled(Box).attrs({
+  sx: {
     height: '100%',
     display: 'grid',
     gridGap: [4],
@@ -159,14 +157,14 @@ S.Box = styled(Box)(
     '@media (max-width: 1550px)': {
       gridTemplateColumns: '1fr',
     },
-  })
-)
-S.Wrapper = styled(Box)(
-  css({
+  },
+})``
+S.Wrapper = styled(Box).attrs({
+  sx: {
     gridColumn: '2/3',
     gridRow: '1/3',
     '@media (max-width: 1550px)': {
       gridColumn: '1/2',
     },
-  })
-)
+  },
+})``

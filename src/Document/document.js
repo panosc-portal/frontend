@@ -1,7 +1,6 @@
 import React from 'react'
 
-import styled from '@emotion/styled'
-import css from '@styled-system/css'
+import styled from 'styled-components'
 
 import Datasets from '../Datasets/datasets'
 import {Box, Card, Heading, Image, Link, Text, Flex} from '../Primitives'
@@ -17,7 +16,7 @@ const Detail = props => (
 const Document = ({data}) => {
   return (
     <S.Box>
-      <S.Heading>{data.title}</S.Heading>
+      <Heading>{data.title}</Heading>
       <S.LeftFlex>
         <Card m={0}>
           <Text fontWeight="bold">Description</Text>
@@ -33,7 +32,7 @@ const Document = ({data}) => {
             {data.keywords.map(keyword => keyword + ', ')}
           </Detail>
           <Detail caption="Type">{data.type}</Detail>
-          <Detail caption="Author">{data.members[0].person.fullName}</Detail>
+          <Detail caption="Author">{data.members[0]?.person.fullName}</Detail>
           <Detail caption="Other">Stuff</Detail>
         </Details>
       </S.LeftFlex>
@@ -53,45 +52,38 @@ const Document = ({data}) => {
 export default Document
 
 const S = {}
-S.Box = styled(Box)(
-  css({
+S.Box = styled(Box).attrs({
+  sx: {
     display: 'grid',
     columnGap: [4],
     gridTemplateColumns: '1fr 256px ',
     gridTemplateRows: 'min-content 1fr',
-  })
-)
-S.LeftFlex = styled(Flex)(
-  css({
+  },
+})``
+S.LeftFlex = styled(Flex).attrs({
+  sx: {
     flexDirection: 'column',
     gap: [4],
     gridColumn: '1/2',
-  })
-)
-S.RightFlex = styled(Flex)(
-  css({
+  },
+})``
+S.RightFlex = styled(Flex).attrs({
+  sx: {
     flexDirection: 'column',
     gap: [4],
     gridColumn: '2/3',
     gridRow: '1/-1',
-  })
-)
-S.Heading = styled(Heading)(
-  css({
-    gridColumn: '1/2',
-  })
-)
+  },
+})``
 S.Image = styled(Image)`
   display: block;
 `
-S.Card = styled(Card)(
-  css({
-    marginBottom: 0,
-  })
-)
-S.Details = styled(Box)(css({}))
-S.Detail = styled(Card)(
-  css({
+S.Card = styled(Card).attrs({
+  marginBottom: 0,
+})``
+S.Details = styled(Box)``
+S.Detail = styled(Card).attrs({
+  sx: {
     display: 'grid',
     gridTemplateColumns: '25% 1fr',
     gridGap: [1],
@@ -99,12 +91,10 @@ S.Detail = styled(Card)(
     m: 0,
     p: 0,
     my: [1],
-  })
-)
-S.Text = styled(Text)(
-  css({
-    bg: 'middleground',
-    p: [2],
-    py: [3],
-  })
-)
+  },
+})``
+S.Text = styled(Text).attrs({
+  bg: 'middleground',
+  p: [2],
+  py: [3],
+})``

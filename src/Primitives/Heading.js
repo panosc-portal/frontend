@@ -1,1 +1,1 @@
-export {Heading as default} from 'rebass'
+export {Heading as default} from 'rebass/styled-components'

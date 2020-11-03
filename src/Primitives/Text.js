@@ -1,1 +1,1 @@
-export {Text as default} from 'rebass'
+export {Text as default} from 'rebass/styled-components'

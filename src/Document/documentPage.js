@@ -1,7 +1,7 @@
 import React, {Suspense} from 'react'
 
-import styled from '@emotion/styled'
 import css from '@styled-system/css'
+import styled from 'styled-components'
 import useSWR from 'swr'
 
 import ErrorBoundary from '../App/errorBoundary'
