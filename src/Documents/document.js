@@ -81,7 +81,7 @@ S.Layout = styled(Box).attrs({
   sx: {gridGap: [1]},
 })`
   grid-template-columns: 1fr max-content ${({theme}) => theme.sizes.image}px;
-  @media (max-width: 1550px) {
+  @media (max-width: ${({theme}) => theme.breakpoints[2]}) {
     grid-template-columns: 220px 1fr;
     grid-template-rows: 220px 300px;
   }
