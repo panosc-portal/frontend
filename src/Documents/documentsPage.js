@@ -65,9 +65,9 @@ const DocumentsPage = () => {
   const theme = useContext(ThemeContext)
   const handleBreakpoints = useCallback(
     () =>
-      window.innerWidth < theme.breakpoints[0]
+      window.innerWidth < parseInt(theme.breakpoints[0])
         ? 800
-        : window.innerWidth < theme.breakpoints[1]
+        : window.innerWidth < parseInt(theme.breakpoints[1])
         ? 600
         : 300,
     [theme.breakpoints]
@@ -85,6 +85,7 @@ const DocumentsPage = () => {
         setItemSize(newSize)
         itemSize !== newSize &&
           infiniteLoaderRef.current._listRef.scrollToItem(targetIndex)
+        console.log(window.innerWidth)
       }
       handleScrollOffset()
     }
@@ -157,13 +158,11 @@ const S = {}
 S.MaxHeight = styled(Box).attrs({
   height: '100%',
 })``
-S.Hidden = styled(Box).attrs({
-  sx: {
-    '@media (max-width: 1200px)': {
-      display: 'none',
-    },
-  },
-})``
+S.Hidden = styled(Box).attrs({})`
+  @media (max-width: ${({theme}) => theme.breakpoints[2]}) {
+    display: none;
+  }
+`
 S.Box = styled(Box).attrs({
   sx: {
     height: '100%',
@@ -171,18 +170,19 @@ S.Box = styled(Box).attrs({
     gridGap: [4],
     gridTemplateColumns: '256px 1fr',
     gridTemplateRows: 'min-content 1fr',
-
-    '@media (max-width: 1200px)': {
-      gridTemplateColumns: '1fr',
-    },
   },
-})``
+})`
+  @media screen and (max-width: ${({theme}) => theme.breakpoints[2]}) {
+    grid-template-columns: 1fr;
+  }
+`
 S.Wrapper = styled(Box).attrs({
   sx: {
     gridColumn: '2/3',
     gridRow: '1/3',
-    '@media (max-width: 1200px)': {
-      gridColumn: '1/2',
-    },
   },
-})``
+})`
+  @media (max-width: ${({theme}) => theme.breakpoints[2]}) {
+    grid-column: 1/2;
+  }
+`
