@@ -1,7 +1,15 @@
-import React, {useRef, Suspense, useCallback, useState, useEffect} from 'react'
+import React, {
+  useRef,
+  Suspense,
+  useCallback,
+  useState,
+  useLayoutEffect,
+  useContext,
+} from 'react'
 
 import debounce from 'lodash.debounce'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import {ThemeContext} from 'styled-components'
 import {FixedSizeList} from 'react-window'
 import InfiniteLoader from 'react-window-infinite-loader'
 import styled from 'styled-components'
@@ -54,31 +62,36 @@ const DocumentsPage = () => {
       document={isItemLoaded(index) && documents[index]}
     />
   )
-  const breakpoints = () => (window.innerWidth < 1550 ? 552 : 300)
+  const theme = useContext(ThemeContext)
+  const handleBreakpoints = useCallback(
+    () =>
+      window.innerWidth < theme.breakpoints[0]
+        ? 800
+        : window.innerWidth < theme.breakpoints[1]
+        ? 600
+        : 300,
+    [theme.breakpoints]
+  )
 
-  const [itemSize, setItemSize] = useState(breakpoints())
-  const [offsetIndex, setOffsetIndex] = useState()
+  const [itemSize, setItemSize] = useState(handleBreakpoints())
+  const offsetRef = useRef()
+  const infiniteLoaderRef = useRef()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleResize = () => {
-      const resized = breakpoints()
-      setItemSize(resized)
+      const newSize = handleBreakpoints()
       const handleScrollOffset = () => {
-        /**
-         * this is the problem
-         * setting new item height triggers a rerender
-         * I struggle to keep track of the scroll position due to those rerenders
-         * should scroll to roughly match the preresized view
-         * ideally using this: https://codesandbox.io/s/github/bvaughn/react-window/tree/master/website/sandboxes/scrolling-to-a-list-item?file=/index.js
-         * that's the ref issue
-         * or with something like initialScrollOffset = offsetIndex*resized
-         * */
+        const targetIndex = offsetRef.current
+        setItemSize(newSize)
+        itemSize !== newSize &&
+          infiniteLoaderRef.current._listRef.scrollToItem(targetIndex)
       }
+      handleScrollOffset()
     }
     window.addEventListener('resize', debounce(handleResize, 500))
     return () =>
       window.removeEventListener('resize', debounce(handleResize, 500))
-  }, [])
+  }, [handleBreakpoints, itemSize])
 
   return (
     <S.Box>
@@ -101,6 +114,7 @@ const DocumentsPage = () => {
                     isItemLoaded={isItemLoaded}
                     itemCount={itemCount()}
                     loadMoreItems={loadMore}
+                    ref={infiniteLoaderRef}
                   >
                     {({onItemsRendered, ref}) => {
                       return (
@@ -109,23 +123,19 @@ const DocumentsPage = () => {
                           width={width}
                           itemCount={itemCount()}
                           onItemsRendered={({
-                            overscanStartIndex,
-                            overscanStopIndex,
                             visibleStartIndex,
                             visibleStopIndex,
                           }) => {
                             onItemsRendered({
-                              overscanStartIndex,
-                              overscanStopIndex,
                               visibleStartIndex,
                               visibleStopIndex,
                             })
-                            //where was scrolled to before resize
-                            setOffsetIndex(visibleStartIndex)
+                            offsetRef.current = Math.round(
+                              (visibleStartIndex + visibleStopIndex) / 2 - 1
+                            )
                           }}
-                          ref={ref}
                           itemSize={itemSize}
-                          initialScrollOffset={0}
+                          ref={ref}
                         >
                           {Row}
                         </FixedSizeList>
@@ -149,7 +159,7 @@ S.MaxHeight = styled(Box).attrs({
 })``
 S.Hidden = styled(Box).attrs({
   sx: {
-    '@media (max-width: 1550px)': {
+    '@media (max-width: 1200px)': {
       display: 'none',
     },
   },
@@ -162,7 +172,7 @@ S.Box = styled(Box).attrs({
     gridTemplateColumns: '256px 1fr',
     gridTemplateRows: 'min-content 1fr',
 
-    '@media (max-width: 1550px)': {
+    '@media (max-width: 1200px)': {
       gridTemplateColumns: '1fr',
     },
   },
@@ -171,7 +181,7 @@ S.Wrapper = styled(Box).attrs({
   sx: {
     gridColumn: '2/3',
     gridRow: '1/3',
-    '@media (max-width: 1550px)': {
+    '@media (max-width: 1200px)': {
       gridColumn: '1/2',
     },
   },
