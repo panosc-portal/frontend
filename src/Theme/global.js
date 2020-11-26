@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle(
     body: {
       backgroundColor: 'background',
       color: 'text',
-      fontSize: [1],
+      fontSize: [0, 1, 1, 2, 2],
       height: '100%',
       fontFamily: 'body',
     },

@@ -50,7 +50,7 @@ const theme = {
       fontFamily: 'heading',
       fontWeight: 'heading',
       lineHeight: 'heading',
-      fontSize: [5, 6, 7],
+      fontSize: [3, 4, 5, 6, 7],
     },
     caps: {
       textTransform: 'uppercase',
@@ -66,8 +66,7 @@ const theme = {
     card: {
       p: 3,
       bg: 'middleground',
-      mb: 4,
-      '&:last-of-type': {mb: 0},
+      my: [1, 2, 2, 3, 3],
     },
     link: {
       color: 'primary',
@@ -91,7 +90,7 @@ const theme = {
   },
   buttons: {
     primary: {
-      fontSize: 2,
+      fontSize: [2, 1, 1, 1, 4],
       fontWeight: 'bold',
       color: 'primary',
       bg: 'foreground',
@@ -108,8 +107,8 @@ const theme = {
     },
     secondary: {
       variant: 'buttons.primary',
-      color: 'background',
-      bg: 'secondary',
+      bg: 'background',
+      color: 'middleground',
     },
   },
   styles: {
@@ -119,6 +118,6 @@ const theme = {
       lineHeight: 'body',
     },
   },
-  breakpoints: ['750', '1550'],
+  breakpoints: ['600px', '900px', '1200px', '1800px'],
 }
 export default theme
