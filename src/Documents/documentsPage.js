@@ -56,17 +56,24 @@ const DocumentsPage = () => {
   )
   const breakpoints = () => (window.innerWidth < 1550 ? 552 : 300)
 
-  const [scrollPosition, setScrollPosition] = useState(0)
   const [itemSize, setItemSize] = useState(breakpoints())
-  const scrollIndex = useRef(0)
+  const [offsetIndex, setOffsetIndex] = useState()
 
   useEffect(() => {
     const handleResize = () => {
-      const getItemSize = () => breakpoints()
-      const newSize = getItemSize()
-      // const offset = scrollIndex.current * newSize
-      setItemSize(newSize)
-      // setScrollPosition(offset)
+      const resized = breakpoints()
+      setItemSize(resized)
+      const handleScrollOffset = () => {
+        /**
+         * this is the problem
+         * setting new item height triggers a rerender
+         * I struggle to keep track of the scroll position due to those rerenders
+         * should scroll to roughly match the preresized view
+         * ideally using this: https://codesandbox.io/s/github/bvaughn/react-window/tree/master/website/sandboxes/scrolling-to-a-list-item?file=/index.js
+         * that's the ref issue
+         * or with something like initialScrollOffset = offsetIndex*resized
+         * */
+      }
     }
     window.addEventListener('resize', debounce(handleResize, 500))
     return () =>
@@ -113,11 +120,12 @@ const DocumentsPage = () => {
                               visibleStartIndex,
                               visibleStopIndex,
                             })
-                            scrollIndex.current = visibleStartIndex
+                            //where was scrolled to before resize
+                            setOffsetIndex(visibleStartIndex)
                           }}
                           ref={ref}
                           itemSize={itemSize}
-                          initialScrollOffset={scrollPosition}
+                          initialScrollOffset={0}
                         >
                           {Row}
                         </FixedSizeList>
