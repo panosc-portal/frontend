@@ -1,91 +1,79 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import styled from 'styled-components'
 
+import useThreeColLayout from '../App/useSidebar'
 import {Box, Button, Card, Flex, Heading, Image, Link, Text} from './'
 
-const Primitives = () => {
-  const SampleImageCard = () => (
-    <S.Pads>
-      <Card>
-        <Image src="https://source.unsplash.com/random/600x600" />
-      </Card>
-    </S.Pads>
-  )
+const S = {}
+
+const SampleImageCard = () => (
+  <S.Pads>
+    <Card>
+      <Image src="https://source.unsplash.com/random/600x600" />
+    </Card>
+  </S.Pads>
+)
+S.Pads = styled(Box).attrs({
+  p: [0, 1, 2, 3],
+  py: [1],
+  width: [1, 1, 1 / 2, 1 / 3],
+})``
+
+const Search = () => (
+  <Card>
+    <Heading variant="display">NICUH</Heading>
+    <Text>Text in Text</Text>
+    <Box>
+      <Link href="">Link</Link>
+    </Box>
+  </Card>
+)
+const Documents = () => (
+  <Box>
+    <Flex flexWrap="wrap" my={[-1, -1, -2, -3]}>
+      <SampleImageCard />
+      <SampleImageCard />
+      <SampleImageCard />
+      <SampleImageCard />
+      <SampleImageCard />
+      <SampleImageCard />
+      <SampleImageCard />
+      <SampleImageCard />
+      <SampleImageCard />
+    </Flex>
+  </Box>
+)
+
+const Environments = () => {
   return (
-    <S.SidebarLayout>
+    <S.Sidebar>
+      <Heading>Sidebar</Heading>
       <Box>
-        <Card>
-          <Heading variant="display">Heading in Card</Heading>
-          Text in Card
-          <Text>Text in Text</Text>
-          <Box>
-            <Link href="">Link</Link>
-          </Box>
-        </Card>
-        <Flex flexWrap="wrap" mx={[-1, -2]}>
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-          <SampleImageCard />
-        </Flex>
+        <Button>Primary</Button>
+        <Button variant="secondary">Secondary</Button>
       </Box>
-      <S.Sidebar>
-        <S.Controller>
-          <Button>#</Button>
-        </S.Controller>
-        <S.Content>
-          <Heading>Sidebar</Heading>
-          <Box>
-            <Button>Primary</Button>
-            <Button variant="secondary">Secondary</Button>
-          </Box>
-        </S.Content>
-      </S.Sidebar>
-    </S.SidebarLayout>
+    </S.Sidebar>
   )
 }
 
+const Primitives = () => {
+  const {Layout, Left, Right, Middle} = useThreeColLayout()
+
+  return (
+    <Layout>
+      <Left>
+        <Search />
+      </Left>
+      <Middle>
+        <Documents />
+      </Middle>
+      <Right>
+        <Environments />
+      </Right>
+    </Layout>
+  )
+}
 export default Primitives
 
-const S = {}
-S.Pads = styled(Box).attrs({
-  px: [1, 2],
-  width: [1, 1 / 2, 1 / 3, 1 / 4],
-})``
-S.Content = styled(Card).attrs()``
-S.Sidebar = styled.aside``
-S.Controller = styled(Card).attrs()`
-  display: none;
-`
-S.SidebarLayout = styled(Box).attrs({
-  sx: {display: 'grid', gap: 3, gridTemplateColumns: '1fr 25%'},
-})`
-  @media screen and (max-width: ${({theme}) => theme.breakpoints[0]}) {
-    grid-template-columns: 1fr;
-    ${S.Content} {
-      display: none;
-    }
-    ${S.Controller} {
-    display: block;
-    position: fixed;
-    left: 0;
-    top: 0;
-  }
-`
+S.Sidebar = styled(Card)``

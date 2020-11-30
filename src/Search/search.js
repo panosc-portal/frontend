@@ -6,9 +6,13 @@ import {useForm} from 'react-hook-form'
 import {baseQuery, mockTechniques} from '../App/helpers'
 import {Box, Button, Card} from '../Primitives'
 
-const Search = ({setQueryObject}) => {
+import useSearchQuery from '../App/useSearchQuery'
+
+const Search = () => {
   const [fields, setFields] = useState({})
   const {register, handleSubmit} = useForm()
+  const setQuery = useSearchQuery(state => state.setQuery)
+  const resetQuery = useSearchQuery(state => state.resetQuery)
 
   const submitForm = data => {
     setFields(data)
@@ -18,12 +22,12 @@ const Search = ({setQueryObject}) => {
     data.technique &&
       (query.where = {...query.where, keywords: {inq: [data.technique]}})
 
-    setQueryObject(query)
+    setQuery(query)
   }
 
   const resetForm = () => {
     setFields({})
-    setQueryObject(baseQuery)
+    resetQuery()
   }
 
   const SearchTitles = () => (
