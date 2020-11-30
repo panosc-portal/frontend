@@ -66,7 +66,6 @@ const theme = {
     card: {
       p: 3,
       bg: 'middleground',
-      my: [1, 2, 2, 3, 3],
     },
     link: {
       color: 'primary',
