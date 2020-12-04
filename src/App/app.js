@@ -17,39 +17,53 @@ import Global from '../Theme/global'
 import light from '../Theme/light'
 import ThemeModeContext from '../Theme/themeModeContext'
 import Spinner from './spinner'
+import useLayout from './useSidebar'
+import Search from '../Search/search'
 
 const App = () => {
   const {isDark} = useContext(ThemeModeContext)
   const {initialized} = useKeycloak()
+  const {Left, Right, Middle, Layout, setSidebar, sidebar} = useLayout()
   return (
     <ThemeProvider theme={isDark ? dark : light}>
       <Global />
       <nav>
-        <Navigation />
+        <Navigation sidebar={sidebar} setSidebar={setSidebar} />
       </nav>
       {initialized && (
-        <S.Main as="main">
-          <Suspense fallback={<Spinner />}>
+        <Layout as="main">
+          <Left>
             <Switch>
-              <Route exact path="/" component={DocumentsPage} />
-              <Route exact path="/documents" component={DocumentsPage} />
-              <Route
-                exact
-                path="/documents/:documentId"
-                component={DocumentPage}
-              />
-              <Route path="/dashboard" component={Dashboard} />
-              <Route path="/debug" component={Primitives} />
+              <Route exact path="/" component={Search} />
+              <Route exact path="/documents" component={Search} />
             </Switch>
+          </Left>
+
+          <Suspense fallback={<Spinner />}>
+            <Middle>
+              <S.Main>
+                <Switch>
+                  <Route exact path="/" component={DocumentsPage} />
+                  <Route exact path="/documents" component={DocumentsPage} />
+                  <Route
+                    exact
+                    path="/documents/:documentId"
+                    component={DocumentPage}
+                  />
+                  <Route path="/dashboard" component={Dashboard} />
+                  <Route path="/debug" component={Primitives} />
+                </Switch>
+              </S.Main>
+            </Middle>
           </Suspense>
-          <S.Hidden>
+          <Right>
             <ErrorBoundary>
               <Suspense fallback={<Spinner />}>
                 <Environments />
               </Suspense>
             </ErrorBoundary>
-          </S.Hidden>
-        </S.Main>
+          </Right>
+        </Layout>
       )}
     </ThemeProvider>
   )
@@ -64,9 +78,6 @@ S.Hidden = styled(Box).attrs({
     display: 'none',
   },
 })``
-S.Box = styled(Box).attrs({
-  padding: [4],
-})``
-S.Main = styled(S.Box)`
+S.Main = styled(Box).attrs({})`
   height: calc(100% - ${props => props.theme.sizes.nav}px);
 `

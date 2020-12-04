@@ -4,19 +4,18 @@ import {Input, Label, Radio} from '@rebass/forms'
 import {useForm} from 'react-hook-form'
 
 import {baseQuery, mockTechniques} from '../App/helpers'
-import {Box, Button, Card} from '../Primitives'
-
-import useSearchQuery from '../App/useSearchQuery'
+import {useSearchStore} from '../App/stores'
+import {Box, Button, Card, Heading} from '../Primitives'
 
 const Search = () => {
   const [fields, setFields] = useState({})
   const {register, handleSubmit} = useForm()
-  const setQuery = useSearchQuery(state => state.setQuery)
-  const resetQuery = useSearchQuery(state => state.resetQuery)
+  const setQuery = useSearchStore(state => state.setQuery)
+  const resetQuery = useSearchStore(state => state.resetQuery)
 
   const submitForm = data => {
     setFields(data)
-
+    //immer dis
     const query = {...baseQuery}
     data.title && (query.where = {...query.where, title: {ilike: data.title}})
     data.technique &&
@@ -61,6 +60,7 @@ const Search = () => {
   )
   return (
     <Box>
+      <Heading>Search</Heading>
       <Card as="form" onSubmit={handleSubmit(submitForm)}>
         <SearchTitles />
         <SearchTechniques />

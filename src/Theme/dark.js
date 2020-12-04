@@ -1,3 +1,4 @@
+import breakpoints from './breakpoints'
 const theme = {
   colors: {
     text: 'hsl(0, 0%, 80%)',
@@ -117,6 +118,6 @@ const theme = {
       lineHeight: 'body',
     },
   },
-  breakpoints: ['600px', '900px', '1200px', '1800px'],
+  breakpoints,
 }
 export default theme
