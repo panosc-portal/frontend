@@ -21,14 +21,15 @@ const query = {
   ],
 }
 
-const useSearchQuery = create(set => ({
-  query,
+export const useDocumentsStore = create(set => ({
   page: 1,
   scrollIndex: 0,
   setScrollIndex: scrollIndex => set(() => ({scrollIndex})),
-  setQuery: object => set(() => ({query: object})),
   setPage: page => set(() => ({page})),
-  resetQuery: () => set(() => ({query})),
 }))
 
-export default useSearchQuery
+export const useSearchStore = create(set => ({
+  query,
+  setQuery: object => set(() => ({query: object})),
+  resetQuery: () => set(() => ({query})),
+}))

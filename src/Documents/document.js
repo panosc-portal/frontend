@@ -3,7 +3,7 @@ import React from 'react'
 import {Link as RouterLink} from 'react-router-dom'
 import styled from 'styled-components'
 
-import {momented} from '../App/helpers'
+import {parseDate} from '../App/helpers'
 import Spinner from '../App/spinner'
 import {Box, Flex, Heading, Link, Image, Text} from '../Primitives'
 
@@ -63,9 +63,9 @@ const Document = ({document, style}) =>
               document.isPublic ? 'Public' : 'Non-Public'
             }`}
           />
-          <Detail title="Started on" data={momented(document.startDate)} />
-          <Detail title="Ended on" data={momented(document.endDate)} />
-          <Detail title="Released on" data={momented(document.releaseDate)} />
+          <Detail title="Started on" data={parseDate(document.startDate)} />
+          <Detail title="Ended on" data={parseDate(document.endDate)} />
+          <Detail title="Released on" data={parseDate(document.releaseDate)} />
         </S.Details>
 
         <Image src={document.img} />
