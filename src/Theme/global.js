@@ -8,16 +8,12 @@ const GlobalStyle = createGlobalStyle(
       backgroundColor: 'background',
       color: 'text',
       fontSize: [0, 1, 1, 2, 2],
-      height: '100%',
       fontFamily: 'body',
     },
     html: {
-      height: '100%',
       fontSize: '10px',
     },
-    '#root': {
-      height: '100%',
-    },
+    ':root': {},
   })
 )
 export default GlobalStyle

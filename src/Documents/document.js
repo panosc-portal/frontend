@@ -4,13 +4,14 @@ import {Link as RouterLink} from 'react-router-dom'
 import styled from 'styled-components'
 
 import {parseDate} from '../App/helpers'
+import {documentSize} from '../App/helpers'
 import Spinner from '../App/spinner'
 import {Box, Flex, Heading, Link, Image, Text} from '../Primitives'
 
 const MetaItem = ({title, data}) => (
   <S.MetaItem>
-    <Text fontWeight="bold">{title}</Text>
-    <Text>{data}</Text>
+    <S.Text>{title}</S.Text>
+    <S.Text>{data}</S.Text>
   </S.MetaItem>
 )
 
@@ -21,8 +22,8 @@ const Member = ({data}) => (
       data.affiliation.name}
   </S.Tag>
 )
-const Members = ({members}) => (
-  <Flex>
+const Members = ({members, className}) => (
+  <Flex className={className}>
     {members.map(member => (
       <Member key={member.id} data={member} />
     ))}
@@ -36,92 +37,101 @@ const HeadingLink = ({title, pid}) => (
 )
 
 const SummaryText = ({summary}) => {
-  return <Text>{summary.substring(0, 150)}...</Text>
+  return <Text>{summary.substring(0, 350)}...</Text>
 }
 
-const CitationLink = ({citation, doi}) => (
-  <Link href={'http://doi.org/' + doi}>{citation}</Link>
+const CitationLink = ({citation, doi, className}) => (
+  <Link className={className} href={'http://doi.org/' + doi}>
+    {citation}
+  </Link>
 )
 
-const Keywords = ({keywords}) => (
-  <Flex>
+const Keywords = ({keywords, className}) => (
+  <Flex className={className}>
     {keywords.map((keyword, index) => (
       <S.Tag key={index}>{keyword}</S.Tag>
     ))}
   </Flex>
 )
 
-const Document = ({document, style}) =>
-  !document ? (
+const Document = ({document}) => {
+  return !document ? (
     <Spinner />
   ) : (
-    <Box key={document.pid} style={style}>
-      <S.Layout>
-        <S.Main>
-          <HeadingLink pid={document.pid} title={document.title} />
-          <Members members={document.members} />
-          <SummaryText summary={document.summary} />
-          <CitationLink citation={document.citation} doi={document.doi} />
-          <Keywords keywords={document.keywords} />
-        </S.Main>
+    <S.Layout>
+      <S.Image src={document.img} />
+      <S.Main>
+        <HeadingLink pid={document.pid} title={document.title} />
+        {/* <S.Members members={document.members} /> */}
+        <S.Keywords keywords={document.keywords} />
+        <SummaryText summary={document.summary} />
+        {/* <S.CitationLink citation={document.citation} doi={document.doi} /> */}
+
         <S.MetaList>
-          <MetaItem title="Type" data={document.type} />
-          <MetaItem
-            title="Licence / Visibility"
-            data={`${document.licence} / ${
-              document.isPublic ? 'Public' : 'Non-Public'
-            }`}
-          />
-          <MetaItem title="Started on" data={parseDate(document.startDate)} />
-          <MetaItem title="Ended on" data={parseDate(document.endDate)} />
-          <MetaItem
-            title="Released on"
-            data={parseDate(document.releaseDate)}
-          />
+          {/* <MetaItem title="Type" data={document.type} /> */}
+          {/* <MetaItem */}
+          {/*   title="Licence / Visibility" */}
+          {/*   data={`${document.licence} / ${ */}
+          {/*     document.isPublic ? 'Public' : 'Non-Public' */}
+          {/*   }`} */}
+          {/* /> */}
+          {/* <MetaItem title="Started on" data={parseDate(document.startDate)} /> */}
+          {/* <MetaItem title="Ended on" data={parseDate(document.endDate)} /> */}
+          {/* <MetaItem */}
+          {/*   title="Released on" */}
+          {/*   data={parseDate(document.releaseDate)} */}
+          {/* /> */}
+          <MetaItem title="Created" data={parseDate(document.releseDate)} />
+          <MetaItem title="Size" data={documentSize(document.datasets)} />
         </S.MetaList>
-        <S.Image src={document.img} />
-      </S.Layout>
-    </Box>
+      </S.Main>
+    </S.Layout>
   )
+}
 export default Document
 
 const S = {}
+S.Keywords = styled(Keywords)``
+S.Members = styled(Members)``
+S.CitationLink = styled(CitationLink)``
 S.Layout = styled(Box).attrs({
-  display: 'grid',
-  marginBottom: [2, 1, 2, 3],
-  sx: {gridGap: '1px'},
+  sx: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    bg: 'middleground',
+    display: 'flex',
+    mb: '2rem',
+  },
 })`
-  grid-template-columns: 3fr 1fr 1fr;
-`
-S.Main = styled(Flex).attrs({
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  bg: 'middleground',
-  p: 3,
-})``
-S.MetaList = styled(Flex).attrs({
-  bg: 'background',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  p: '1px',
-})``
-S.MetaItem = styled(Flex).attrs({
-  bg: 'middleground',
-  p: 1,
-  flexDirection: 'column',
-  justifyContent: 'space-evenly',
-  marginBottom: '0.2rem',
-  flex: 'auto',
-})`
-  &:last-of-type {
-    margin-bottom: 0;
+  ${S.Members}, ${S.CitationLink} {
+    display: none;
   }
 `
-
+S.Main = styled(Box).attrs({
+  p: 3,
+})``
+S.MetaList = styled(Box).attrs({
+  sx: {
+    display: 'flex',
+    flexDirection: 'row',
+    mt: 1,
+  },
+})``
+S.MetaItem = styled(Box).attrs({
+  bg: 'middleground',
+  justifyContent: 'space-evenly',
+  mr: 1,
+})``
+S.Text = styled(Text).attrs({
+  display: 'inline-block',
+  pr: 1,
+})``
 S.Tag = styled(Box).attrs({
   bg: 'foreground',
   p: 1,
   m: 1,
   marginLeft: 0,
 })``
-S.Image = styled(Image).attrs()``
+S.Image = styled(Image).attrs({
+  width: '100%',
+})``

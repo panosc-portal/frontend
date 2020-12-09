@@ -21,13 +21,11 @@ const DocumentPage = props => {
     '/Documents/' + documentId + '?filter=' + parseObjectToUri(query)
   )
   return (
-    <S.Box>
-      <ErrorBoundary>
-        <Suspense fallback={<Spinner />}>
-          <Document data={data} />
-        </Suspense>
-      </ErrorBoundary>
-    </S.Box>
+    <ErrorBoundary>
+      <Suspense fallback={<Spinner />}>
+        <Document data={data} />
+      </Suspense>
+    </ErrorBoundary>
   )
 }
 

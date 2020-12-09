@@ -41,3 +41,8 @@ export const baseQuery = {
 
 export const parseObjectToUri = object =>
   encodeURIComponent(JSON.stringify(object))
+
+export const documentSize = datasets => {
+  const sum = datasets.map(item => item.size).reduce((acc, val) => acc + val, 0)
+  return `${sum} MB`
+}

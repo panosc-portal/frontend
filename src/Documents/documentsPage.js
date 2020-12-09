@@ -1,170 +1,92 @@
-import React, {
-  useRef,
-  Suspense,
-  useCallback,
-  useState,
-  useLayoutEffect,
-  useContext,
-} from 'react'
+import React, {Suspense, useState} from 'react'
 
-import debounce from 'lodash.debounce'
-import throttle from 'lodash.throttle'
-import AutoSizer from 'react-virtualized-auto-sizer'
-import {FixedSizeList} from 'react-window'
-import InfiniteLoader from 'react-window-infinite-loader'
-import {ThemeContext} from 'styled-components'
-import {useSWRInfinite} from 'swr'
+import styled from 'styled-components'
 
 import ErrorBoundary from '../App/errorBoundary'
 import Spinner from '../App/spinner'
-import {useDocumentsStore, useSearchStore} from '../App/stores'
-import {Box, Heading} from '../Primitives'
-import Document from './document'
+import DocumentsList from '../Documents/documentsList'
+import Environments from '../Environments/environments'
+import {Button, Box, Flex, Heading} from '../Primitives'
+import Search from '../Search/search'
 
 const DocumentsPage = () => {
-  // Data Fetching
-  const limit = 5
-
-  const initialSize = useDocumentsStore(state => state.page)
-  const queryObject = useSearchStore(state => state.query)
-
-  const {data, setSize, error, size} = useSWRInfinite(
-    index => {
-      const skip = limit * index
-      const paginatedQueryObject = {
-        ...queryObject,
-        limit,
-        skip,
-      }
-      const parseParameters = paramsObject =>
-        encodeURIComponent(JSON.stringify(paramsObject))
-      return `/Documents?filter=${parseParameters(paginatedQueryObject)}`
-    },
-    {initialSize}
-  )
-
-  const documents = data ? [].concat(...data) : []
-
-  const isLoadingInitialData = !data && !error
-  const isLoadingMore =
-    isLoadingInitialData ||
-    (size > 0 && data && typeof data[size - 1] === 'undefined')
-  const hasMore = !!data[data.length - 1].length
-  const isItemLoaded = index => !hasMore || index < documents.length
-  const itemCount = () => (hasMore ? documents.length + 1 : documents.length)
-
-  const loadMore = useCallback(
-    () =>
-      isLoadingMore
-        ? false
-        : data?.[0]?.length === 0 || setSize(size => size + 1),
-    [data, setSize, isLoadingMore]
-  )
-
-  // Single Document
-  const Row = ({index, style}) => (
-    <Document
-      style={style}
-      document={isItemLoaded(index) && documents[index]}
-    />
-  )
-
-  //Breakpoints in virtual list
-  const theme = useContext(ThemeContext)
-
-  const handleBreakpoints = useCallback(() => {
-    const breakpoints = []
-    theme.breakpoints.map(breakpoint => breakpoints.push(parseInt(breakpoint)))
-    const width = window.innerWidth / 10
-    return width < breakpoints[0] ? 1000 : width < breakpoints[1] ? 800 : 300
-  }, [theme.breakpoints])
-
-  const [itemSize, setItemSize] = useState(handleBreakpoints())
-
-  const infiniteLoaderRef = useRef()
-
-  //Remember Scroll Position
-  const setInitialSize = useDocumentsStore(state => state.setPage)
-  const scrollIndex = useDocumentsStore(state => state.scrollIndex)
-  const setScrollIndex = useDocumentsStore(state => state.setScrollIndex)
-
-  const getIndex = useCallback(
-    ref =>
-      ref.current
-        ? Math.round(
-            (ref.current._lastRenderedStartIndex +
-              ref.current._lastRenderedStopIndex) /
-              2
-          )
-        : 0,
-    []
-  )
-  const scrollToPlace = useCallback(
-    ref => {
-      const index = getIndex(ref)
-      ref.current && ref.current._listRef.scrollToItem(index, 'center')
-    },
-    [getIndex]
-  )
-
-  //Automaticaly start list where left off
-  const initialOffset = scrollIndex * itemSize
-
-  //Rescroll back to view after resizing window
-  useLayoutEffect(() => {
-    const handleResize = () => {
-      const newSize = handleBreakpoints()
-      itemSize !== newSize && setItemSize(newSize)
-    }
-    window.addEventListener('resize', debounce(handleResize, 500))
-    return () => {
-      scrollToPlace(infiniteLoaderRef)
-      window.removeEventListener('resize', debounce(handleResize, 500))
-    }
-  }, [scrollToPlace, handleBreakpoints, itemSize])
-
-  //Update indexes to store (throttled)
-  const updateIndexes = () => {
-    const index = getIndex(infiniteLoaderRef)
-    index !== scrollIndex && index !== 0 && setScrollIndex(index)
-    initialSize !== size && setInitialSize(size)
-  }
+  const [show, setShow] = useState()
 
   return (
     <ErrorBoundary>
-      <Heading>Documents</Heading>
       <Suspense fallback={<Spinner />}>
-        <Box height="100%">
-          <AutoSizer>
-            {({height, width}) => (
-              <InfiniteLoader
-                isItemLoaded={isItemLoaded}
-                itemCount={itemCount()}
-                loadMoreItems={loadMore}
-                ref={infiniteLoaderRef}
-              >
-                {({onItemsRendered, ref}) => {
-                  return (
-                    <FixedSizeList
-                      height={height}
-                      width={width}
-                      onScroll={throttle(updateIndexes, 1000)}
-                      itemCount={itemCount()}
-                      onItemsRendered={onItemsRendered}
-                      itemSize={itemSize}
-                      ref={ref}
-                      initialScrollOffset={initialOffset}
-                    >
-                      {Row}
-                    </FixedSizeList>
-                  )
-                }}
-              </InfiniteLoader>
-            )}
-          </AutoSizer>
-        </Box>
+        <Layout>
+          <Side show={show === 'search' ? true : false}>
+            <Search />
+          </Side>
+          <Main show={!show}>
+            <Heading>Documents</Heading>
+            <DocumentsList show={!show} />
+          </Main>
+          <Side show={show === 'env' ? true : false}>
+            <Environments />
+          </Side>
+        </Layout>
+        <Controls>
+          <Flex
+            sx={{bg: 'middleground', gap: 1, justifyContent: 'space-evenly'}}
+          >
+            <Button
+              width={1 / 3}
+              variant="secondary"
+              onClick={() => {
+                setShow('search')
+              }}
+            >
+              Search
+            </Button>
+            <Button
+              width={1 / 3}
+              variant="secondary"
+              onClick={() => {
+                setShow(null)
+              }}
+            >
+              Documents
+            </Button>
+            <Button
+              width={1 / 3}
+              variant="secondary"
+              onClick={() => {
+                setShow('env')
+              }}
+            >
+              Environments
+            </Button>
+          </Flex>
+        </Controls>
       </Suspense>
     </ErrorBoundary>
   )
 }
 export default DocumentsPage
+
+const Layout = styled(Flex).attrs({
+  sx: {
+    gap: [2, 3, 3],
+  },
+})``
+const Main = styled(Box).attrs({
+  width: [1, 1, 3 / 5],
+})`
+
+@media (max-width: ${({theme}) => theme.breakpoints[1]}) {
+display: ${({show}) => (show ? 'block' : 'none')};
+`
+const Side = styled(Box).attrs({
+  width: [1, 1, 1 / 5],
+  display: ['none', 'none', 'block'],
+})`
+@media (max-width: ${({theme}) => theme.breakpoints[1]}) {
+display: ${({show}) => (show ? 'block' : 'none')};
+
+`
+const Controls = styled(Box).attrs({
+  display: ['block', 'block', 'none'],
+  sx: {position: 'fixed', bottom: 0, width: '100%'},
+})``
