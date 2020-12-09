@@ -7,7 +7,7 @@ import {Flex, Link, Box} from '../Primitives'
 import ToggleThemeButton from '../Theme/toggleThemeButton'
 import LoginLogoutButton from './loginLogoutButton'
 
-const Navigation = ({sidebar, setSidebar}) => {
+const Navigation = () => {
   return (
     <S.Flex>
       <Link as={RouterLink} variant="nav" to="/">
@@ -17,16 +17,6 @@ const Navigation = ({sidebar, setSidebar}) => {
       {/* <Link as={RouterLink} variant="nav" to="/dashboard"> */}
       {/*   Dashboard */}
       {/* </Link> */}
-      <S.SidebarControlls onClick={() => setSidebar('left')}>
-        Left
-      </S.SidebarControlls>
-      <S.SidebarControlls onClick={() => setSidebar(false)}>
-        Middle
-      </S.SidebarControlls>
-      <S.SidebarControlls onClick={() => setSidebar('right')}>
-        Right
-      </S.SidebarControlls>
-      <Box mx="auto" />
       <ToggleThemeButton />
       <LoginLogoutButton />
     </S.Flex>

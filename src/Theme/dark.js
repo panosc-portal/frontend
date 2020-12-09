@@ -46,6 +46,7 @@ const theme = {
       lineHeight: 'heading',
       fontWeight: 'heading',
       color: 'heading',
+      fontSize: [3, 4, 5, 6, 7],
     },
     display: {
       fontFamily: 'heading',
@@ -107,8 +108,12 @@ const theme = {
     },
     secondary: {
       variant: 'buttons.primary',
-      bg: 'background',
-      color: 'middleground',
+      bg: 'foreground',
+      color: 'text',
+      outline: 'none',
+      ':hover': {
+        color: 'primary',
+      },
     },
   },
   styles: {

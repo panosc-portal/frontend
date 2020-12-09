@@ -2,7 +2,6 @@ import React from 'react'
 
 import styled from 'styled-components'
 
-import Datasets from '../Datasets/datasets'
 import {Box, Card, Heading, Image, Link, Text, Flex} from '../Primitives'
 
 const Details = props => <S.Details>{props.children}</S.Details>
@@ -15,37 +14,26 @@ const Detail = props => (
 
 const Document = ({data}) => {
   return (
-    <S.Box>
+    <Box>
       <Heading>{data.title}</Heading>
-      <S.LeftFlex>
-        <Card m={0}>
-          <Text fontWeight="bold">Description</Text>
-          <Text>{data.summary}</Text>
-        </Card>
-        <Details>
-          <Detail caption="Citation">
-            <Link to={'http://doi.org/' + data.doi} target="_blank">
-              {data.citation}
-            </Link>
-          </Detail>
-          <Detail caption="Keywords">
-            {data.keywords.map(keyword => keyword + ', ')}
-          </Detail>
-          <Detail caption="Type">{data.type}</Detail>
-          <Detail caption="Author">{data.members[0]?.person.fullName}</Detail>
-          <Detail caption="Other">Stuff</Detail>
-        </Details>
-      </S.LeftFlex>
-      <S.RightFlex>
-        <Datasets data={data.datasets} />
-        <Box>
-          <S.Card>
-            <Text fontWeight="bold">Preview Visualization</Text>
-          </S.Card>
-          <S.Image src={data.img} />
-        </Box>
-      </S.RightFlex>
-    </S.Box>
+      <Card m={0} mb={2} p={2}>
+        <Text fontWeight="bold">Description</Text>
+        <Text>{data.summary}</Text>
+      </Card>
+      <Details>
+        <Detail caption="Citation">
+          <Link to={'http://doi.org/' + data.doi} target="_blank">
+            {data.citation}
+          </Link>
+        </Detail>
+        <Detail caption="Keywords">
+          {data.keywords.map(keyword => keyword + ', ')}
+        </Detail>
+        <Detail caption="Type">{data.type}</Detail>
+        <Detail caption="Author">{data.members[0]?.person.fullName}</Detail>
+        <Detail caption="Other">Stuff</Detail>
+      </Details>
+    </Box>
   )
 }
 
@@ -86,15 +74,15 @@ S.Detail = styled(Card).attrs({
   sx: {
     display: 'grid',
     gridTemplateColumns: '25% 1fr',
-    gridGap: [1],
+    gridGap: '1px',
     bg: 'background',
-    m: 0,
     p: 0,
-    my: [1],
+    m: 0,
+    my: '1px',
   },
 })``
 S.Text = styled(Text).attrs({
   bg: 'middleground',
-  p: [2],
-  py: [3],
+  p: [1],
+  py: [2],
 })``
