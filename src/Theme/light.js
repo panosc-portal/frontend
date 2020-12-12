@@ -1,3 +1,4 @@
+import breakpoints from './breakpoints'
 const theme = {
   colors: {
     text: 'hsl(0, 0%, 20%)',
@@ -12,12 +13,13 @@ const theme = {
     heading: 'hsl(0, 0%, 0%)',
   },
   fonts: {
-    body: 'Ubuntu, system-ui, sans-serif',
+    body: 'Open Sans, system-ui, sans-serif',
     heading: 'inherit',
     monospace: 'Menlo, monospace',
   },
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 64, 96],
   fontWeights: {
+    light: 300,
     body: 400,
     heading: 700,
     bold: 700,
@@ -43,14 +45,17 @@ const theme = {
     heading: {
       fontFamily: 'heading',
       lineHeight: 'heading',
-      fontWeight: 'heading',
+      fontWeight: 'body',
       color: 'heading',
+      fontSize: [1, 2, 2, 3],
+      mb: [1, 2],
     },
     display: {
       fontFamily: 'heading',
-      fontWeight: 'heading',
+      fontWeight: 'light',
       lineHeight: 'heading',
-      fontSize: [5, 6, 7],
+      marginBottom: 3,
+      fontSize: [3, 4, 4, 5],
     },
     caps: {
       textTransform: 'uppercase',
@@ -66,6 +71,16 @@ const theme = {
     card: {
       p: 3,
       bg: 'middleground',
+    },
+    badge: {
+      p: 1,
+      bg: 'foreground',
+    },
+    keyword: {
+      p: [1],
+      mr: [1],
+      my: [1],
+      bg: 'foreground',
     },
     link: {
       color: 'primary',
@@ -89,7 +104,7 @@ const theme = {
   },
   buttons: {
     primary: {
-      fontSize: 2,
+      fontSize: [2, 1, 1, 1, 4],
       fontWeight: 'bold',
       color: 'primary',
       bg: 'foreground',
@@ -106,8 +121,12 @@ const theme = {
     },
     secondary: {
       variant: 'buttons.primary',
-      color: 'background',
-      bg: 'secondary',
+      bg: 'foreground',
+      color: 'text',
+      outline: 'none',
+      ':hover': {
+        color: 'primary',
+      },
     },
   },
   styles: {
@@ -117,5 +136,6 @@ const theme = {
       lineHeight: 'body',
     },
   },
+  breakpoints,
 }
 export default theme

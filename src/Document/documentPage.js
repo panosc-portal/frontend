@@ -1,13 +1,11 @@
 import React, {Suspense} from 'react'
 
-import css from '@styled-system/css'
-import styled from 'styled-components'
 import useSWR from 'swr'
 
 import ErrorBoundary from '../App/errorBoundary'
 import {baseQuery, parseObjectToUri} from '../App/helpers'
 import Spinner from '../App/spinner'
-import {Box} from '../Primitives'
+import {Heading} from '../Primitives'
 import Document from './document'
 
 const DocumentPage = props => {
@@ -23,6 +21,7 @@ const DocumentPage = props => {
   return (
     <ErrorBoundary>
       <Suspense fallback={<Spinner />}>
+        <Heading variant="display">{data.title}</Heading>
         <Document data={data} />
       </Suspense>
     </ErrorBoundary>
@@ -30,6 +29,3 @@ const DocumentPage = props => {
 }
 
 export default DocumentPage
-
-const S = {}
-S.Box = styled(Box)(css({}))

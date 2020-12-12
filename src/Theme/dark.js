@@ -69,6 +69,11 @@ const theme = {
       p: 3,
       bg: 'middleground',
     },
+    badge: {
+      variant: 'variants.card',
+      p: 1,
+      bg: 'foreground',
+    },
     link: {
       color: 'primary',
       textDecoration: 'none',

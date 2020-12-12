@@ -4,8 +4,9 @@ import {useKeycloak} from '@react-keycloak/web'
 import useSWR from 'swr'
 
 import Spinner from '../App/spinner'
-import {Box, Heading, Card} from '../Primitives'
+import {Card} from '../Primitives'
 import Environment from './environment'
+import Column from '../Layout/column'
 
 const Environments = () => {
   const {keycloak} = useKeycloak()
@@ -13,22 +14,21 @@ const Environments = () => {
     refreshInterval: 3000,
   })
   return (
-    <Box>
-      <Heading>Environments</Heading>
+    <Suspense fallback={<Spinner />}>
       {!keycloak.authenticated ? (
         <Card>
           Sorry you need to be authenticated to use the cloud service :-(
         </Card>
       ) : data.length ? (
-        <Suspense fallback={<Spinner />}>
+        <Column>
           {data.map(environment => (
             <Environment key={environment.id} environment={environment} />
           ))}
-        </Suspense>
+        </Column>
       ) : (
         <Card>No running environments.</Card>
       )}
-    </Box>
+    </Suspense>
   )
 }
 

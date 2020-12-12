@@ -9,6 +9,7 @@ import {useDocumentsStore, useSearchStore} from '../App/stores'
 import useScrollPos from '../App/useScrollPos'
 import {Box} from '../Primitives'
 import Document from './document'
+import Column from '../Layout/column'
 
 const DocumentsList = ({show}) => {
   // Data Fetching
@@ -64,10 +65,12 @@ const DocumentsList = ({show}) => {
   return (
     <ErrorBoundary>
       <Suspense fallback={<Spinner />}>
-        {documents?.map(document => (
-          <Document document={document} key={document.pid} />
-        ))}
-        {hasMore && <Box ref={ref}>Loading...</Box>}
+        <Column>
+          {documents?.map(document => (
+            <Document document={document} key={document.pid} />
+          ))}
+          {hasMore && <Box ref={ref}>Loading...</Box>}
+        </Column>
       </Suspense>
     </ErrorBoundary>
   )

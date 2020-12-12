@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import {parseDate} from '../App/helpers'
 import {documentSize} from '../App/helpers'
 import Spinner from '../App/spinner'
-import {Box, Flex, Heading, Link, Image, Text} from '../Primitives'
+import {Card, Box, Flex, Image, Heading, Link, Text} from '../Primitives'
 
 const MetaItem = ({title, data}) => (
   <S.MetaItem>
@@ -36,10 +36,6 @@ const HeadingLink = ({title, pid}) => (
   </Link>
 )
 
-const SummaryText = ({summary}) => {
-  return <Text>{summary.substring(0, 350)}...</Text>
-}
-
 const CitationLink = ({citation, doi, className}) => (
   <Link className={className} href={'http://doi.org/' + doi}>
     {citation}
@@ -49,7 +45,9 @@ const CitationLink = ({citation, doi, className}) => (
 const Keywords = ({keywords, className}) => (
   <Flex className={className}>
     {keywords.map((keyword, index) => (
-      <S.Tag key={index}>{keyword}</S.Tag>
+      <Card variant="badge" key={index}>
+        {keyword}
+      </Card>
     ))}
   </Flex>
 )
@@ -59,32 +57,19 @@ const Document = ({document}) => {
     <Spinner />
   ) : (
     <S.Layout>
-      <S.Image src={document.img} />
-      <S.Main>
+      <Box width={[1, 1, 2 / 5, 2 / 7]}>
+        <Image width="100%" src={document.img} />
+      </Box>
+      <Card width={[1, 1, 3 / 5, 5 / 7]}>
         <HeadingLink pid={document.pid} title={document.title} />
-        {/* <S.Members members={document.members} /> */}
         <S.Keywords keywords={document.keywords} />
-        <SummaryText summary={document.summary} />
-        {/* <S.CitationLink citation={document.citation} doi={document.doi} /> */}
+        <ClippedText mt={2} lineHeight="1.5" children={document.summary} />
 
         <S.MetaList>
-          {/* <MetaItem title="Type" data={document.type} /> */}
-          {/* <MetaItem */}
-          {/*   title="Licence / Visibility" */}
-          {/*   data={`${document.licence} / ${ */}
-          {/*     document.isPublic ? 'Public' : 'Non-Public' */}
-          {/*   }`} */}
-          {/* /> */}
-          {/* <MetaItem title="Started on" data={parseDate(document.startDate)} /> */}
-          {/* <MetaItem title="Ended on" data={parseDate(document.endDate)} /> */}
-          {/* <MetaItem */}
-          {/*   title="Released on" */}
-          {/*   data={parseDate(document.releaseDate)} */}
-          {/* /> */}
           <MetaItem title="Created" data={parseDate(document.releseDate)} />
           <MetaItem title="Size" data={documentSize(document.datasets)} />
         </S.MetaList>
-      </S.Main>
+      </Card>
     </S.Layout>
   )
 }
@@ -94,13 +79,10 @@ const S = {}
 S.Keywords = styled(Keywords)``
 S.Members = styled(Members)``
 S.CitationLink = styled(CitationLink)``
-S.Layout = styled(Box).attrs({
+S.Layout = styled(Flex).attrs({
   sx: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    bg: 'middleground',
-    display: 'flex',
-    mb: '2rem',
+    flexWrap: 'wrap',
+    width: '100%',
   },
 })`
   ${S.Members}, ${S.CitationLink} {
@@ -132,6 +114,13 @@ S.Tag = styled(Box).attrs({
   m: 1,
   marginLeft: 0,
 })``
-S.Image = styled(Image).attrs({
-  width: '100%',
-})``
+// S.Image = styled(Image).attrs({
+//   width: '100%',
+// })``
+const ClippedText = styled(Box)`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+`

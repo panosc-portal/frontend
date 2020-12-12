@@ -60,7 +60,6 @@ const Search = () => {
   )
   return (
     <Box>
-      <Heading>Search</Heading>
       <Card as="form" onSubmit={handleSubmit(submitForm)}>
         <SearchTitles />
         <SearchTechniques />
