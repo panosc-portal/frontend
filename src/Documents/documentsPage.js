@@ -8,6 +8,7 @@ import DocumentsList from '../Documents/documentsList'
 import Environments from '../Environments/environments'
 import {Button, Box, Flex, Heading} from '../Primitives'
 import Search from '../Search/search'
+import Layout from '../Layout/row'
 
 const DocumentsPage = () => {
   const [show, setShow] = useState()
@@ -17,13 +18,15 @@ const DocumentsPage = () => {
       <Suspense fallback={<Spinner />}>
         <Layout>
           <Side show={show === 'search' ? true : false}>
+            <Heading variant="display">Search</Heading>
             <Search />
           </Side>
           <Main show={!show}>
-            <Heading>Documents</Heading>
+            <Heading variant="display">Documents</Heading>
             <DocumentsList show={!show} />
           </Main>
           <Side show={show === 'env' ? true : false}>
+            <Heading variant="display">Environments</Heading>
             <Environments />
           </Side>
         </Layout>
@@ -66,27 +69,22 @@ const DocumentsPage = () => {
 }
 export default DocumentsPage
 
-const Layout = styled(Flex).attrs({
-  sx: {
-    gap: [2, 3, 3],
-  },
-})``
 const Main = styled(Box).attrs({
-  width: [1, 1, 3 / 5],
+  width: [1, 1 / 3, 3 / 5],
 })`
 
-@media (max-width: ${({theme}) => theme.breakpoints[1]}) {
+@media (max-width: ${({theme}) => theme.breakpoints[0]}) {
 display: ${({show}) => (show ? 'block' : 'none')};
 `
 const Side = styled(Box).attrs({
-  width: [1, 1, 1 / 5],
-  display: ['none', 'none', 'block'],
+  width: [1, 1 / 3, 1 / 5],
+  display: ['none', 'block'],
 })`
-@media (max-width: ${({theme}) => theme.breakpoints[1]}) {
+@media (max-width: ${({theme}) => theme.breakpoints[0]}) {
 display: ${({show}) => (show ? 'block' : 'none')};
 
 `
 const Controls = styled(Box).attrs({
-  display: ['block', 'block', 'none'],
+  display: ['block', 'none'],
   sx: {position: 'fixed', bottom: 0, width: '100%'},
 })``

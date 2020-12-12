@@ -15,9 +15,8 @@ const Detail = props => (
 const Document = ({data}) => {
   return (
     <Box>
-      <Heading>{data.title}</Heading>
       <Card m={0} mb={2} p={2}>
-        <Text fontWeight="bold">Description</Text>
+        <Heading>Description</Heading>
         <Text>{data.summary}</Text>
       </Card>
       <Details>

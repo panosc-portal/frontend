@@ -1,2 +1,2 @@
-const breakpoints = ['37.5em', '56.25em', '75em', '112.5em']
+const breakpoints = ['600px', '900px', '1200px', '1800px']
 export default breakpoints

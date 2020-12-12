@@ -10,15 +10,14 @@ const useScrollPos = loading => {
   const handleScroll = useCallback(() => {
     if (!loading && window.scrollY !== 0) {
       setScrollPos(window.scrollY)
-      console.log(`updated scroll pos ${window.scrollY}`)
     }
   }, [setScrollPos, loading])
+  const handler = debounce(handleScroll, 500)
 
   useEffect(() => {
-    window.addEventListener('scroll', debounce(handleScroll, 500))
-    return () =>
-      window.removeEventListener('scroll', debounce(handleScroll, 500))
-  }, [handleScroll])
+    window.addEventListener('scroll', handler)
+    return () => window.removeEventListener('scroll', handler)
+  }, [handleScroll, handler])
 
   useEffect(() => {
     window.scrollTo(0, scrollPos)

@@ -22,22 +22,24 @@ const App = () => {
   return (
     <ThemeProvider theme={isDark ? dark : light}>
       <Global />
-      <Box as="nav" sx={{position: 'sticky', top: 0}}>
+      <Box as="nav" sx={{position: 'sticky', top: 0, mb: [4, 5]}}>
         <Navigation />
       </Box>
       {initialized && (
-        <ErrorBoundary>
-          <Suspense fallback={<Spinner />}>
-            <Route exact path="/" component={DocumentsPage} />
-            <Route exact path="/documents" component={DocumentsPage} />
-            <Route
-              exact
-              path="/documents/:documentId"
-              component={DocumentPage}
-            />
-            <Route path="/dashboard" component={Dashboard} />
-          </Suspense>
-        </ErrorBoundary>
+        <Box mx={[0, 2, 3, 4]}>
+          <ErrorBoundary>
+            <Suspense fallback={<Spinner />}>
+              <Route exact path="/" component={DocumentsPage} />
+              <Route exact path="/documents" component={DocumentsPage} />
+              <Route
+                exact
+                path="/documents/:documentId"
+                component={DocumentPage}
+              />
+              <Route path="/dashboard" component={Dashboard} />
+            </Suspense>
+          </ErrorBoundary>
+        </Box>
       )}
     </ThemeProvider>
   )
