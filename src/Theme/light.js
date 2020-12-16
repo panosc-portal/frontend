@@ -34,13 +34,6 @@ const theme = {
     nav: 32,
     image: 270,
   },
-  radii: {
-    default: 0,
-    circle: 99999,
-  },
-  shadows: {
-    card: '0 0 4px rgba(0, 0, 0, .125)',
-  },
   text: {
     heading: {
       fontFamily: 'heading',
@@ -134,6 +127,7 @@ const theme = {
       fontFamily: 'body',
       fontWeight: 'body',
       lineHeight: 'body',
+      fontSize: '10px',
     },
   },
   breakpoints,

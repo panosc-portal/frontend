@@ -70,17 +70,17 @@ const DocumentsPage = () => {
 export default DocumentsPage
 
 const Main = styled(Box).attrs({
-  width: [1, 1 / 3, 3 / 5],
+  width: [1, 1, 3 / 5],
 })`
 
-@media (max-width: ${({theme}) => theme.breakpoints[0]}) {
+@media (max-width: ${({theme}) => theme.breakpoints[1]}) {
 display: ${({show}) => (show ? 'block' : 'none')};
 `
 const Side = styled(Box).attrs({
-  width: [1, 1 / 3, 1 / 5],
-  display: ['none', 'block'],
+  width: [1, 1, 1 / 5],
+  display: ['none', 'none', 'block'],
 })`
-@media (max-width: ${({theme}) => theme.breakpoints[0]}) {
+@media (max-width: ${({theme}) => theme.breakpoints[1]}) {
 display: ${({show}) => (show ? 'block' : 'none')};
 
 `
