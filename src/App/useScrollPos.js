@@ -4,14 +4,14 @@ import debounce from 'lodash.debounce'
 
 import {useDocumentsStore} from '../App/stores'
 
-const useScrollPos = loading => {
-  const scrollPos = useDocumentsStore(state => state.scrollIndex)
-  const setScrollPos = useDocumentsStore(state => state.setScrollIndex)
+const useScrollPosition = loading => {
+  const scrollPosition = useDocumentsStore(state => state.scrollIndex)
+  const setScrollPosition = useDocumentsStore(state => state.setScrollIndex)
   const handleScroll = useCallback(() => {
     if (!loading && window.scrollY !== 0) {
-      setScrollPos(window.scrollY)
+      setScrollPosition(window.scrollY)
     }
-  }, [setScrollPos, loading])
+  }, [setScrollPosition, loading])
   const handler = debounce(handleScroll, 500)
 
   useEffect(() => {
@@ -20,8 +20,8 @@ const useScrollPos = loading => {
   }, [handleScroll, handler])
 
   useEffect(() => {
-    window.scrollTo(0, scrollPos)
-  }, [scrollPos, loading])
+    window.scrollTo(0, scrollPosition)
+  }, [scrollPosition, loading])
 }
 
-export default useScrollPos
+export default useScrollPosition
