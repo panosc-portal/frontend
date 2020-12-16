@@ -5,7 +5,7 @@ import {useForm} from 'react-hook-form'
 
 import {baseQuery, mockTechniques} from '../App/helpers'
 import {useSearchStore} from '../App/stores'
-import {Box, Button, Card, Heading} from '../Primitives'
+import {Box, Button, Card} from '../Primitives'
 
 const Search = () => {
   const [fields, setFields] = useState({})

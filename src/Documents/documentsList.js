@@ -6,7 +6,7 @@ import {useSWRInfinite} from 'swr'
 import ErrorBoundary from '../App/errorBoundary'
 import Spinner from '../App/spinner'
 import {useDocumentsStore, useSearchStore} from '../App/stores'
-import useScrollPos from '../App/useScrollPos'
+import useScrollPosition from '../App/useScrollPos'
 import {Box} from '../Primitives'
 import Document from './document'
 import Column from '../Layout/column'
@@ -43,7 +43,7 @@ const DocumentsList = ({show}) => {
   // const isItemLoaded = index => !hasMore || index < documents.length
   // const itemCount = () => (hasMore ? documents.length + 1 : documents.length)
 
-  useScrollPos(isLoadingInitialData || !show)
+  useScrollPosition(isLoadingInitialData || !show)
 
   const loadMore = useCallback(
     () =>
