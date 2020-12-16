@@ -8,6 +8,7 @@ const GlobalStyle = createGlobalStyle(
       backgroundColor: 'background',
       color: 'text',
       fontFamily: 'body',
+      fontSize: [0, 1],
     },
   })
 )
