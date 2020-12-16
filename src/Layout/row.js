@@ -6,7 +6,7 @@ export default props => (
   <Flex
     sx={{
       flexDirection: 'row',
-      flexWrap: ['wrap', 'nowrap'],
+      flexWrap: ['wrap', 'wrap', 'nowrap'],
       gap: [1, 2, 3, 4],
     }}
     className={props.className}
