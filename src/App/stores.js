@@ -23,20 +23,13 @@ const query = {
 
 export const useDocumentsStore = create(set => ({
   page: 1,
-  scrollIndex: 0,
-  setScrollIndex: scrollIndex => set(() => ({scrollIndex})),
-  restoredScroll: false,
-  setRestoredScroll: bool => set(() => ({bool})),
   setPage: page => set(() => ({page})),
+  scrollPosition: 0,
+  setScrollPosition: scrollPosition => set(() => ({scrollPosition})),
 }))
 
 export const useSearchStore = create(set => ({
   query,
   setQuery: object => set(() => ({query: object})),
   resetQuery: () => set(() => ({query})),
-}))
-
-export const useDatasetStore = create(set => ({
-  datasets: null,
-  setDatasets: data => set(() => ({data})),
 }))
