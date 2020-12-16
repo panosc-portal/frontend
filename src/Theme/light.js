@@ -127,7 +127,6 @@ const theme = {
       fontFamily: 'body',
       fontWeight: 'body',
       lineHeight: 'body',
-      fontSize: '10px',
     },
   },
   breakpoints,
