@@ -1,15 +1,14 @@
 import React, {Suspense} from 'react'
 
+import css from '@styled-system/css'
+import styled from 'styled-components'
 import useSWR from 'swr'
 
 import ErrorBoundary from '../App/errorBoundary'
 import {parseObjectToUri} from '../App/helpers'
 import Spinner from '../App/spinner'
 import Dataset from '../Datasets/dataset'
-import {Box} from '../Primitives'
 import Layout from '../Layout/column'
-import css from '@styled-system/css'
-import styled from 'styled-components'
 
 const Datasets = props => {
   const documentId = decodeURIComponent(
@@ -22,7 +21,7 @@ const Datasets = props => {
     include: [{relation: 'instrument'}],
   }
   const {data} = useSWR('/Datasets?filter=' + parseObjectToUri(query))
-  console.log(data)
+
   return (
     <SmallerGaps>
       <ErrorBoundary>
@@ -39,6 +38,6 @@ export default Datasets
 
 const SmallerGaps = styled(Layout)(
   css({
-    gap: [0, 1, 2, 3],
+    gap: [1, 1, 2, 3],
   })
 )

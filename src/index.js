@@ -9,7 +9,6 @@ import ErrorBoundary from './App/errorBoundary'
 import SWRProvider from './App/swrProvider'
 import keycloak from './keycloak'
 import * as serviceWorker from './serviceWorker'
-import {ThemeModeProvider} from './Theme/themeModeContext'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,11 +18,9 @@ ReactDOM.render(
         initConfig={{pkceMethod: 'S256', onLoad: 'check-sso'}}
       >
         <SWRProvider>
-          <ThemeModeProvider>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </ThemeModeProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </SWRProvider>
       </KeycloakProvider>
     </ErrorBoundary>

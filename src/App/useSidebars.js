@@ -3,11 +3,11 @@ import React, {Suspense, useState} from 'react'
 import {useWindowWidth} from '@react-hook/window-size'
 
 import ErrorBoundary from '../App/errorBoundary'
-import {Box, Link, Heading} from '../Primitives'
 import Spinner from '../App/spinner'
+import {Box, Link, Heading} from '../Primitives'
 import breakpoints from '../Theme/breakpoints'
 
-const useMobileNav = main => {
+const useSidebars = main => {
   const [showed, setShowed] = useState(encodeURIComponent(main))
   const windowWidth = useWindowWidth()
   const desktopView = windowWidth > parseInt(breakpoints[1]) * 16
@@ -80,4 +80,4 @@ const useMobileNav = main => {
   return {ControlButton, ControlWrapper, ControlBar, AutoArrange, showed}
 }
 
-export default useMobileNav
+export default useSidebars

@@ -4,9 +4,9 @@ import {useKeycloak} from '@react-keycloak/web'
 import useSWR from 'swr'
 
 import Spinner from '../App/spinner'
+import Column from '../Layout/column'
 import {Card} from '../Primitives'
 import Environment from './environment'
-import Column from '../Layout/column'
 
 const Environments = () => {
   const {keycloak} = useKeycloak()

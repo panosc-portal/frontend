@@ -10,9 +10,8 @@ import DocumentPage from '../Document/documentPage'
 import DocumentsPage from '../Documents/documentsPage'
 import Navigation from '../Navigation/navigation'
 import {Box} from '../Primitives'
-import dark from '../Theme/dark'
 import Global from '../Theme/global'
-import light from '../Theme/light'
+import theme from '../Theme/theme'
 import Spinner from './spinner'
 import {useThemeStore} from './stores'
 
@@ -20,7 +19,7 @@ const App = () => {
   const isDark = useThemeStore(state => state.isDark)
   const {initialized} = useKeycloak()
   return (
-    <ThemeProvider theme={isDark ? dark : light}>
+    <ThemeProvider theme={theme(isDark)}>
       <Global />
       <Box as="nav" sx={{position: 'sticky', top: 0, mb: [4, 5]}}>
         <Navigation />
