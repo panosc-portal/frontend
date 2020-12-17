@@ -1,4 +1,4 @@
-import React, {Suspense, useContext} from 'react'
+import React, {Suspense} from 'react'
 
 import {useKeycloak} from '@react-keycloak/web'
 import {Route} from 'react-router-dom'
@@ -13,11 +13,11 @@ import {Box} from '../Primitives'
 import dark from '../Theme/dark'
 import Global from '../Theme/global'
 import light from '../Theme/light'
-import ThemeModeContext from '../Theme/themeModeContext'
 import Spinner from './spinner'
+import {useThemeStore} from './stores'
 
 const App = () => {
-  const {isDark} = useContext(ThemeModeContext)
+  const isDark = useThemeStore(state => state.isDark)
   const {initialized} = useKeycloak()
   return (
     <ThemeProvider theme={isDark ? dark : light}>

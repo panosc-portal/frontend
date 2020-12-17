@@ -14,9 +14,6 @@ const Navigation = () => {
         PaNOSC
       </Link>
       <Box mx="auto" />
-      {/* <Link as={RouterLink} variant="nav" to="/dashboard"> */}
-      {/*   Dashboard */}
-      {/* </Link> */}
       <ToggleThemeButton />
       <LoginLogoutButton />
     </S.Flex>
@@ -31,12 +28,3 @@ S.Flex = styled(Flex).attrs({
   bg: 'nav',
   height: 'nav',
 })``
-
-S.SidebarControlls = styled(Link).attrs({
-  variant: 'nav',
-})`
-  display: none;
-  @media (max-width: ${({theme}) => theme.breakpoints[1]}) {
-    display: block;
-  }
-`
