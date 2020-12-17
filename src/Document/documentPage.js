@@ -4,14 +4,14 @@ import useSWR from 'swr'
 
 import ErrorBoundary from '../App/errorBoundary'
 import {baseQuery, parseObjectToUri} from '../App/helpers'
+import useSidebars from '../App/useSidebars'
 import Spinner from '../App/spinner'
+import Datasets from '../Datasets/datasets'
+import Environments from '../Environments/environments'
+import Column from '../Layout/column'
+import Layout from '../Layout/row'
 import {Heading, Box, Image} from '../Primitives'
 import Document from './document'
-import Datasets from '../Datasets/datasets'
-import Layout from '../Layout/row'
-import Column from '../Layout/column'
-import Environments from '../Environments/environments'
-import useMobileNav from '../App/mobileNav'
 
 const DocumentPage = props => {
   const documentId = props.match.params.documentId
@@ -58,7 +58,7 @@ const DocumentPage = props => {
     },
     {name: 'Environments', component: <Environments />, width: [1, 1, 1 / 4]},
   ]
-  const {AutoArrange} = useMobileNav('Document')
+  const {AutoArrange} = useSidebars('Document')
   return (
     <Layout>
       <AutoArrange sections={sections} />

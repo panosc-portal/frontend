@@ -1,18 +1,7 @@
 import breakpoints from './breakpoints'
-const theme = {
-  colors: {
-    text: 'hsl(0, 0%, 20%)',
-    background: 'hsl(0, 0%, 95%)',
-    nav: 'hsl(0,0%,90%)',
-    middleground: 'hsl(0, 0%, 87.5%)',
-    foreground: 'hsl(0, 0%, 75%)',
-    primary: '#07c',
-    secondary: '#30c',
-    muted: '#f6f6f9',
-    gray: '#dddddf',
-    highlight: 'hsla(205, 100%, 40%, 0.125)',
-    heading: 'hsl(0, 0%, 0%)',
-  },
+import {light, dark} from './colors'
+
+const theme = isDark => ({
   fonts: {
     body: 'Open Sans, system-ui, sans-serif',
     heading: 'inherit',
@@ -130,5 +119,6 @@ const theme = {
     },
   },
   breakpoints,
-}
+  colors: isDark ? dark : light,
+})
 export default theme
