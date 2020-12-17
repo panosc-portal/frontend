@@ -1,4 +1,4 @@
-import React, {Suspense, useCallback} from 'react'
+import React, {Suspense, useCallback, useEffect} from 'react'
 
 import useInView from 'react-cool-inview'
 import {useSWRInfinite} from 'swr'
@@ -7,15 +7,17 @@ import ErrorBoundary from '../App/errorBoundary'
 import Spinner from '../App/spinner'
 import {useDocumentsStore, useSearchStore} from '../App/stores'
 import useScrollPosition from '../App/useScrollPos'
+import Column from '../Layout/column'
 import {Box} from '../Primitives'
 import Document from './document'
-import Column from '../Layout/column'
 
-const DocumentsList = ({show}) => {
+const DocumentsList = ({showed}) => {
+  const notShowed = showed !== encodeURIComponent('Documents')
   // Data Fetching
   const limit = 5
 
   const initialSize = useDocumentsStore(state => state.page)
+  const setInitialSize = useDocumentsStore(state => state.setPage)
   const queryObject = useSearchStore(state => state.query)
 
   const {data, setSize, error, size} = useSWRInfinite(
@@ -43,8 +45,6 @@ const DocumentsList = ({show}) => {
   // const isItemLoaded = index => !hasMore || index < documents.length
   // const itemCount = () => (hasMore ? documents.length + 1 : documents.length)
 
-  useScrollPosition(isLoadingInitialData || !show)
-
   const loadMore = useCallback(
     () =>
       isLoadingMore
@@ -61,6 +61,17 @@ const DocumentsList = ({show}) => {
       observe()
     },
   })
+  const updateInitalSize = useCallback(() => {
+    setInitialSize(size)
+  }, [setInitialSize, size])
+
+  useEffect(() => {
+    return () => {
+      updateInitalSize()
+    }
+  }, [updateInitalSize])
+
+  useScrollPosition(isLoadingInitialData || notShowed)
 
   return (
     <ErrorBoundary>

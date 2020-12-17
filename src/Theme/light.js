@@ -3,8 +3,9 @@ const theme = {
   colors: {
     text: 'hsl(0, 0%, 20%)',
     background: 'hsl(0, 0%, 95%)',
-    middleground: 'hsl(0, 0%, 90%)',
-    foreground: 'hsl(0, 0%, 80%)',
+    nav: 'hsl(0,0%,90%)',
+    middleground: 'hsl(0, 0%, 87.5%)',
+    foreground: 'hsl(0, 0%, 75%)',
     primary: '#07c',
     secondary: '#30c',
     muted: '#f6f6f9',
@@ -101,7 +102,7 @@ const theme = {
       fontWeight: 'bold',
       color: 'primary',
       bg: 'foreground',
-      borderRadius: 'default',
+      borderRadius: 0,
       ':hover': {
         color: 'text',
       },

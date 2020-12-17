@@ -57,10 +57,10 @@ const Document = ({document}) => {
     <Spinner />
   ) : (
     <S.Layout>
-      <Box width={[1, 1, 2 / 5, 2 / 7]}>
+      <Box width={[1, 1 / 2, 2 / 5, 2 / 5, 2 / 7]}>
         <Image width="100%" src={document.img} />
       </Box>
-      <Card width={[1, 1, 3 / 5, 5 / 7]}>
+      <Card width={[1, 1 / 2, 3 / 5, 3 / 5, 5 / 7]}>
         <HeadingLink pid={document.pid} title={document.title} />
         <S.Keywords keywords={document.keywords} />
         <ClippedText mt={2} lineHeight="1.5" children={document.summary} />
@@ -80,10 +80,7 @@ S.Keywords = styled(Keywords)``
 S.Members = styled(Members)``
 S.CitationLink = styled(CitationLink)``
 S.Layout = styled(Flex).attrs({
-  sx: {
-    flexWrap: 'wrap',
-    width: '100%',
-  },
+  flexWrap: 'wrap',
 })`
   ${S.Members}, ${S.CitationLink} {
     display: none;
@@ -117,10 +114,13 @@ S.Tag = styled(Box).attrs({
 // S.Image = styled(Image).attrs({
 //   width: '100%',
 // })``
-const ClippedText = styled(Box)`
+const ClippedText = styled(Box).attrs({
+  sx: {
+    '-webkit-line-clamp': ['9', '6', '3', '3', '6'],
+  },
+})`
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 `

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@emotion-icons/remix-line": "^2.10.0",
+    "@react-hook/window-size": "^3.0.7",
     "@react-keycloak/web": "^2.1.4",
     "@rebass/forms": "^4.0.6",
     "@rebass/preset": "^4.0.5",

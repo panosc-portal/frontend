@@ -28,7 +28,7 @@ export default Navigation
 const S = {}
 
 S.Flex = styled(Flex).attrs({
-  bg: 'middleground',
+  bg: 'nav',
   height: 'nav',
 })``
 
