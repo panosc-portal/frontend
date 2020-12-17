@@ -3,6 +3,7 @@ const theme = {
   colors: {
     text: 'hsl(0, 0%, 80%)',
     background: 'hsl(0, 0%, 5%)',
+    nav: 'hsl(0, 0%, 10%)',
     middleground: 'hsl(0, 0%, 12.5%)',
     foreground: 'hsl(0, 0%, 25%)',
     primary: '#07c',

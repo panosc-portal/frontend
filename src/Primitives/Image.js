@@ -7,4 +7,5 @@ export default props => <SImage {...props} />
 
 const SImage = styled(Image)`
   display: block;
+  width: 100%;
 `
