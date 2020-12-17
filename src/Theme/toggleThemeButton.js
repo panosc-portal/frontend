@@ -1,12 +1,15 @@
-import React, {useContext} from 'react'
+import React from 'react'
 
+import {useThemeStore} from '../App/stores'
 import {Link} from '../Primitives'
-import ThemeModeContext from './themeModeContext'
 
 const ToggleThemeButton = () => {
-  const {toggle, isDark} = useContext(ThemeModeContext)
+  const [isDark, toggleTheme] = useThemeStore(state => [
+    state.isDark,
+    state.toggleTheme,
+  ])
   return (
-    <Link variant="nav" onClick={() => toggle()}>
+    <Link variant="nav" onClick={() => toggleTheme()}>
       {isDark ? 'Lighten' : 'Darken'}
     </Link>
   )

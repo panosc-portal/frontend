@@ -14,18 +14,18 @@ const DocumentsPage = () => {
     {
       name: 'Search',
       component: <Search />,
-      width: [1, 1, 3 / 16, 1 / 5],
+      width: [1, 1, 5 / 16, 1 / 5],
     },
     {
       name: 'Documents',
       component: <DocumentsList showed={showed} />,
-      width: [1, 1, 5 / 8, 3 / 5],
+      width: [1, 1, 6 / 16, 3 / 5],
     },
 
     {
       name: 'Environments',
       component: <Environments />,
-      width: [1, 1, 3 / 16, 1 / 5],
+      width: [1, 1, 5 / 16, 1 / 5],
     },
   ]
   return (

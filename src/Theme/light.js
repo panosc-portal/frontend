@@ -31,9 +31,7 @@ const theme = {
   },
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
   sizes: {
-    icon: 20,
     nav: 32,
-    image: 270,
   },
   text: {
     heading: {
@@ -50,6 +48,7 @@ const theme = {
       lineHeight: 'heading',
       marginBottom: 3,
       fontSize: [3, 4, 4, 5],
+      marginLeft: [2, 0],
     },
     caps: {
       textTransform: 'uppercase',

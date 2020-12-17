@@ -14,12 +14,13 @@ const theme = {
     heading: 'hsl(0, 0%, 100%)',
   },
   fonts: {
-    body: 'Ubuntu, system-ui, sans-serif',
+    body: 'Open Sans, system-ui, sans-serif',
     heading: 'inherit',
     monospace: 'Menlo, monospace',
   },
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 64, 96],
   fontWeights: {
+    light: 300,
     body: 400,
     heading: 700,
     bold: 700,
@@ -34,26 +35,21 @@ const theme = {
     nav: 32,
     image: 270,
   },
-  radii: {
-    default: 0,
-    circle: 99999,
-  },
-  shadows: {
-    card: '0 0 4px rgba(0, 0, 0, .125)',
-  },
   text: {
     heading: {
       fontFamily: 'heading',
       lineHeight: 'heading',
-      fontWeight: 'heading',
+      fontWeight: 'body',
       color: 'heading',
-      fontSize: [3, 4, 5, 6, 7],
+      fontSize: [1, 2, 2, 3],
+      mb: [1, 2],
     },
     display: {
       fontFamily: 'heading',
-      fontWeight: 'heading',
+      fontWeight: 'light',
       lineHeight: 'heading',
-      fontSize: [3, 4, 5, 6, 7],
+      marginBottom: 3,
+      fontSize: [3, 4, 4, 5],
     },
     caps: {
       textTransform: 'uppercase',
@@ -71,8 +67,13 @@ const theme = {
       bg: 'middleground',
     },
     badge: {
-      variant: 'variants.card',
       p: 1,
+      bg: 'foreground',
+    },
+    keyword: {
+      p: [1],
+      mr: [1],
+      my: [1],
       bg: 'foreground',
     },
     link: {
@@ -84,7 +85,7 @@ const theme = {
       },
     },
     nav: {
-      fontSize: 1,
+      fontSize: [0, 1],
       fontWeight: 'bold',
       display: 'inline-block',
       p: 2,
@@ -101,7 +102,7 @@ const theme = {
       fontWeight: 'bold',
       color: 'primary',
       bg: 'foreground',
-      borderRadius: 'default',
+      borderRadius: 0,
       ':hover': {
         color: 'text',
       },
