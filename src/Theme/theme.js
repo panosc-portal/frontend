@@ -55,6 +55,7 @@ const theme = isDark => {
       card: {
         p: 3,
         bg: 'middleground',
+        lineHeight: 'body',
       },
       badge: {
         p: 1,

@@ -11,8 +11,8 @@ import Column from '../Layout/column'
 import {Box} from '../Primitives'
 import Document from './document'
 
-const DocumentsList = ({showed}) => {
-  const notShowed = showed !== encodeURIComponent('Documents')
+const DocumentsList = ({isShowing, name}) => {
+  const notShowed = isShowing !== name
   // Data Fetching
   const limit = 5
 
@@ -42,14 +42,9 @@ const DocumentsList = ({showed}) => {
     isLoadingInitialData ||
     (size > 0 && data && typeof data[size - 1] === 'undefined')
   const hasMore = !!data[data.length - 1].length
-  // const isItemLoaded = index => !hasMore || index < documents.length
-  // const itemCount = () => (hasMore ? documents.length + 1 : documents.length)
 
   const loadMore = useCallback(
-    () =>
-      isLoadingMore
-        ? false
-        : data?.[0]?.length === 0 || setSize(size => size + 1),
+    () => isLoadingMore || data?.[0]?.length === 0 || setSize(size => size + 1),
     [data, setSize, isLoadingMore]
   )
 
