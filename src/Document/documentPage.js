@@ -58,10 +58,10 @@ const DocumentPage = props => {
     },
     {name: 'Environments', component: <Environments />, width: [1, 1, 1 / 4]},
   ]
-  const {AutoArrange} = useSidebars('Document')
+  const {Arrange} = useSidebars('Document')
   return (
     <Layout>
-      <AutoArrange sections={sections} />
+      <Arrange sections={sections} />
     </Layout>
   )
 }

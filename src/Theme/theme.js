@@ -4,6 +4,7 @@ import {light, dark} from './colors'
 const theme = isDark => {
   return {
     colors: isDark ? dark : light,
+    breakpoints,
     fonts: {
       body: 'Open Sans, system-ui, sans-serif',
       heading: 'inherit',
@@ -22,7 +23,7 @@ const theme = isDark => {
     },
     space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
     sizes: {
-      nav: 32,
+      nav: 60,
     },
     text: {
       heading: {
@@ -39,7 +40,6 @@ const theme = isDark => {
         lineHeight: 'heading',
         marginBottom: 3,
         fontSize: [3, 4, 4, 5],
-        marginLeft: [2, 0],
       },
       caps: {
         textTransform: 'uppercase',
@@ -120,7 +120,6 @@ const theme = isDark => {
         lineHeight: 'body',
       },
     },
-    breakpoints,
   }
 }
 export default theme
