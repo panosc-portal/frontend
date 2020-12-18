@@ -8,7 +8,7 @@ const useScrollPosition = loading => {
   const scrollPosition = useDocumentsStore(state => state.scrollPosition)
   const setScrollPosition = useDocumentsStore(state => state.setScrollPosition)
   const handleScroll = useCallback(() => {
-    if (!loading && window.scrollY !== 0) {
+    if (!loading) {
       setScrollPosition(window.scrollY)
     }
   }, [setScrollPosition, loading])

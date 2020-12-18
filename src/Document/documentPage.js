@@ -47,7 +47,7 @@ const DocumentPage = props => {
 
   const sections = [
     {
-      name: 'Document',
+      name: data.title,
       component: <Document data={data} />,
       width: [1, 1, 1 / 2],
     },
@@ -58,10 +58,10 @@ const DocumentPage = props => {
     },
     {name: 'Environments', component: <Environments />, width: [1, 1, 1 / 4]},
   ]
-  const {Arrange} = useSidebars('Document')
+  const {Arrange} = useSidebars(sections)
   return (
     <Layout>
-      <Arrange sections={sections} />
+      <Arrange />
     </Layout>
   )
 }
