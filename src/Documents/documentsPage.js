@@ -9,7 +9,7 @@ import Layout from '../Layout/row'
 import Search from '../Search/search'
 
 const DocumentsPage = () => {
-  const {AutoArrange, showed} = useSidebars('Documents')
+  const {Arrange, showed} = useSidebars('Documents')
   const sections = [
     {
       name: 'Search',
@@ -32,7 +32,7 @@ const DocumentsPage = () => {
     <ErrorBoundary>
       <Suspense fallback={<Spinner />}>
         <Layout>
-          <AutoArrange sections={sections} />
+          <Arrange sections={sections} />
         </Layout>
       </Suspense>
     </ErrorBoundary>

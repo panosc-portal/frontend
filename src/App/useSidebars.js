@@ -11,7 +11,7 @@ const useSidebars = main => {
   const [showed, setShowed] = useState(encodeURIComponent(main))
   const windowWidth = useWindowWidth()
   const desktopView = windowWidth > parseInt(breakpoints[1]) * 16
-  const ControlButton = props => {
+  const SBButton = props => {
     const identifier = encodeURIComponent(props.name)
     return (
       <Link
@@ -27,7 +27,7 @@ const useSidebars = main => {
       </Link>
     )
   }
-  const ControlWrapper = props => {
+  const SBWrapper = props => {
     const identifier = encodeURIComponent(props.name)
 
     return (
@@ -39,7 +39,7 @@ const useSidebars = main => {
       )
     )
   }
-  const ControlBar = props => (
+  const SBBar = props => (
     <Box
       sx={{
         position: 'fixed',
@@ -55,29 +55,29 @@ const useSidebars = main => {
       {props.children}
     </Box>
   )
-  const AutoArrange = ({sections}) => (
+  const Arrange = ({sections}) => (
     <>
       {sections.map((section, index) => (
-        <ControlWrapper key={index} width={section.width} name={section.name}>
+        <SBWrapper key={index} width={section.width} name={section.name}>
           <ErrorBoundary>
             <Suspense fallback={<Spinner />}>{section.component}</Suspense>
           </ErrorBoundary>
-        </ControlWrapper>
+        </SBWrapper>
       ))}
 
-      <ControlBar>
+      <SBBar>
         {sections.map((section, index) => (
-          <ControlButton
+          <SBButton
             key={index}
             width={1 / sections.length}
             name={section.name}
           />
         ))}
-      </ControlBar>
+      </SBBar>
     </>
   )
 
-  return {ControlButton, ControlWrapper, ControlBar, AutoArrange, showed}
+  return {SBButton, SBWrapper, SBBar, Arrange, showed}
 }
 
 export default useSidebars
