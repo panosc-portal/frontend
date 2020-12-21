@@ -4,8 +4,8 @@ import useSWR from 'swr'
 
 import ErrorBoundary from '../App/errorBoundary'
 import {baseQuery, parseObjectToUri} from '../App/helpers'
-import useSidebars from '../App/useSidebars'
 import Spinner from '../App/spinner'
+import useSidebars from '../App/useSidebars'
 import Datasets from '../Datasets/datasets'
 import Environments from '../Environments/environments'
 import Column from '../Layout/column'
@@ -56,7 +56,7 @@ const DocumentPage = props => {
       component: <DatasetsVisualisation />,
       width: [1, 1, 1 / 4],
     },
-    {name: 'Environments', component: <Environments />, width: [1, 1, 1 / 4]},
+    {name: 'Analysis', component: <Environments />, width: [1, 1, 1 / 4]},
   ]
   const {Arrange} = useSidebars(sections)
   return (

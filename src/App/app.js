@@ -25,7 +25,7 @@ const App = () => {
         <Navigation />
       </Box>
       {initialized && (
-        <Box mx={[1, 2, 3, 4]}>
+        <Box mx={[4, 4, 4, 5]}>
           <ErrorBoundary>
             <Suspense fallback={<Spinner />}>
               <Route exact path="/" component={DocumentsPage} />
