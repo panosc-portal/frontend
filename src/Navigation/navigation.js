@@ -1,8 +1,6 @@
 import React, {useState} from 'react'
 
-import css from '@styled-system/css'
 import {NavLink} from 'react-router-dom'
-import styled from 'styled-components'
 
 import {useNavigationStore, useThemeStore} from '../App/stores'
 import {Image, Button, Flex, Box} from '../Primitives'
@@ -58,7 +56,7 @@ const Navigation = () => {
         textAlign: 'right',
         px: 2,
         height: '100%',
-        ':hover': {bg: 'background'},
+        ':hover': {bg: !showHamburger && 'background'},
         outline: 'none',
       }}
       {...props}
@@ -113,6 +111,7 @@ const Navigation = () => {
           <Home />
         </SectionLink>
       )}
+
       {sections.map(section => {
         if (section.overrideHome) {
           return false
@@ -127,8 +126,11 @@ const Navigation = () => {
           )
         )
       })}
+
       <Box mx="auto" />
+
       <Hamburger />
+
       <HamburgerContent show={showHamburger}>
         <HamburgerLink>
           <ToggleThemeButton />
