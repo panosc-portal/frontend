@@ -98,11 +98,23 @@ const theme = isDark => {
           color: 'text',
         },
       },
-      outline: {
-        variant: 'buttons.primary',
-        color: 'primary',
-        bg: 'transparent',
-        boxShadow: 'inset 0 0 2px',
+      nav: {
+        color: 'text',
+        fontWeight: 'bold',
+        fontSize: 2,
+        border: 0,
+        outline: 'none',
+        cursor: 'pointer',
+        borderRadius: 0,
+        p: 0,
+        px: 2,
+        height: '100%',
+        bg: ['foreground', 'foreground', 'transparent'],
+
+        ':hover': {
+          color: 'primary',
+          bg: ['background'],
+        },
       },
       secondary: {
         variant: 'buttons.primary',

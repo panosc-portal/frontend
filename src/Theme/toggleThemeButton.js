@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {useThemeStore} from '../App/stores'
-import {Link} from '../Primitives'
+import {Button} from '../Primitives'
 
 const ToggleThemeButton = () => {
   const [isDark, toggleTheme] = useThemeStore(state => [
@@ -9,9 +9,9 @@ const ToggleThemeButton = () => {
     state.toggleTheme,
   ])
   return (
-    <Link variant="nav" onClick={() => toggleTheme()}>
+    <Button variant="nav" onClick={() => toggleTheme()}>
       {isDark ? 'Lighten' : 'Darken'}
-    </Link>
+    </Button>
   )
 }
 export default ToggleThemeButton

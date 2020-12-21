@@ -2,20 +2,20 @@ import React from 'react'
 
 import {useKeycloak} from '@react-keycloak/web'
 
-import {Link} from '../Primitives'
+import {Button} from '../Primitives'
 
 const LoginLogoutButton = () => {
   const {keycloak} = useKeycloak()
   return (
     <>
       {keycloak.authenticated ? (
-        <Link variant="nav" onClick={() => keycloak.logout()}>
+        <Button variant="nav" onClick={() => keycloak.logout()}>
           Logout
-        </Link>
+        </Button>
       ) : (
-        <Link variant="nav" onClick={() => keycloak.login()}>
+        <Button variant="nav" onClick={() => keycloak.login()}>
           Login
-        </Link>
+        </Button>
       )}
     </>
   )

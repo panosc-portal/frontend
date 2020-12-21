@@ -5,9 +5,8 @@ import {useWindowWidth} from '@react-hook/window-size'
 import ErrorBoundary from '../App/errorBoundary'
 import Spinner from '../App/spinner'
 import {useNavigationStore} from '../App/stores'
-import {Box, Text, Link, Heading} from '../Primitives'
+import {Box, Heading} from '../Primitives'
 import breakpoints from '../Theme/breakpoints'
-import {S} from '../Navigation/navigation'
 
 const useSidebars = (sections, main) => {
   const [isShowing, setIsShowing] = useState(sections[main ?? 0].name)
@@ -16,21 +15,18 @@ const useSidebars = (sections, main) => {
   const desktopView = windowWidth > parseInt(breakpoints[1]) * 16
 
   useEffect(() => {
-    const NavigationButtons = () =>
-      sections.map((section, index) => (
-        <SBButton key={index} name={section.name} />
-      ))
-    setSections(NavigationButtons())
-  }, [sections, setSections])
+    const sectionsObj = sections.map((section, index) => ({
+      key: index,
+      active: isShowing === section.name,
+      main: main ?? 0 === index,
+      name: section.name,
+      onClick: () => setIsShowing(section.name),
+      desktopView,
+      overrideHome: section.overrideHome,
+    }))
 
-  const SBButton = props => (
-    <S.NavItem
-      onClick={() => setIsShowing(props.name)}
-      className={isShowing === props.name && 'active'}
-    >
-      {props.name.length > 15 ? `${props.name.substring(0, 15)}..` : props.name}
-    </S.NavItem>
-  )
+    setSections(sectionsObj)
+  }, [sections, setSections, isShowing, main, desktopView])
 
   const SBWrapper = props =>
     (props.name === isShowing || desktopView) && (

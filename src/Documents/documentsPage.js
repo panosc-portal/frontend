@@ -1,14 +1,15 @@
 import React, {Suspense} from 'react'
 
 import {useKeycloak} from '@react-keycloak/web'
+
+import About from '../About/about'
 import ErrorBoundary from '../App/errorBoundary'
-import useSidebars from '../App/useSidebars'
 import Spinner from '../App/spinner'
+import useSidebars from '../App/useSidebars'
 import DocumentsList from '../Documents/documentsList'
 import Environments from '../Environments/environments'
 import Layout from '../Layout/row'
 import Search from '../Search/search'
-import About from '../About/about'
 
 const DocumentsPage = () => {
   const {keycloak} = useKeycloak()
@@ -25,17 +26,18 @@ const DocumentsPage = () => {
     },
     keycloak.authenticated
       ? {
-          name: 'Environments',
+          name: 'Dashboard',
           component: <Environments />,
           width: [1, 1, 5 / 16, 1 / 5],
         }
       : {
-          name: 'PaNOSC',
+          name: 'About PaNOSC',
           component: <About />,
           width: [1, 1, 5 / 16, 1 / 5],
+          overrideHome: true,
         },
   ]
-  const {Arrange} = useSidebars(sections, 1)
+  const {Arrange} = useSidebars(sections, keycloak.authenticated ? 1 : 2)
   return (
     <ErrorBoundary>
       <Suspense fallback={<Spinner />}>
