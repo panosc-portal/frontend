@@ -1,7 +1,5 @@
 import create from 'zustand'
 
-import breakpoints from '../Theme/breakpoints'
-
 const query = {
   include: [
     {
@@ -52,7 +50,6 @@ export const useAppStore = create((set, get) => ({
   },
   windowWidth: false,
   setWindowWidth: n => set(() => ({windowWidth: n})),
-  desktopView: () => get().windowWidth > parseInt(breakpoints[1]) * 16,
 }))
 
 export const useNavigationStore = create(set => ({

@@ -1,20 +1,24 @@
 import React, {useState} from 'react'
 
+import {useKeycloak} from '@react-keycloak/web'
 import {NavLink} from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 
+import {isDesktop} from '../App/helpers'
 import {useNavigationStore, useAppStore} from '../App/stores'
 import {Image, Button, Flex, Box} from '../Primitives'
-import ToggleThemeButton from '../Theme/toggleThemeButton'
-import LoginLogoutButton from './loginLogoutButton'
+import toggleTheme from '../Theme/toggleThemeButton'
+import loginLogout from './loginLogoutButton'
 import BurgerIcon from './menu.svg'
 
 const Navigation = () => {
-  const [isDark, desktopView] = useAppStore(state => [
+  const [isDark, windowWidth] = useAppStore(state => [
     state.isDark,
-    state.desktopView,
+    state.windowWidth,
   ])
   const sections = useNavigationStore(state => state.sections)
   const [showBurger, setShowBurger] = useState(false)
+  const {keycloak} = useKeycloak()
 
   //Component refactor needed!
   const SectionLink = props => (
@@ -23,29 +27,17 @@ const Navigation = () => {
         height: '100%',
         flexDirection: 'column',
         justifyContent: 'center',
-        fontSize: 2,
+        fontSize: [0, 1],
         cursor: 'pointer',
         bg: props.active ? 'background' : 'nav',
         color: props.active ? 'text' : 'primary',
+        borderRight: '2px solid',
+        borderColor: 'background',
+        fontWeight: 600,
         textTransform: 'uppercase',
         px: 3,
         ':hover': {color: 'text', bg: 'background'},
-      }}
-      {...props}
-    />
-  )
-  const BurgerLink = props => (
-    <Flex
-      sx={{
-        height: ['nav', 'nav', '100%'],
-        flexDirection: 'column',
-        justifyContent: 'center',
-        fontSize: 2,
-        cursor: 'pointer',
-        bg: props.active ? 'background' : 'nav',
-        color: props.active ? 'text' : 'primary',
-        textTransform: 'uppercase',
-        ':hover': {color: 'text'},
+        '&.active': {bg: isDesktop(windowWidth) && 'background'},
       }}
       {...props}
     />
@@ -55,7 +47,6 @@ const Navigation = () => {
     <Button
       bg={showBurger ? ['foreground'] : ['nav']}
       sx={{
-        display: ['block', 'block', 'none'],
         textAlign: 'right',
         py: 3,
         height: '100%',
@@ -65,39 +56,71 @@ const Navigation = () => {
       {...props}
       onClick={() => setShowBurger(!showBurger)}
     >
-      <img src={BurgerIcon} alt="Royal Cheese" height="25px" width="25px" />
+      <Image src={BurgerIcon} variant="navIcon" notWide />
     </Button>
   )
-  const BurgerContent = props => (
-    <Box
+  const BurgerContent = props =>
+    props.show && (
+      <Flex
+        sx={{
+          flexDirection: 'column',
+          position: 'fixed',
+          left: 0,
+          top: '60px',
+          width: '100%',
+          height: '100%',
+          bg: 'foreground',
+        }}
+        onClick={() => setShowBurger(!showBurger)}
+      >
+        {props.children}
+      </Flex>
+    )
+  const BurgerLink = props => (
+    <Flex
       sx={{
-        display: props.show ? ['flex'] : ['none', 'none', 'flex'],
-        flexDirection: ['column', 'column', 'row'],
-        position: ['fixed', 'fixed', 'static'],
-        top: ['60px', '60px', 'unset'],
-        left: [0, 0, 'unset'],
-        width: ['100%', '100%', 'unset'],
-        height: ['100%'],
-        bg: 'foreground',
+        height: 'nav',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        fontSize: 2,
+        cursor: 'pointer',
+        bg: props.active ? 'background' : 'nav',
+        color: props.active ? 'text' : 'primary',
+        textTransform: 'uppercase',
+        ':hover': {color: 'text'},
       }}
-      onClick={() => setShowBurger(!showBurger)}
+      {...props}
     >
-      {props.children}
-    </Box>
+      {props.name}
+    </Flex>
   )
 
   const overrideHome = sections.find(s => s.overrideHome)
+  const mainComponent = sections.find(s => s.main)
 
   const Home = () => (
-    <Box height={['20px']}>
+    <Box height={'navIcon'} p={0} onClick={() => mainComponent?.onClick()}>
       <Image
         height="100%"
         width="unset"
         alt="PaNOSC logo"
-        src={!isDark ? '/PaNOSC_logo_black.svg' : '/PaNOSC_logo_white.svg'}
+        src={
+          keycloak.authenticated
+            ? '/panosc_plain.svg'
+            : !isDark
+            ? '/PaNOSC_logo_black.svg'
+            : '/PaNOSC_logo_white.svg'
+        }
       />
     </Box>
   )
+  const isHome = useLocation().pathname === '/'
+  const Breadcrumb = () =>
+    isHome || (
+      <SectionLink {...mainComponent}>{mainComponent?.name}</SectionLink>
+    )
 
   return (
     <Flex
@@ -116,13 +139,14 @@ const Navigation = () => {
           <Home />
         </SectionLink>
       )}
+      <Breadcrumb />
 
       {sections.map(section => {
         if (section.overrideHome) {
           return false
         }
         return (
-          desktopView || (
+          isDesktop(windowWidth) || (
             <SectionLink {...section}>
               {section.name.length > 15
                 ? `${section.name.substring(0, 14)}...`
@@ -137,12 +161,8 @@ const Navigation = () => {
       <Burger />
 
       <BurgerContent show={showBurger}>
-        <BurgerLink>
-          <ToggleThemeButton />
-        </BurgerLink>
-        <BurgerLink>
-          <LoginLogoutButton />
-        </BurgerLink>
+        <BurgerLink {...toggleTheme()} />
+        <BurgerLink {...loginLogout()} />
       </BurgerContent>
     </Flex>
   )

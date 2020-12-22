@@ -23,7 +23,6 @@ const DocumentsPage = () => {
       name: 'Data',
       component: <DocumentsList name="Data" />,
       width: [1, 1, 6 / 16, 3 / 5],
-      overrideHome: keycloak.authenticated,
     },
     keycloak.authenticated
       ? {
@@ -32,13 +31,12 @@ const DocumentsPage = () => {
           width: [1, 1, 5 / 16, 1 / 5],
         }
       : {
-          name: 'About PaNOSC',
+          name: 'About',
           component: <About />,
           width: [1, 1, 5 / 16, 1 / 5],
-          overrideHome: true,
         },
   ]
-  const {Arrange} = useSidebars(sections, keycloak.authenticated ? 1 : 2)
+  const {Arrange} = useSidebars(sections, 1)
   return (
     <ErrorBoundary>
       <Suspense fallback={<Spinner />}>

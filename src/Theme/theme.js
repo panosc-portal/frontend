@@ -23,6 +23,7 @@ const theme = isDark => {
     },
     space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
     sizes: {
+      navIcon: 25,
       nav: 60,
     },
     text: {
@@ -85,6 +86,10 @@ const theme = isDark => {
         ':hover,:focus,.active': {
           color: 'primary',
         },
+      },
+      navIcon: {
+        width: 'navIcon',
+        height: 'navIcon',
       },
     },
     buttons: {
