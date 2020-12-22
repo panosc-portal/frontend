@@ -23,6 +23,7 @@ const DocumentsPage = () => {
       name: 'Data',
       component: <DocumentsList name="Data" />,
       width: [1, 1, 6 / 16, 3 / 5],
+      overrideHome: keycloak.authenticated,
     },
     keycloak.authenticated
       ? {

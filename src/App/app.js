@@ -1,5 +1,6 @@
-import React, {Suspense} from 'react'
+import React, {Suspense, useEffect} from 'react'
 
+import {useWindowWidth} from '@react-hook/window-size'
 import {useKeycloak} from '@react-keycloak/web'
 import {Route} from 'react-router-dom'
 import {ThemeProvider} from 'styled-components'
@@ -13,11 +14,16 @@ import {Box} from '../Primitives'
 import Global from '../Theme/global'
 import theme from '../Theme/theme'
 import Spinner from './spinner'
-import {useThemeStore} from './stores'
+import {useAppStore} from './stores'
 
 const App = () => {
-  const isDark = useThemeStore(state => state.isDark)
+  const [isDark, setWindowWidth] = useAppStore(state => [
+    state.isDark,
+    state.setWindowWidth,
+  ])
   const {initialized} = useKeycloak()
+  const windowWidth = useWindowWidth()
+  useEffect(() => setWindowWidth(windowWidth), [windowWidth, setWindowWidth])
   return (
     <ThemeProvider theme={theme(isDark)}>
       <Global />

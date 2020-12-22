@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {useThemeStore} from '../App/stores'
+import {useAppStore} from '../App/stores'
 import {Button} from '../Primitives'
 
 const ToggleThemeButton = () => {
-  const [isDark, toggleTheme] = useThemeStore(state => [
+  const [isDark, toggleTheme] = useAppStore(state => [
     state.isDark,
     state.toggleTheme,
   ])
