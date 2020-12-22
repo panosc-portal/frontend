@@ -1,5 +1,7 @@
 import moment from 'moment'
 
+import breakpoints from '../Theme/breakpoints'
+
 export const parseDate = date => moment(date).format('L')
 
 export const mockTechniques = [
@@ -46,3 +48,5 @@ export const documentSize = datasets => {
   const sum = datasets.map(item => item.size).reduce((acc, val) => acc + val, 0)
   return `${sum} MB`
 }
+
+export const isDesktop = width => width > parseInt(breakpoints[1]) * 16
