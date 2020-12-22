@@ -1,5 +1,7 @@
 import create from 'zustand'
 
+import breakpoints from '../Theme/breakpoints'
+
 const query = {
   include: [
     {
@@ -41,13 +43,16 @@ export const useSearchStore = create(set => ({
   resetQuery: () => set(() => ({query})),
 }))
 
-export const useThemeStore = create((set, get) => ({
+export const useAppStore = create((set, get) => ({
   isDark: preset,
   toggleTheme: () => {
     const newTheme = !get().isDark
     localStorage.setItem('isDark', newTheme)
     set(() => ({isDark: newTheme}))
   },
+  windowWidth: false,
+  setWindowWidth: n => set(() => ({windowWidth: n})),
+  desktopView: () => get().windowWidth > parseInt(breakpoints[1]) * 16,
 }))
 
 export const useNavigationStore = create(set => ({

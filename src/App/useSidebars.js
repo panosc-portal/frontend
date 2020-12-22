@@ -1,18 +1,14 @@
 import React, {Suspense, useState, useEffect, cloneElement} from 'react'
 
-import {useWindowWidth} from '@react-hook/window-size'
-
 import ErrorBoundary from '../App/errorBoundary'
 import Spinner from '../App/spinner'
-import {useNavigationStore} from '../App/stores'
+import {useNavigationStore, useAppStore} from '../App/stores'
 import {Box, Heading} from '../Primitives'
-import breakpoints from '../Theme/breakpoints'
 
 const useSidebars = (sections, main) => {
   const [isShowing, setIsShowing] = useState(sections[main ?? 0].name)
   const setSections = useNavigationStore(state => state.setSections)
-  const windowWidth = useWindowWidth()
-  const desktopView = windowWidth > parseInt(breakpoints[1]) * 16
+  const desktopView = useAppStore(state => state.desktopView)
 
   useEffect(() => {
     const sectionsObj = sections.map((section, index) => ({
@@ -21,7 +17,6 @@ const useSidebars = (sections, main) => {
       main: main ?? 0 === index,
       name: section.name,
       onClick: () => setIsShowing(section.name),
-      desktopView,
       overrideHome: section.overrideHome,
     }))
 

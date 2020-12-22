@@ -113,7 +113,7 @@ const theme = isDark => {
 
         ':hover': {
           color: 'primary',
-          bg: ['background'],
+          bg: ['foreground', 'foreground', 'background'],
         },
       },
       secondary: {
