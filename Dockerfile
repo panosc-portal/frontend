@@ -1,8 +1,10 @@
 FROM node:10-alpine as build-step
+
 RUN mkdir /app
 WORKDIR /app
 COPY package.json /app
-RUN npm install
+COPY yarn.lock /app
+RUN yarn install
 COPY . /app
 
 ARG SEARCH
