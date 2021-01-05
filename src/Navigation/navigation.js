@@ -4,7 +4,6 @@ import {useKeycloak} from '@react-keycloak/web'
 import {NavLink} from 'react-router-dom'
 import {useLocation} from 'react-router-dom'
 
-import {isDesktop} from '../App/helpers'
 import {useNavigationStore, useAppStore} from '../App/stores'
 import {Image, Button, Flex, Box} from '../Primitives'
 import toggleTheme from '../Theme/toggleThemeButton'
@@ -12,13 +11,14 @@ import loginLogout from './loginLogoutButton'
 import BurgerIcon from './menu.svg'
 
 const Navigation = () => {
-  const [isDark, windowWidth] = useAppStore(state => [
+  const [isDark, isDesktop] = useAppStore(state => [
     state.isDark,
-    state.windowWidth,
+    state.isDesktop,
   ])
   const sections = useNavigationStore(state => state.sections)
   const [showBurger, setShowBurger] = useState(false)
   const {keycloak} = useKeycloak()
+  console.log(isDesktop)
 
   //Component refactor needed!
   const SectionLink = props => (
@@ -35,9 +35,9 @@ const Navigation = () => {
         borderColor: 'background',
         fontWeight: 600,
         textTransform: 'uppercase',
-        px: 3,
+        px: [1, 2, 3],
         ':hover': {color: 'text', bg: 'background'},
-        '&.active': {bg: isDesktop(windowWidth) && 'background'},
+        '&.active': {bg: isDesktop && 'background'},
       }}
       {...props}
     />
@@ -101,7 +101,7 @@ const Navigation = () => {
   const mainComponent = sections.find(s => s.main)
 
   const Home = () => (
-    <Box height={'navIcon'} p={0} onClick={() => mainComponent?.onClick()}>
+    <Box height={'navIcon'} p={[1, 0]} onClick={() => mainComponent?.onClick()}>
       <Image
         height="100%"
         width="unset"
@@ -118,9 +118,10 @@ const Navigation = () => {
   )
   const isHome = useLocation().pathname === '/'
   const Breadcrumb = () =>
-    isHome || (
+    isHome ||
+    (isDesktop && (
       <SectionLink {...mainComponent}>{mainComponent?.name}</SectionLink>
-    )
+    ))
 
   return (
     <Flex
@@ -142,11 +143,8 @@ const Navigation = () => {
       <Breadcrumb />
 
       {sections.map(section => {
-        if (section.overrideHome) {
-          return false
-        }
         return (
-          isDesktop(windowWidth) || (
+          isDesktop || (
             <SectionLink {...section}>
               {section.name.length > 15
                 ? `${section.name.substring(0, 14)}...`

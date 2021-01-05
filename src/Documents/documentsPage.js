@@ -5,7 +5,7 @@ import {useKeycloak} from '@react-keycloak/web'
 import About from '../About/about'
 import ErrorBoundary from '../App/errorBoundary'
 import Spinner from '../App/spinner'
-import useSidebars from '../App/useSidebars'
+import useSections from '../App/useSections'
 import DocumentsList from '../Documents/documentsList'
 import Environments from '../Environments/environments'
 import Layout from '../Layout/row'
@@ -36,7 +36,7 @@ const DocumentsPage = () => {
           width: [1, 1, 5 / 16, 1 / 5],
         },
   ]
-  const {Arrange} = useSidebars(sections, 1)
+  const {Arrange} = useSections(sections, 1)
   return (
     <ErrorBoundary>
       <Suspense fallback={<Spinner />}>
