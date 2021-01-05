@@ -1,5 +1,8 @@
 import React, {Suspense, useState, useEffect, cloneElement} from 'react'
 
+import {useSwipeable} from 'react-swipeable'
+import {findIndex, propEq} from 'ramda'
+
 import ErrorBoundary from '../App/errorBoundary'
 import Spinner from '../App/spinner'
 import {useNavigationStore, useAppStore} from '../App/stores'
@@ -10,6 +13,16 @@ const useSections = (sections, main) => {
   const [isShowing, setIsShowing] = useState(sections[mainComponent].name)
   const setSections = useNavigationStore(state => state.setSections)
   const isDesktop = useAppStore(state => state.isDesktop)
+
+  const shown = findIndex(propEq('name', isShowing), sections)
+  const handlers = useSwipeable({
+    onSwipedLeft: () =>
+      setIsShowing(sections[Math.abs((shown + 1) % sections.length)].name),
+    onSwipedRight: () =>
+      setIsShowing(sections[Math.abs((shown - 1) % sections.length)].name),
+  })
+
+  console.log(shown)
 
   useEffect(() => {
     //save sections to navigation store
@@ -30,26 +43,29 @@ const useSections = (sections, main) => {
     setSections(sectionsObj)
   }, [sections, mainComponent, setSections, isShowing])
 
-  const Arrange = () =>
-    sections.map(
-      (section, index) =>
-        (section.name === isShowing || isDesktop) && (
-          <Box
-            key={index}
-            width={section.width ?? [1, 1, 1 / 3]}
-            name={section.name}
-          >
-            <ErrorBoundary>
-              <Suspense fallback={<Spinner />}>
-                {section.hideTitle || (
-                  <Heading variant="display">{section.name}</Heading>
-                )}
-                {cloneElement(section.component, {isShowing})}
-              </Suspense>
-            </ErrorBoundary>
-          </Box>
-        )
-    )
+  const Arrange = () => (
+    <Box {...handlers}>
+      {sections.map(
+        (section, index) =>
+          (section.name === isShowing || isDesktop) && (
+            <Box
+              key={index}
+              width={isDesktop ? section.width ?? [1, 1, 1 / 3] : [1]}
+              name={section.name}
+            >
+              <ErrorBoundary>
+                <Suspense fallback={<Spinner />}>
+                  {section.hideTitle || (
+                    <Heading variant="display">{section.name}</Heading>
+                  )}
+                  {cloneElement(section.component, {isShowing})}
+                </Suspense>
+              </ErrorBoundary>
+            </Box>
+          )
+      )}
+    </Box>
+  )
 
   return {Arrange, isShowing}
 }
