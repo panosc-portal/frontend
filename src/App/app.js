@@ -11,19 +11,25 @@ import DocumentPage from '../Document/documentPage'
 import DocumentsPage from '../Documents/documentsPage'
 import Navigation from '../Navigation/navigation'
 import {Box} from '../Primitives'
+import breakpoints from '../Theme/breakpoints'
 import Global from '../Theme/global'
 import theme from '../Theme/theme'
 import Spinner from './spinner'
 import {useAppStore} from './stores'
 
 const App = () => {
-  const [isDark, setWindowWidth] = useAppStore(state => [
+  const [isDark, setWindowWidth, setIsDesktop] = useAppStore(state => [
     state.isDark,
     state.setWindowWidth,
+    state.setIsDesktop,
   ])
   const {initialized} = useKeycloak()
   const windowWidth = useWindowWidth()
-  useEffect(() => setWindowWidth(windowWidth), [windowWidth, setWindowWidth])
+  useEffect(() => {
+    setWindowWidth(windowWidth)
+    setIsDesktop(windowWidth > parseInt(breakpoints[1]) * 16)
+  }, [windowWidth, setWindowWidth, setIsDesktop])
+  console.log(windowWidth > parseInt(breakpoints[1]) * 16)
   return (
     <ThemeProvider theme={theme(isDark)}>
       <Global />

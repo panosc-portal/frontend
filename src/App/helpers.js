@@ -49,4 +49,3 @@ export const documentSize = datasets => {
   return `${sum} MB`
 }
 
-export const isDesktop = width => width > parseInt(breakpoints[1]) * 16
