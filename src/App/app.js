@@ -25,11 +25,12 @@ const App = () => {
   ])
   const {initialized} = useKeycloak()
   const windowWidth = useWindowWidth()
+
   useEffect(() => {
     setWindowWidth(windowWidth)
     setIsDesktop(windowWidth > parseInt(breakpoints[1]) * 16)
   }, [windowWidth, setWindowWidth, setIsDesktop])
-  console.log(windowWidth > parseInt(breakpoints[1]) * 16)
+
   return (
     <ThemeProvider theme={theme(isDark)}>
       <Global />

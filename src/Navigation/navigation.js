@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 import {useKeycloak} from '@react-keycloak/web'
 import {NavLink} from 'react-router-dom'
@@ -18,7 +18,8 @@ const Navigation = () => {
   const sections = useNavigationStore(state => state.sections)
   const [showBurger, setShowBurger] = useState(false)
   const {keycloak} = useKeycloak()
-  console.log(isDesktop)
+
+  useEffect(() => sections && setShowBurger(false), [sections, setShowBurger])
 
   //Component refactor needed!
   const SectionLink = props => (
