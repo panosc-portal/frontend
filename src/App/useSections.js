@@ -1,7 +1,10 @@
+/* Originally this hook did way less and was nice and clean,
+ * not sure I still like it but does the job */
+
 import React, {Suspense, useState, useEffect, cloneElement} from 'react'
 
-import {useSwipeable} from 'react-swipeable'
 import {findIndex, propEq} from 'ramda'
+import {useSwipeable} from 'react-swipeable'
 
 import ErrorBoundary from '../App/errorBoundary'
 import Spinner from '../App/spinner'
@@ -14,15 +17,18 @@ const useSections = (sections, main) => {
   const setSections = useNavigationStore(state => state.setSections)
   const isDesktop = useAppStore(state => state.isDesktop)
 
+  //how heavy is too heavy? :(
   const shown = findIndex(propEq('name', isShowing), sections)
   const handlers = useSwipeable({
     onSwipedLeft: () =>
-      setIsShowing(sections[Math.abs((shown + 1) % sections.length)].name),
+      setIsShowing(sections[(shown + 1) % sections.length].name),
     onSwipedRight: () =>
-      setIsShowing(sections[Math.abs((shown - 1) % sections.length)].name),
+      setIsShowing(
+        sections[
+          (shown !== 0 ? shown - 1 : sections.length - 1) % sections.length
+        ].name
+      ),
   })
-
-  console.log(shown)
 
   useEffect(() => {
     //save sections to navigation store
@@ -44,7 +50,7 @@ const useSections = (sections, main) => {
   }, [sections, mainComponent, setSections, isShowing])
 
   const Arrange = () => (
-    <Box {...handlers}>
+    <>
       {sections.map(
         (section, index) =>
           (section.name === isShowing || isDesktop) && (
@@ -55,16 +61,18 @@ const useSections = (sections, main) => {
             >
               <ErrorBoundary>
                 <Suspense fallback={<Spinner />}>
-                  {section.hideTitle || (
-                    <Heading variant="display">{section.name}</Heading>
-                  )}
-                  {cloneElement(section.component, {isShowing})}
+                  <Box {...handlers}>
+                    {section.hideTitle || (
+                      <Heading variant="display">{section.name}</Heading>
+                    )}
+                    {cloneElement(section.component, {isShowing})}
+                  </Box>
                 </Suspense>
               </ErrorBoundary>
             </Box>
           )
       )}
-    </Box>
+    </>
   )
 
   return {Arrange, isShowing}
