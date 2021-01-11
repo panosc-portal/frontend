@@ -56,7 +56,7 @@ const useSections = (sections, main) => {
           (section.name === isShowing || isDesktop) && (
             <Box
               key={index}
-              width={isDesktop ? section.width ?? [1, 1, 1 / 3] : [1]}
+              width={section.width ?? [1, 1, 1 / 3]}
               name={section.name}
             >
               <ErrorBoundary>
