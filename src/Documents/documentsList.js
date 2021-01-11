@@ -12,8 +12,6 @@ import {Box} from '../Primitives'
 import Document from './document'
 
 const DocumentsList = ({isShowing, name}) => {
-  const notShowed = isShowing !== name
-  // Data Fetching
   const limit = 5
 
   const initialSize = useDocumentsStore(state => state.page)
@@ -66,6 +64,7 @@ const DocumentsList = ({isShowing, name}) => {
     }
   }, [updateInitalSize])
 
+  const notShowed = isShowing !== name
   useScrollPosition(isLoadingInitialData || notShowed)
 
   return (
@@ -75,7 +74,7 @@ const DocumentsList = ({isShowing, name}) => {
           {documents?.map(document => (
             <Document document={document} key={document.pid} />
           ))}
-          {hasMore && <Box ref={ref}>Loading...</Box>}
+          {/* {hasMore && <Box ref={ref}>Loading...</Box>} */}
         </Column>
       </Suspense>
     </ErrorBoundary>

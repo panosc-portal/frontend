@@ -39,6 +39,8 @@ export const useSearchStore = create(set => ({
   query,
   setQuery: obj => set(() => ({query: obj})),
   resetQuery: () => set(() => ({query})),
+  buttons: [],
+  setButtons: arr => set(() => ({buttons: arr})),
 }))
 
 export const useAppStore = create((set, get) => ({
