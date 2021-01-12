@@ -74,7 +74,7 @@ const DocumentsList = ({isShowing, name}) => {
           {documents?.map(document => (
             <Document document={document} key={document.pid} />
           ))}
-          {/* {hasMore && <Box ref={ref}>Loading...</Box>} */}
+          {hasMore && <Box ref={ref}>Loading...</Box>}
         </Column>
       </Suspense>
     </ErrorBoundary>
