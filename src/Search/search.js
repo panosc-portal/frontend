@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useState} from 'react'
 
 import {Input} from '@rebass/forms'
 import styled from 'styled-components'
@@ -20,13 +20,18 @@ const Search = () => {
     state.resetQuery,
   ])
 
+  const [filters, setFilters] = useState([])
+
+  const techniques = query.where?.keywords?.inq ?? []
+  const title = query.where?.title?.ilike ?? ''
+
   const addTechnique = technique =>
-    produce(query.where?.keywords?.inq ?? [], draftTechniques => {
+    produce(techniques, draftTechniques => {
       draftTechniques.push(technique)
     })
 
   const removeTechnique = technique =>
-    produce(query.where?.keywords?.inq ?? [], draftTechniques => {
+    produce(techniques, draftTechniques => {
       draftTechniques.splice(
         draftTechniques.findIndex(t => t === technique),
         1
@@ -34,22 +39,19 @@ const Search = () => {
     })
 
   const handleTechnique = technique =>
-    query.where?.keywords?.inq.includes(technique)
+    techniques.includes(technique)
       ? removeTechnique(technique)
       : addTechnique(technique)
 
-  const debouncedTitleChange = debounce(
-    title => update(title, query.where?.keywords?.inq ?? []),
-    500
-  )
+  const debouncedTitleChange = debounce(title => update(title, techniques), 500)
 
   const handleTitle = e => debouncedTitleChange(e.target.value)
 
   const isApplied = technique =>
-    query.where?.keywords?.inq.includes(technique) ? 'red' : 'text'
+    techniques.includes(technique) ? 'red' : 'text'
 
   const stripTechniques = obj =>
-    isEmpty(obj.where?.keywords?.inq) || isNil(obj.where?.keywords?.inq)
+    isEmpty(obj.where?.keywords?.inq)
       ? dissocPath(['where', 'keywords'], obj)
       : obj
   const stripTitle = obj =>
@@ -76,6 +78,7 @@ const Search = () => {
   const updateQuery = useCallback(
     newQuery => {
       const qq = mergeDeepWith(concat, newQuery, baseQuery)
+      console.log(qq)
       setQuery(qq)
     },
     [setQuery]
@@ -101,7 +104,7 @@ const Search = () => {
         id="title"
         placeholder="Search titles"
         name="title"
-        defaultValue={query.where?.title?.ilike}
+        defaultValue={title}
         onChange={handleTitle}
       />
       <Flex
@@ -113,13 +116,8 @@ const Search = () => {
         {mockTechniques.map((technique, index) => (
           <S.Button
             key={index}
-            color={isApplied()}
-            onClick={() =>
-              update(
-                query.where?.title?.ilike ?? '',
-                handleTechnique(technique)
-              )
-            }
+            color={techniques.includes(technique) ? 'red' : 'blue'}
+            onClick={() => update(title, handleTechnique(technique))}
           >
             {technique}
           </S.Button>
