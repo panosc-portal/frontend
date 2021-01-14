@@ -39,6 +39,28 @@ export const baseQuery = {
   ],
 }
 
+export const baseQueryWhere = {
+  include: [
+    {
+      relation: 'datasets',
+    },
+    {
+      relation: 'members',
+      scope: {
+        include: [
+          {
+            relation: 'affiliation',
+          },
+          {
+            relation: 'person',
+          },
+        ],
+      },
+    },
+  ],
+  where: {keywords: {inq: []}, title: {ilike: ''}},
+}
+
 export const parseObjectToUri = object =>
   encodeURIComponent(JSON.stringify(object))
 

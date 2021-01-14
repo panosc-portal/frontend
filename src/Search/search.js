@@ -5,9 +5,19 @@ import styled from 'styled-components'
 import produce from 'immer'
 
 import debounce from 'lodash.debounce'
-import {baseQuery} from '../App/helpers'
+import {baseQueryWhere, baseQuery} from '../App/helpers'
 
-import {isNil, concat, compose, mergeDeepWith, isEmpty, dissocPath} from 'ramda'
+import {
+  isNil,
+  concat,
+  view,
+  compose,
+  mergeDeepWith,
+  isEmpty,
+  set,
+  dissocPath,
+  lensPath,
+} from 'ramda'
 
 import {mockTechniques} from '../App/helpers'
 import {useSearchStore} from '../App/stores'
@@ -19,8 +29,6 @@ const Search = () => {
     state.setQuery,
     state.resetQuery,
   ])
-
-  const [filters, setFilters] = useState([])
 
   const techniques = query.where?.keywords?.inq ?? []
   const title = query.where?.title?.ilike ?? ''
