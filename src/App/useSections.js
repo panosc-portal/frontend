@@ -3,7 +3,6 @@
 
 import React, {Suspense, useState, useEffect, cloneElement} from 'react'
 
-import {findIndex, propEq} from 'ramda'
 import {useSwipeable} from 'react-swipeable'
 
 import ErrorBoundary from '../App/errorBoundary'
@@ -13,35 +12,35 @@ import {Box, Heading} from '../Primitives'
 
 const useSections = (sections, main) => {
   const mainComponent = main ?? 0
-  const [isShowing, setIsShowing] = useState(sections[mainComponent].name)
+  const [isShowing, setIsShowing] = useState({
+    index: mainComponent,
+    name: sections[mainComponent].name,
+  })
   const setSections = useNavigationStore(state => state.setSections)
   const isDesktop = useAppStore(state => state.isDesktop)
 
-  //how heavy is too heavy? :(
-  const shown = findIndex(propEq('name', isShowing), sections)
   const handlers = useSwipeable({
-    onSwipedLeft: () =>
-      setIsShowing(sections[(shown + 1) % sections.length].name),
-    onSwipedRight: () =>
-      setIsShowing(
-        sections[
-          (shown !== 0 ? shown - 1 : sections.length - 1) % sections.length
-        ].name
-      ),
+    onSwipedLeft: () => {
+      const toShow = (isShowing.index + 1) % sections.length
+      setIsShowing({index: toShow, name: sections[toShow].name})
+    },
+    onSwipedRight: () => {
+      const toShow =
+        (isShowing.index !== 0 ? isShowing.index - 1 : sections.length - 1) %
+        sections.length
+      setIsShowing({index: toShow, name: sections[toShow].name})
+    },
   })
 
   useEffect(() => {
-    //save sections to navigation store
     const sectionsObj = sections.map((section, index) => ({
       key: index,
       //indicates whether section is being shown
       active: isShowing === section.name,
       //whether is shown as default on page view
       main: mainComponent === index,
-      //does state & titles
       name: section.name,
-      //changes which component is being shown
-      onClick: () => setIsShowing(section.name),
+      onClick: () => setIsShowing({index, name: section.name}),
       //whether homebutton should be overriden and point to this section
       overrideHome: section.overrideHome,
     }))
@@ -53,7 +52,7 @@ const useSections = (sections, main) => {
     <>
       {sections.map(
         (section, index) =>
-          (section.name === isShowing || isDesktop) && (
+          (index === isShowing.index || isDesktop) && (
             <Box
               key={index}
               width={section.width ?? [1, 1, 1 / 3]}
