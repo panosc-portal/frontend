@@ -48,31 +48,28 @@ const useSections = (sections, main) => {
     setSections(sectionsObj)
   }, [sections, mainComponent, setSections, isShowing])
 
-  const Arrange = () => (
-    <>
-      {sections.map(
-        (section, index) =>
-          (index === isShowing.index || isDesktop) && (
-            <Box
-              key={index}
-              width={section.width ?? [1, 1, 1 / 3]}
-              name={section.name}
-            >
-              <ErrorBoundary>
-                <Suspense fallback={<Spinner />}>
-                  <Box {...handlers}>
-                    {section.hideTitle || (
-                      <Heading variant="display">{section.name}</Heading>
-                    )}
-                    {cloneElement(section.component, {isShowing})}
-                  </Box>
-                </Suspense>
-              </ErrorBoundary>
-            </Box>
-          )
-      )}
-    </>
-  )
+  const Arrange = () =>
+    sections.map(
+      (section, index) =>
+        (index === isShowing.index || isDesktop) && (
+          <Box
+            key={index}
+            width={section.width ?? [1, 1, 1 / 3]}
+            name={section.name}
+          >
+            <ErrorBoundary>
+              <Suspense fallback={<Spinner />}>
+                <Box {...handlers}>
+                  {section.hideTitle || (
+                    <Heading variant="display">{section.name}</Heading>
+                  )}
+                  {cloneElement(section.component, {isShowing})}
+                </Box>
+              </Suspense>
+            </ErrorBoundary>
+          </Box>
+        )
+    )
 
   return {Arrange, isShowing}
 }
