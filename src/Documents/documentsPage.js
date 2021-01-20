@@ -11,10 +11,11 @@ import Environments from '../Environments/environments'
 import Layout from '../Layout/row'
 import Search from '../Search/search'
 
-import parse, {filters} from '../Search/parser'
+import getSearchString, {filters} from '../Search/parser'
 
 const DocumentsPage = () => {
-  console.log(parse(filters))
+  // console.log(getSearchString(filters))
+
   const {keycloak} = useKeycloak()
   const sections = [
     {
