@@ -64,7 +64,7 @@ const DocumentsList = ({isShowing, name}) => {
     }
   }, [updateInitalSize])
 
-  const notShowed = isShowing !== name
+  const notShowed = isShowing.name !== name
   useScrollPosition(isLoadingInitialData || notShowed)
 
   return (
