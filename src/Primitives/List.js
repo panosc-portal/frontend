@@ -23,6 +23,6 @@ S.ul = styled.ul(
 )
 S.li = styled.li(
   css({
-    color: 'red',
+    color: 'pink',
   })
 )
