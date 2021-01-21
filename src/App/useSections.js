@@ -36,7 +36,7 @@ const useSections = (sections, main) => {
     const sectionsObj = sections.map((section, index) => ({
       key: index,
       //indicates whether section is being shown
-      active: isShowing === section.name,
+      active: isShowing.name === section.name,
       //whether is shown as default on page view
       main: mainComponent === index,
       name: section.name,
