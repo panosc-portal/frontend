@@ -43,7 +43,12 @@ const CitationLink = ({citation, doi, className}) => (
 )
 
 const Keywords = ({keywords, className}) => (
-  <Flex className={className}>
+  <Flex
+    sx={{
+      gap: [1, 2],
+    }}
+    className={className}
+  >
     {keywords.map((keyword, index) => (
       <Card variant="badge" key={index}>
         {keyword}
