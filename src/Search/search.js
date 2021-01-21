@@ -1,27 +1,15 @@
 import React, {useCallback, useState} from 'react'
 
 import {Input} from '@rebass/forms'
-import styled from 'styled-components'
 import produce from 'immer'
-
 import debounce from 'lodash.debounce'
-import {baseQueryWhere, baseQuery} from '../App/helpers'
+import {concat, compose, mergeDeepWith, isEmpty, dissocPath} from 'ramda'
+import styled from 'styled-components'
 
-import {
-  isNil,
-  concat,
-  view,
-  compose,
-  mergeDeepWith,
-  isEmpty,
-  set,
-  dissocPath,
-  lensPath,
-} from 'ramda'
-
+import {baseQuery} from '../App/helpers'
 import {mockTechniques} from '../App/helpers'
 import {useSearchStore} from '../App/stores'
-import {Box, Flex, Button} from '../Primitives'
+import {Box, Card, Heading, Flex, Button} from '../Primitives'
 
 const Search = () => {
   const [query, setQuery, resetQuery] = useSearchStore(state => [
@@ -31,6 +19,8 @@ const Search = () => {
   ])
 
   const techniques = query.where?.keywords?.inq ?? []
+  const [usedTechniques, setUsedTechniques] = useState(techniques)
+
   const title = query.where?.title?.ilike ?? ''
 
   const addTechnique = technique =>
@@ -46,17 +36,25 @@ const Search = () => {
       )
     })
 
-  const handleTechnique = technique =>
-    techniques.includes(technique)
-      ? removeTechnique(technique)
-      : addTechnique(technique)
+  const handleTechnique = technique => {
+    if (techniques.includes(technique)) {
+      const newTechniques = produce(usedTechniques, draft => {
+        return draft.filter(t => t !== technique)
+      })
+      setUsedTechniques(newTechniques)
+      return removeTechnique(technique)
+    } else {
+      const newTechniques = produce(usedTechniques, draft => {
+        draft.push(technique)
+      })
+      setUsedTechniques(newTechniques)
+      return addTechnique(technique)
+    }
+  }
 
   const debouncedTitleChange = debounce(title => update(title, techniques), 500)
 
   const handleTitle = e => debouncedTitleChange(e.target.value)
-
-  const isApplied = technique =>
-    techniques.includes(technique) ? 'red' : 'text'
 
   const stripTechniques = obj =>
     isEmpty(obj.where?.keywords?.inq)
@@ -86,7 +84,6 @@ const Search = () => {
   const updateQuery = useCallback(
     newQuery => {
       const qq = mergeDeepWith(concat, newQuery, baseQuery)
-      console.log(qq)
       setQuery(qq)
     },
     [setQuery]
@@ -101,38 +98,52 @@ const Search = () => {
   )
 
   return (
-    <Flex
-      sx={{
-        bg: 'middleground',
-        flexDirection: 'column',
-        gap: 3,
-      }}
-    >
-      <Input
-        id="title"
-        placeholder="Search titles"
-        name="title"
-        defaultValue={title}
-        onChange={handleTitle}
-      />
+    <Card>
       <Flex
         sx={{
+          bg: 'middleground',
           flexDirection: 'column',
-          gap: 1,
+          gap: 3,
         }}
       >
-        {mockTechniques.map((technique, index) => (
-          <S.Button
-            key={index}
-            color={techniques.includes(technique) ? 'red' : 'blue'}
-            onClick={() => update(title, handleTechnique(technique))}
+        <S.Input
+          sx={{
+            outline: 0,
+            border: 0,
+            fontSize: 2,
+          }}
+          id="title"
+          placeholder="Search by title"
+          name="title"
+          defaultValue={title}
+          onChange={handleTitle}
+        />
+        <Box>
+          <Heading variant="small">Techniques</Heading>
+          <Flex
+            sx={{
+              flexDirection: 'column',
+              gap: 1,
+              pl: 3,
+            }}
           >
-            {technique}
-          </S.Button>
-        ))}
+            {mockTechniques.map((technique, index) => (
+              <S.Button
+                key={index}
+                color={usedTechniques.includes(technique) ? 'pink' : 'text'}
+                fontWeight={usedTechniques.includes(technique) ? 700 : 400}
+                onClick={() => update(title, handleTechnique(technique))}
+              >
+                {technique}
+              </S.Button>
+            ))}
+          </Flex>
+        </Box>
+        <S.Button onClick={() => resetQuery() || setUsedTechniques([])}>
+          Clear All
+        </S.Button>
       </Flex>
-      <S.Button onClick={() => resetQuery()}>Clear All</S.Button>
-    </Flex>
+    </Card>
   )
 }
 
@@ -143,9 +154,18 @@ const S = {}
 S.Button = styled(Button).attrs({
   width: 1 / 1,
   sx: {
+    mx: 0,
+    px: 0,
+    my: 0,
+    py: 1,
     fontWeight: 400,
     outline: 'none',
     textAlign: 'left',
     bg: 'middleground',
+    '&:hover': {color: 'pink'},
   },
 })``
+
+S.Input = styled(Input)`
+  background-color: ${({theme}) => theme.colors.background}!important;
+`
