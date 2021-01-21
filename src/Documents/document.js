@@ -43,16 +43,12 @@ const CitationLink = ({citation, doi, className}) => (
 )
 
 const Keywords = ({keywords, className}) => (
-<<<<<<< HEAD
-  <Flex className={className}>
-=======
   <Flex
     sx={{
       gap: [1, 2],
     }}
     className={className}
   >
->>>>>>> fix-keywords-gap
     {keywords.map((keyword, index) => (
       <Card variant="badge" key={index}>
         {keyword}
