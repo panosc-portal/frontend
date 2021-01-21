@@ -2,9 +2,8 @@ import React from 'react'
 
 import styled from 'styled-components'
 
-import {Box, Card, Heading, Image, Link, Text, Flex} from '../Primitives'
+import {Box, Card, Heading, Link, Text} from '../Primitives'
 
-const Details = props => <S.Details>{props.children}</S.Details>
 const Detail = props => (
   <S.Detail>
     <S.Text fontWeight="bold">{props.caption}</S.Text>
@@ -15,11 +14,11 @@ const Detail = props => (
 const Document = ({data}) => {
   return (
     <Box>
-      <Card m={0} mb={2} p={2}>
+      <Card>
         <Heading>Description</Heading>
         <Text>{data.summary}</Text>
       </Card>
-      <Details>
+      <Box>
         <Detail caption="Citation">
           <Link to={'http://doi.org/' + data.doi} target="_blank">
             {data.citation}
@@ -31,7 +30,7 @@ const Document = ({data}) => {
         <Detail caption="Type">{data.type}</Detail>
         <Detail caption="Author">{data.members[0]?.person.fullName}</Detail>
         <Detail caption="Other">Stuff</Detail>
-      </Details>
+      </Box>
     </Box>
   )
 }
@@ -47,29 +46,10 @@ S.Box = styled(Box).attrs({
     gridTemplateRows: 'min-content 1fr',
   },
 })``
-S.LeftFlex = styled(Flex).attrs({
-  sx: {
-    flexDirection: 'column',
-    gap: [4],
-    gridColumn: '1/2',
-  },
-})``
-S.RightFlex = styled(Flex).attrs({
-  sx: {
-    flexDirection: 'column',
-    gap: [4],
-    gridColumn: '2/3',
-    gridRow: '1/-1',
-  },
-})``
-S.Image = styled(Image)`
-  display: block;
-`
 S.Card = styled(Card).attrs({
   marginBottom: 0,
 })``
-S.Details = styled(Box)``
-S.Detail = styled(Card).attrs({
+S.Detail = styled(Box).attrs({
   sx: {
     display: 'grid',
     gridTemplateColumns: '25% 1fr',
@@ -82,6 +62,6 @@ S.Detail = styled(Card).attrs({
 })``
 S.Text = styled(Text).attrs({
   bg: 'middleground',
-  p: [1],
+  px: [1, 2, 3, 4],
   py: [2],
 })``

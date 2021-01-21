@@ -42,6 +42,11 @@ const theme = isDark => {
         marginBottom: 3,
         fontSize: [3, 4, 4, 5],
       },
+      small: {
+        fontSize: [2],
+        fontWeight: 600,
+        mb: 2,
+      },
       caps: {
         textTransform: 'uppercase',
         letterSpacing: '0.1em',
@@ -54,7 +59,7 @@ const theme = isDark => {
         borderRadius: 'circle',
       },
       card: {
-        p: 3,
+        p: [1, 2, 3, 4],
         bg: 'middleground',
         lineHeight: 'body',
       },
@@ -94,7 +99,7 @@ const theme = isDark => {
     },
     buttons: {
       primary: {
-        fontSize: [2, 1, 1, 1, 4],
+        fontSize: [2],
         fontWeight: 'bold',
         color: 'primary',
         bg: 'foreground',
