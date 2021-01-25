@@ -1,7 +1,6 @@
 import React, {Suspense, useEffect} from 'react'
 
 import {useWindowWidth} from '@react-hook/window-size'
-import {useKeycloak} from '@react-keycloak/web'
 import {Route} from 'react-router-dom'
 import {ThemeProvider} from 'styled-components'
 
@@ -23,7 +22,6 @@ const App = () => {
     state.setWindowWidth,
     state.setIsDesktop,
   ])
-  const {initialized} = useKeycloak()
   const windowWidth = useWindowWidth()
 
   useEffect(() => {
@@ -37,22 +35,20 @@ const App = () => {
       <Box as="nav" sx={{position: 'sticky', top: 0, mb: [4, 5]}}>
         <Navigation />
       </Box>
-      {initialized && (
-        <Box mx={[4, 4, 4, 5]}>
-          <ErrorBoundary>
-            <Suspense fallback={<Spinner />}>
-              <Route exact path="/" component={DocumentsPage} />
-              <Route exact path="/documents" component={DocumentsPage} />
-              <Route
-                exact
-                path="/documents/:documentId"
-                component={DocumentPage}
-              />
-              <Route path="/dashboard" component={Dashboard} />
-            </Suspense>
-          </ErrorBoundary>
-        </Box>
-      )}
+      <Box mx={[4, 4, 4, 5]}>
+        <ErrorBoundary>
+          <Suspense fallback={<Spinner />}>
+            <Route exact path="/" component={DocumentsPage} />
+            <Route exact path="/documents" component={DocumentsPage} />
+            <Route
+              exact
+              path="/documents/:documentId"
+              component={DocumentPage}
+            />
+            <Route path="/dashboard" component={Dashboard} />
+          </Suspense>
+        </ErrorBoundary>
+      </Box>
     </ThemeProvider>
   )
 }
