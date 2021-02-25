@@ -11,7 +11,7 @@ const SWRProvider = ({children}) => {
       ? keycloak.authenticated
         ? process.env.REACT_APP_API + url
         : false
-      : process.env.REACT_APP_SEARCH ?? 'http://localhost:5000/api' + url
+      : process.env.REACT_APP_SEARCH + url ?? 'http://localhost:5000/api' + url
   const fetcher = url => {
     console.log(getUrlWithBase(url))
     const access_token = keycloak?.token ?? ''
