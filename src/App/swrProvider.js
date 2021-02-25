@@ -13,6 +13,7 @@ const SWRProvider = ({children}) => {
         : false
       : process.env.REACT_APP_SEARCH ?? 'http://localhost:5000/api' + url
   const fetcher = url => {
+    console.log(getUrlWithBase(url))
     const access_token = keycloak?.token ?? ''
     const method = url.endsWith('token') ? 'post' : 'get'
     return (
