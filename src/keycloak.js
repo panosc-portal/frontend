@@ -1,11 +1,19 @@
 import Keycloak from 'keycloak-js'
-import {isEmpty} from 'ramda'
+import {isNil} from 'ramda'
 
-const config = {
-  url: isEmpty(process.env.REACT_APP_KEYCLOAK_URL) ? 'http://localhost:8080/auth' : process.env.REACT_APP_KEYCLOAK_URL,
-  realm: isEmpty(process.env.REACT_APP_KEYCLOAK_REALM) ? 'default' : process.env.REACT_APP_KEYCLOAK_REALM,
-  clientId: isEmpty(process.env.REACT_APP_KEYCLOAK_CLIENT_ID) ? 'account' : process.env.REACT_APP_KEYCLOAK_CLIENT_ID
-}
+const getConfig = () => ({
+  url: isNil(process.env.REACT_APP_KEYCLOAK_URL)
+    ? 'http://localhost:8080/auth'
+    : process.env.REACT_APP_KEYCLOAK_URL,
+  realm: isNil(process.env.REACT_APP_KEYCLOAK_REALM)
+    ? 'default'
+    : process.env.REACT_APP_KEYCLOAK_REALM,
+  clientId: isNil(process.env.REACT_APP_KEYCLOAK_CLIENT_ID)
+    ? 'account'
+    : process.env.REACT_APP_KEYCLOAK_CLIENT_ID,
+})
+
+const config = getConfig()
 
 const keycloak = new Keycloak(config)
 

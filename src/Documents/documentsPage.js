@@ -9,7 +9,13 @@ import useSections from '../App/useSections'
 import DocumentsList from '../Documents/documentsList'
 import Environments from '../Environments/environments'
 import Layout from '../Layout/row'
+import parser, {filters, config} from '../Search/parser'
 import Search from '../Search/search'
+
+//debug
+
+const query = parser(config, filters)
+console.log(query)
 
 const DocumentsPage = () => {
   const {keycloak} = useKeycloak()
