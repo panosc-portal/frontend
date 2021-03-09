@@ -1,3 +1,5 @@
+//refactor needed af!
+
 import * as R from 'ramda'
 
 const parser = R.curry((config, filters) => {
@@ -44,10 +46,28 @@ const parser = R.curry((config, filters) => {
       ? {[filter.operator]: filter?.value}
       : filter?.value,
   })
+  const handleParamNonParam = filter =>
+    filter?.target[filter.target.length - 1] === 'parameters'
+      ? makeParameter(filter)
+      : makeNonParameter(filter)
+
+  //remove the assoc target by altering fn composition
+  const handleMany = filter => {
+    const many = R.map(
+      R.pipe(R.assoc('target', filter.target), handleParamNonParam)
+    )(R.prop('filters', filter))
+    return {[filter.operator]: many}
+  }
+  const handleSingleOrMany = R.ifElse(
+    R.has('filters'),
+    handleMany,
+    handleParamNonParam
+  )
   const skeleton = R.pipe(
     R.map(R.pipe(R.prop('target'), createPathFromTarget)),
     R.reduce(R.mergeDeepLeft, {}),
     R.mergeDeepRight(plainQuery),
+    //broken by design
     R.assoc('where', R.map(makeNonParameter, whereFilters))
   )(includeFilters)
 
@@ -70,22 +90,6 @@ const parser = R.curry((config, filters) => {
     ]
     return filter.unit ? {and: [...arr, {unit: filter.unit}]} : {and: arr}
   }
-  const handleParamNonParam = filter =>
-    filter?.target[filter.target.length - 1] === 'parameters'
-      ? makeParameter(filter)
-      : makeNonParameter(filter)
-
-  const handleMany = filter => {
-    const many = R.map(
-      R.pipe(R.assoc('target', filter.target), handleParamNonParam)
-    )(R.prop('filters', filter))
-    return {[filter.operator]: many}
-  }
-  const handleSingleOrMany = R.ifElse(
-    R.has('filters'),
-    handleMany,
-    handleParamNonParam
-  )
 
   const assocFilterValues = R.reduce((acc, val) => {
     const path = targetToPath(val?.target)
@@ -99,6 +103,7 @@ const parser = R.curry((config, filters) => {
 
   const full = assocFilterValues(includeFilters)
 
+  //this is broken by design, need rewrite
   const getAllIncludePaths = R.map(
     R.pipe(R.prop('target'), targetToPath, R.dropLast(1))
   )(includeFilters)
@@ -133,7 +138,7 @@ export const filters = [
         value: [800, 900],
         operator: 'between',
         unit: 'eV',
-        excess: 'isexcess',
+        excess: 'isExcess',
       },
     ],
   },
@@ -147,9 +152,8 @@ export const filters = [
     target: ['members', 'person'],
     value: 'Bob',
     name: 'fullName',
-    excess: 'isexcess',
+    excess: 'isExcess',
   },
-  {name: 'type', value: 'proposal'},
   {name: 'title', value: 'recoil', operator: 'ilike'},
 ]
 
