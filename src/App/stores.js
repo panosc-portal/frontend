@@ -36,6 +36,9 @@ export const useDocumentsStore = create(set => ({
 }))
 
 export const useSearchStore = create(set => ({
+  filters: [],
+  setFilters: arr => set(() => ({filters: arr})),
+  resetFilters: () => set(() => ({filters: []})),
   query,
   setQuery: obj => set(() => ({query: obj})),
   resetQuery: () => set(() => ({query})),

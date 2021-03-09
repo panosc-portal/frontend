@@ -66,9 +66,9 @@ const parser = R.curry((config, filters) => {
   const skeleton = R.pipe(
     R.map(R.pipe(R.prop('target'), createPathFromTarget)),
     R.reduce(R.mergeDeepLeft, {}),
-    R.mergeDeepRight(plainQuery),
+    R.mergeDeepRight(plainQuery)
     //broken by design
-    R.assoc('where', R.map(makeNonParameter, whereFilters))
+    // R.assoc('where', R.map(makeNonParameter, whereFilters))
   )(includeFilters)
 
   const targetToPath = R.addIndex(R.reduceRight)(
@@ -112,10 +112,19 @@ const parser = R.curry((config, filters) => {
     (acc, val) => R.over(R.lensPath(val), R.values, acc),
     full
   )
-  const final = R.over(
-    includeLens,
-    R.values
-  )(makeIncludesArrays(getAllIncludePaths))
+  const getPathsForDefaultIncludes = R.map(R.pipe(targetToPath, R.dropLast(1)))(
+    R.prop('include', config)
+  )
+  // const getPaths = R.converge(R.concat, [
+  //   R.map(R.pipe(R.prop('target'), targetToPath, R.dropLast(1)))(
+  //     includeFilters
+  //   ),
+  //   R.map(R.pipe(targetToPath, R.dropLast(1)))(R.prop('include', config)),
+  // ])
+  // console.log(getPaths)
+  const paths = R.concat(getAllIncludePaths, getPathsForDefaultIncludes)
+  console.log(paths)
+  const final = R.over(includeLens, R.values)(makeIncludesArrays(paths))
   console.log(final)
   return R.pipe(JSON.stringify, encodeURIComponent)(final)
 })

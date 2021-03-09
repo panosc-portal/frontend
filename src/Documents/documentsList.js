@@ -9,6 +9,7 @@ import {useDocumentsStore, useSearchStore} from '../App/stores'
 import useScrollPosition from '../App/useScrollPos'
 import Column from '../Layout/column'
 import {Box} from '../Primitives'
+import parser from '../Search/parser'
 import Document from './document'
 
 const DocumentsList = ({isShowing, name}) => {
@@ -17,18 +18,30 @@ const DocumentsList = ({isShowing, name}) => {
   const initialSize = useDocumentsStore(state => state.page)
   const setInitialSize = useDocumentsStore(state => state.setPage)
   const queryObject = useSearchStore(state => state.query)
+  const filters = useSearchStore(state => state.filters)
 
   const {data, setSize, error, size} = useSWRInfinite(
     index => {
       const skip = limit * index
-      const paginatedQueryObject = {
-        ...queryObject,
-        limit,
+      const config = {
         skip,
+        limit,
+        include: [
+          ['datasets'],
+          ['members', 'affiliation'],
+          ['members', 'person'],
+        ],
       }
-      const parseParameters = paramsObject =>
-        encodeURIComponent(JSON.stringify(paramsObject))
-      return `/Documents?filter=${parseParameters(paginatedQueryObject)}`
+      const query = parser(config, filters)
+      return `/Documents?filter=${query}`
+      // const paginatedQueryObject = {
+      //   ...queryObject,
+      //   limit,
+      //   skip,
+      // }
+      // const parseParameters = paramsObject =>
+      //   encodeURIComponent(JSON.stringify(paramsObject))
+      // return `/Documents?filter=${parseParameters(paginatedQueryObject)}`
     },
     {initialSize}
   )
