@@ -29,6 +29,9 @@ const parser = R.curry((config, filters) => {
     )
   )(config)
 
+  console.log(`plain:`)
+  console.log(plainQuery)
+
   const normalizedFilters = R.map(
     R.pipe(
       R.pick(['target', 'operator', 'value', 'name', 'unit', 'filters']),
@@ -38,18 +41,34 @@ const parser = R.curry((config, filters) => {
     )
   )(filters)
 
-  const includeFilters = R.filter(R.has('target'), normalizedFilters)
-  const whereFilters = R.reject(R.has('target'), normalizedFilters)
+  const filtersWithTarget = R.filter(R.has('target'), normalizedFilters)
+  const filtersWithoutTarget = R.reject(R.has('target'), normalizedFilters)
 
-  const makeNonParameter = filter => ({
+  const assocNonParameterFilter = filter => ({
     [filter.name ?? 'name']: filter?.operator
       ? {[filter.operator]: filter?.value}
       : filter?.value,
   })
+
+  const assocParameterFilter = filter => {
+    const arr = [
+      R.objOf('name', R.prop('name', filter)),
+      R.objOf(
+        'value',
+        R.ifElse(
+          R.has('operator'),
+          R.converge(R.objOf, [R.prop('operator'), R.prop('value')]),
+          R.prop('value')
+        )(filter)
+      ),
+    ]
+    return filter.unit ? {and: [...arr, {unit: filter.unit}]} : {and: arr}
+  }
+
   const handleParamNonParam = filter =>
     filter?.target[filter.target.length - 1] === 'parameters'
-      ? makeParameter(filter)
-      : makeNonParameter(filter)
+      ? assocParameterFilter(filter)
+      : assocNonParameterFilter(filter)
 
   //remove the assoc target by altering fn composition
   const handleMany = filter => {
@@ -63,13 +82,14 @@ const parser = R.curry((config, filters) => {
     handleMany,
     handleParamNonParam
   )
-  const skeleton = R.pipe(
+
+  const queryWithPathsForFilters = R.pipe(
     R.map(R.pipe(R.prop('target'), createPathFromTarget)),
     R.reduce(R.mergeDeepLeft, {}),
     R.mergeDeepRight(plainQuery)
     //broken by design
     // R.assoc('where', R.map(makeNonParameter, whereFilters))
-  )(includeFilters)
+  )(filtersWithTarget)
 
   const targetToPath = R.addIndex(R.reduceRight)(
     (val, acc, idx, list) =>
@@ -79,34 +99,23 @@ const parser = R.curry((config, filters) => {
     []
   )
 
-  const makeParameter = filter => {
-    const arr = [
-      {name: filter?.name},
-      {
-        value: R.has('operator', filter)
-          ? {[filter.operator]: filter.value}
-          : filter.value,
-      },
-    ]
-    return filter.unit ? {and: [...arr, {unit: filter.unit}]} : {and: arr}
-  }
+  const assocFilterValues = R.reduce(
+    (acc, val) =>
+      R.over(
+        R.lensPath(targetToPath(R.prop('target', val))),
+        R.mergeRight(R.objOf('scope', {where: handleSingleOrMany(val)})),
+        acc
+      ),
+    queryWithPathsForFilters
+  )
 
-  const assocFilterValues = R.reduce((acc, val) => {
-    const path = targetToPath(val?.target)
-    const lens = R.lensPath(path)
-    return R.over(
-      lens,
-      R.mergeRight(R.objOf('scope', {where: handleSingleOrMany(val)})),
-      acc
-    )
-  }, skeleton)
-
-  const full = assocFilterValues(includeFilters)
+  const full = assocFilterValues(filtersWithTarget)
+  console.log(full)
 
   //this is broken by design, need rewrite
   const getAllIncludePaths = R.map(
     R.pipe(R.prop('target'), targetToPath, R.dropLast(1))
-  )(includeFilters)
+  )(filtersWithTarget)
   const includeLens = R.lensPath(['include'])
   const makeIncludesArrays = R.reduce(
     (acc, val) => R.over(R.lensPath(val), R.values, acc),
@@ -117,40 +126,46 @@ const parser = R.curry((config, filters) => {
   )
   // const getPaths = R.converge(R.concat, [
   //   R.map(R.pipe(R.prop('target'), targetToPath, R.dropLast(1)))(
-  //     includeFilters
+  //     filtersWithTarget
   //   ),
   //   R.map(R.pipe(targetToPath, R.dropLast(1)))(R.prop('include', config)),
   // ])
   // console.log(getPaths)
   const paths = R.concat(getAllIncludePaths, getPathsForDefaultIncludes)
-  console.log(paths)
   const final = R.over(includeLens, R.values)(makeIncludesArrays(paths))
-  console.log(final)
   return R.pipe(JSON.stringify, encodeURIComponent)(final)
 })
 
 export default parser
 
 export const filters = [
+  // {
+  //   target: ['datasets', 'parameters'],
+  //   operator: 'or',
+  //   filters: [
+  //     {
+  //       name: 'wavelength',
+  //       value: [700, 900],
+  //       operator: 'between',
+  //       unit: 'nm',
+  //     },
+  //     {
+  //       name: 'photon_energy',
+  //       value: [800, 900],
+  //       operator: 'between',
+  //       unit: 'eV',
+  //       excess: 'isExcess',
+  //     },
+  //   ],
+  // },
   {
     target: ['datasets', 'parameters'],
-    operator: 'or',
-    filters: [
-      {
-        name: 'wavelength',
-        value: [700, 900],
-        operator: 'between',
-        unit: 'nm',
-      },
-      {
-        name: 'photon_energy',
-        value: [800, 900],
-        operator: 'between',
-        unit: 'eV',
-        excess: 'isExcess',
-      },
-    ],
+    name: 'wavelength',
+    value: [700, 900],
+    operator: 'between',
+    unit: 'nm',
   },
+
   // {target: ['datasets', 'techniques'], value: 'x-ray absorption'},
   {
     target: ['datasets', 'techniques'],
