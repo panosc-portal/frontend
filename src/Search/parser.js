@@ -1,174 +1,34 @@
-//refactor needed af!
-
 import * as R from 'ramda'
 
-const parser = R.curry((config, filters) => {
-  const log = xs => {
-    console.log(xs)
-    return xs
-  }
-  const createPathFromTarget = R.reduceRight(
-    (val, acc) =>
-      R.isEmpty(acc)
-        ? {include: {[val]: {relation: val}}}
-        : {include: {[val]: {relation: val, scope: acc}}},
-    {}
-  )
-
-  const plainQuery = R.pipe(
-    R.pick(['skip', 'limit', 'include']),
-    R.when(
-      R.has('include'),
-      R.over(
-        R.lensProp('include'),
-        R.pipe(
-          R.map(R.pipe(createPathFromTarget, R.prop('include'))),
-          R.reduce(R.mergeDeepLeft, {})
-        )
-      )
-    )
-  )(config)
-
-  console.log(`plain:`)
-  console.log(plainQuery)
-
-  const normalizedFilters = R.map(
-    R.pipe(
-      R.pick(['target', 'operator', 'value', 'name', 'unit', 'filters']),
-      R.evolve({
-        filters: R.map(R.pick(['operator', 'value', 'name', 'unit'])),
-      })
-    )
-  )(filters)
-
-  const filtersWithTarget = R.filter(R.has('target'), normalizedFilters)
-  const filtersWithoutTarget = R.reject(R.has('target'), normalizedFilters)
-
-  const assocNonParameterFilter = filter => ({
-    [filter.name ?? 'name']: filter?.operator
-      ? {[filter.operator]: filter?.value}
-      : filter?.value,
-  })
-
-  const assocParameterFilter = filter => {
-    const arr = [
-      R.objOf('name', R.prop('name', filter)),
-      R.objOf(
-        'value',
-        R.ifElse(
-          R.has('operator'),
-          R.converge(R.objOf, [R.prop('operator'), R.prop('value')]),
-          R.prop('value')
-        )(filter)
-      ),
-    ]
-    return filter.unit ? {and: [...arr, {unit: filter.unit}]} : {and: arr}
-  }
-
-  const handleParamNonParam = filter =>
-    filter?.target[filter.target.length - 1] === 'parameters'
-      ? assocParameterFilter(filter)
-      : assocNonParameterFilter(filter)
-
-  //remove the assoc target by altering fn composition
-  const handleMany = filter => {
-    const many = R.map(
-      R.pipe(R.assoc('target', filter.target), handleParamNonParam)
-    )(R.prop('filters', filter))
-    return {[filter.operator]: many}
-  }
-  const handleSingleOrMany = R.ifElse(
-    R.has('filters'),
-    handleMany,
-    handleParamNonParam
-  )
-
-  const queryWithPathsForFilters = R.pipe(
-    R.map(R.pipe(R.prop('target'), createPathFromTarget)),
-    R.reduce(R.mergeDeepLeft, {}),
-    R.mergeDeepRight(plainQuery)
-    //broken by design
-    // R.assoc('where', R.map(makeNonParameter, whereFilters))
-  )(filtersWithTarget)
-
-  const targetToPath = R.addIndex(R.reduceRight)(
-    (val, acc, idx, list) =>
-      idx === list.length - 1
-        ? ['include', val, ...acc]
-        : ['scope', 'include', val, ...acc],
-    []
-  )
-
-  const assocFilterValues = R.reduce(
-    (acc, val) =>
-      R.over(
-        R.lensPath(targetToPath(R.prop('target', val))),
-        R.mergeRight(R.objOf('scope', {where: handleSingleOrMany(val)})),
-        acc
-      ),
-    queryWithPathsForFilters
-  )
-
-  const full = assocFilterValues(filtersWithTarget)
-  console.log(full)
-
-  //this is broken by design, need rewrite
-  const getAllIncludePaths = R.map(
-    R.pipe(R.prop('target'), targetToPath, R.dropLast(1))
-  )(filtersWithTarget)
-  const includeLens = R.lensPath(['include'])
-  const makeIncludesArrays = R.reduce(
-    (acc, val) => R.over(R.lensPath(val), R.values, acc),
-    full
-  )
-  const getPathsForDefaultIncludes = R.map(R.pipe(targetToPath, R.dropLast(1)))(
-    R.prop('include', config)
-  )
-  // const getPaths = R.converge(R.concat, [
-  //   R.map(R.pipe(R.prop('target'), targetToPath, R.dropLast(1)))(
-  //     filtersWithTarget
-  //   ),
-  //   R.map(R.pipe(targetToPath, R.dropLast(1)))(R.prop('include', config)),
-  // ])
-  // console.log(getPaths)
-  const paths = R.concat(getAllIncludePaths, getPathsForDefaultIncludes)
-  const final = R.over(includeLens, R.values)(makeIncludesArrays(paths))
-  return R.pipe(JSON.stringify, encodeURIComponent)(final)
-})
-
-export default parser
-
 export const filters = [
-  // {
-  //   target: ['datasets', 'parameters'],
-  //   operator: 'or',
-  //   filters: [
-  //     {
-  //       name: 'wavelength',
-  //       value: [700, 900],
-  //       operator: 'between',
-  //       unit: 'nm',
-  //     },
-  //     {
-  //       name: 'photon_energy',
-  //       value: [800, 900],
-  //       operator: 'between',
-  //       unit: 'eV',
-  //       excess: 'isExcess',
-  //     },
-  //   ],
-  // },
   {
     target: ['datasets', 'parameters'],
-    name: 'wavelength',
-    value: [700, 900],
-    operator: 'between',
-    unit: 'nm',
+    operator: 'or',
+    filters: [
+      {
+        name: 'wavelength',
+        value: [700, 900],
+        operator: 'between',
+      },
+      {
+        name: 'photon_energy',
+        value: [800, 900],
+        operator: 'between',
+        unit: 'eV',
+        excess: 'isExcess',
+      },
+    ],
   },
-
-  // {target: ['datasets', 'techniques'], value: 'x-ray absorption'},
+  // {
+  //   target: ['datasets', 'parameters'],
+  //   name: 'wavelength',
+  //   value: [700, 900],
+  //   operator: 'between',
+  //   unit: 'nm',
+  // },
+  {target: ['datasets', 'techniques'], value: 'x-ray absorption'},
   {
-    target: ['datasets', 'techniques'],
+    target: ['datasets', 'techniques', 'whatever'],
     operator: 'and',
     filters: [{value: 'x-ray absorption'}, {value: 'whatever'}],
   },
@@ -179,14 +39,143 @@ export const filters = [
     excess: 'isExcess',
   },
   {name: 'title', value: 'recoil', operator: 'ilike'},
+  {name: 'type', value: 'proposal'},
 ]
 
 export const config = {
   skip: 10,
   limit: 10,
   include: [
-    ['members', 'person'],
+    ['members', 'person', 'info'],
     ['datasets', 'parameters'],
     ['datasets', 'samples'],
   ],
 }
+
+//refactor
+
+const makePathFromTarget = R.reduceRight(
+  (val, acc) =>
+    R.isEmpty(acc)
+      ? {include: {[val]: {relation: val}}}
+      : {include: {[val]: {relation: val, scope: acc}}},
+  {},
+)
+const getPathFromTarget = R.addIndex(R.reduceRight)(
+  (val, acc, idx, list) =>
+    idx === list.length - 1
+      ? ['include', val, ...acc]
+      : ['scope', 'include', val, ...acc],
+  ['scope', 'where'],
+)
+
+const makeNonParameter = (filter) => ({
+  [filter.name ?? 'name']: filter?.operator
+    ? {[filter.operator]: filter?.value}
+    : filter?.value,
+})
+
+const makeParameter = R.pipe(
+  R.of,
+  R.ap([
+    R.pipe(R.prop('unit'), R.objOf('unit')),
+    R.pipe(R.prop('name'), R.objOf('name')),
+    R.ifElse(
+      R.has('operator'),
+      R.converge(R.objOf, [R.prop('operator'), R.prop('value')]),
+      R.pick('value'),
+    ),
+  ]),
+  R.reject(R.both(R.has('unit'), R.pipe(R.prop('unit'), R.isNil))),
+)
+
+const isParameter = R.pipe(R.prop('target'), R.last, R.equals('parameters'))
+
+const makeConfig = R.pipe(
+  R.pick(['skip', 'limit', 'include']),
+  R.when(
+    R.has('include'),
+    R.over(
+      R.lensProp('include'),
+      R.pipe(
+        R.map(R.pipe(makePathFromTarget, R.prop('include'))),
+        R.reduce(R.mergeDeepRight, {}),
+      ),
+    ),
+  ),
+)
+const makeFilter = R.pipe(
+  R.ifElse(
+    isParameter,
+    R.ifElse(
+      R.has('filters'),
+      R.converge(R.objOf, [
+        R.prop('operator'),
+        R.pipe(R.prop('filters'), R.map(makeParameter)),
+      ]),
+      makeParameter,
+    ),
+    R.ifElse(
+      R.has('filters'),
+      R.converge(R.objOf, [
+        R.prop('operator'),
+        R.pipe(R.prop('filters'), R.map(makeNonParameter)),
+      ]),
+      makeNonParameter,
+    ),
+  ),
+)
+
+const makeFilters = R.pipe(
+  R.map(
+    R.ifElse(
+      R.has('target'),
+      R.converge(R.assocPath, [
+        R.pipe(R.prop('target'), getPathFromTarget),
+        makeFilter,
+        R.pipe(R.prop('target'), makePathFromTarget),
+      ]),
+      R.pipe(makeNonParameter, R.objOf('where')),
+    ),
+  ),
+)
+
+const mapIndexed = R.addIndex(R.map)
+
+const getPathsDueCleanup = R.useWith(
+  R.pipe(
+    R.concat,
+    R.map(
+      R.pipe(
+        mapIndexed((item, idx, list) => {
+          return R.when(
+            R.equals('include'),
+            R.always(R.slice(0, R.add(1, idx), list)),
+          )(item)
+        }),
+        R.reject(R.is(String)),
+      ),
+    ),
+    R.unnest,
+    R.uniq,
+    R.sort(R.descend(R.length)),
+  ),
+  [
+    R.pipe(R.prop('include'), R.map(getPathFromTarget)),
+    R.pipe(
+      R.filter(R.has('target')),
+      R.map(R.pipe(R.prop('target'), getPathFromTarget)),
+    ),
+  ],
+)
+const cleanup = R.flip(
+  R.useWith(R.over(R.__, R.values, R.__), [R.lensPath, R.identity]),
+)
+
+export default R.converge(
+  R.pipe(R.reduce(cleanup), JSON.stringify, encodeURIComponent),
+  [
+    R.useWith(R.reduce(R.mergeDeepRight), [makeConfig, makeFilters]),
+    getPathsDueCleanup,
+  ],
+)

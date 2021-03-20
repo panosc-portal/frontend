@@ -11,35 +11,35 @@ import Column from '../Layout/column'
 import {Box} from '../Primitives'
 import parser, {filters} from '../Search/parser'
 import Document from './document'
-const config = {
-  skip: 0,
-  limit: 20,
-  include: [['datasets'], ['members', 'affiliation'], ['members', 'person']],
-}
-const query = parser(config, filters)
+// const query = parser(config, filters)
+// console.log(query)
 
 const DocumentsList = ({isShowing, name}) => {
   const limit = 5
 
-  const initialSize = useDocumentsStore(state => state.page)
-  const setInitialSize = useDocumentsStore(state => state.setPage)
-  const queryObject = useSearchStore(state => state.query)
+  const initialSize = useDocumentsStore((state) => state.page)
+  const setInitialSize = useDocumentsStore((state) => state.setPage)
+  const queryObject = useSearchStore((state) => state.query)
+  // console.log('original query object')
+  // console.log(queryObject)
   // const filters = useSearchStore(state => state.filters)
 
   const {data, setSize, error, size} = useSWRInfinite(
-    index => {
+    (index) => {
       const skip = limit * index
-      // return `/Documents?filter=${query}`
-      const paginatedQueryObject = {
-        ...queryObject,
+      const config = {
+        include: [
+          ['datasets'],
+          ['members', 'affiliation'],
+          ['members', 'person'],
+        ],
         limit,
         skip,
       }
-      const parseParameters = paramsObject =>
-        encodeURIComponent(JSON.stringify(paramsObject))
-      return `/Documents?filter=${parseParameters(paginatedQueryObject)}`
+      const query = parser(config, [])
+      return `/Documents?filter=${query}`
     },
-    {initialSize}
+    {initialSize},
   )
 
   const documents = data ? [].concat(...data) : []
@@ -51,8 +51,9 @@ const DocumentsList = ({isShowing, name}) => {
   const hasMore = !!data[data.length - 1].length
 
   const loadMore = useCallback(
-    () => isLoadingMore || data?.[0]?.length === 0 || setSize(size => size + 1),
-    [data, setSize, isLoadingMore]
+    () =>
+      isLoadingMore || data?.[0]?.length === 0 || setSize((size) => size + 1),
+    [data, setSize, isLoadingMore],
   )
 
   const {ref} = useInView({
@@ -80,7 +81,7 @@ const DocumentsList = ({isShowing, name}) => {
     <ErrorBoundary>
       <Suspense fallback={<Spinner />}>
         <Column>
-          {documents?.map(document => (
+          {documents?.map((document) => (
             <Document document={document} key={document.pid} />
           ))}
           {hasMore && <Box ref={ref}>Loading...</Box>}
