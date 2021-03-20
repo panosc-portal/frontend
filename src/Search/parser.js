@@ -1,4 +1,3 @@
-//refactor
 import * as R from 'ramda'
 
 const makePathFromTarget = R.reduceRight(
