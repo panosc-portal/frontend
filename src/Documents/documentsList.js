@@ -9,7 +9,7 @@ import {useDocumentsStore, useSearchStore} from '../App/stores'
 import useScrollPosition from '../App/useScrollPos'
 import Column from '../Layout/column'
 import {Box} from '../Primitives'
-import parser, {filters} from '../Search/parser'
+import parser from '../Search/parser'
 import Document from './document'
 // const query = parser(config, filters)
 // console.log(query)
