@@ -12,7 +12,7 @@ import {useSearchStore} from '../App/stores'
 import {Box, Card, Heading, Flex, Button} from '../Primitives'
 
 const Search = () => {
-  const [query, setQuery, resetQuery] = useSearchStore(state => [
+  const [query, setQuery, resetQuery] = useSearchStore((state) => [
     state.query,
     state.setQuery,
     state.resetQuery,
@@ -23,28 +23,28 @@ const Search = () => {
 
   const title = query.where?.title?.ilike ?? ''
 
-  const addTechnique = technique =>
-    produce(techniques, draftTechniques => {
+  const addTechnique = (technique) =>
+    produce(techniques, (draftTechniques) => {
       draftTechniques.push(technique)
     })
 
-  const removeTechnique = technique =>
-    produce(techniques, draftTechniques => {
+  const removeTechnique = (technique) =>
+    produce(techniques, (draftTechniques) => {
       draftTechniques.splice(
-        draftTechniques.findIndex(t => t === technique),
-        1
+        draftTechniques.findIndex((t) => t === technique),
+        1,
       )
     })
 
-  const handleTechnique = technique => {
+  const handleTechnique = (technique) => {
     if (techniques.includes(technique)) {
-      const newTechniques = produce(usedTechniques, draft => {
-        return draft.filter(t => t !== technique)
+      const newTechniques = produce(usedTechniques, (draft) => {
+        return draft.filter((t) => t !== technique)
       })
       setUsedTechniques(newTechniques)
       return removeTechnique(technique)
     } else {
-      const newTechniques = produce(usedTechniques, draft => {
+      const newTechniques = produce(usedTechniques, (draft) => {
         draft.push(technique)
       })
       setUsedTechniques(newTechniques)
@@ -52,17 +52,20 @@ const Search = () => {
     }
   }
 
-  const debouncedTitleChange = debounce(title => update(title, techniques), 500)
+  const debouncedTitleChange = debounce(
+    (title) => update(title, techniques),
+    500,
+  )
 
-  const handleTitle = e => debouncedTitleChange(e.target.value)
+  const handleTitle = (e) => debouncedTitleChange(e.target.value)
 
-  const stripTechniques = obj =>
+  const stripTechniques = (obj) =>
     isEmpty(obj.where?.keywords?.inq)
       ? dissocPath(['where', 'keywords'], obj)
       : obj
-  const stripTitle = obj =>
+  const stripTitle = (obj) =>
     isEmpty(obj.where?.title?.ilike) ? dissocPath(['where', 'title'], obj) : obj
-  const stripWhere = obj =>
+  const stripWhere = (obj) =>
     isEmpty(obj.where?.title?.ilike) && isEmpty(obj.where?.keywords?.inq)
       ? dissocPath(['where'], obj)
       : obj
@@ -82,11 +85,11 @@ const Search = () => {
   }, [])
 
   const updateQuery = useCallback(
-    newQuery => {
+    (newQuery) => {
       const qq = mergeDeepWith(concat, newQuery, baseQuery)
       setQuery(qq)
     },
-    [setQuery]
+    [setQuery],
   )
 
   const update = compose(
@@ -94,7 +97,7 @@ const Search = () => {
     stripWhere,
     stripTechniques,
     stripTitle,
-    whereQuery
+    whereQuery,
   )
 
   return (

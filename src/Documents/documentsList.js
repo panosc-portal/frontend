@@ -1,4 +1,4 @@
-import React, {Suspense, useCallback, useEffect} from 'react'
+import React, {Suspense, useCallback, useEffect, useMemo} from 'react'
 
 import useInView from 'react-cool-inview'
 import {useSWRInfinite} from 'swr'

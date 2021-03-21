@@ -26,6 +26,7 @@ const makeParameter = R.pipe(
   R.ap([
     R.pipe(R.prop('unit'), R.objOf('unit')),
     R.pipe(R.prop('name'), R.objOf('name')),
+    //objOfParameter = useWith(pipe, [prop, objOf])
     R.ifElse(
       R.has('operator'),
       R.converge(R.objOf, [R.prop('operator'), R.prop('value')]),
