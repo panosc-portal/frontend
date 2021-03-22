@@ -25,15 +25,17 @@ const makeParameter = R.pipe(
   R.of,
   R.ap([
     R.pipe(R.prop('unit'), R.objOf('unit')),
+    // R.evolve('unit'),
     R.pipe(R.prop('name'), R.objOf('name')),
     //objOfParameter = useWith(pipe, [prop, objOf])
     R.ifElse(
       R.has('operator'),
       R.converge(R.objOf, [R.prop('operator'), R.prop('value')]),
-      R.pick('value'),
+      R.pipe(R.prop('value'), R.objOf('value')),
     ),
   ]),
   R.reject(R.both(R.has('unit'), R.pipe(R.prop('unit'), R.isNil))),
+  R.objOf('and'),
 )
 
 const isParameter = R.pipe(R.prop('target'), R.last, R.equals('parameters'))
@@ -100,7 +102,7 @@ const getPathsDueCleanup = R.useWith(
             R.always(R.slice(0, R.add(1, idx), list)),
           )(item)
         }),
-        R.reject(R.is(String)),
+        R.filter(R.is(Array)),
       ),
     ),
     R.unnest,
@@ -118,6 +120,11 @@ const getPathsDueCleanup = R.useWith(
 const cleanup = R.flip(
   R.useWith(R.over(R.__, R.values, R.__), [R.lensPath, R.identity]),
 )
+const log = (marker) => (xs) => {
+  console.log(marker)
+  console.log(xs)
+  return xs
+}
 
 export default R.converge(
   R.pipe(R.reduce(cleanup), JSON.stringify, encodeURIComponent),
