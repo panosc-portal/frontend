@@ -1,13 +1,61 @@
-import * as R from 'ramda'
+import {
+  addIndex,
+  reject,
+  filter,
+  concat,
+  slice,
+  is,
+  identity,
+  always,
+  map,
+  reduce,
+  reduceRight,
+  mergeDeepRight,
+  pick,
+  lensProp,
+  sort,
+  descend,
+  length,
+  flip,
+  values,
+  uniq,
+  unnest,
+  pipe,
+  __,
+  prop,
+  equals,
+  over,
+  lensPath,
+  assocPath,
+  objOf,
+  of,
+  ap,
+  useWith,
+  converge,
+  both,
+  has,
+  ifElse,
+  when,
+  last,
+  add,
+  isNil,
+  isEmpty,
+} from 'ramda'
 
-const makePathFromTarget = R.reduceRight(
+const log = (marker) => (xs) => {
+  console.log(marker)
+  console.log(xs)
+  return xs
+}
+
+const makePathFromTarget = reduceRight(
   (val, acc) =>
-    R.isEmpty(acc)
+    isEmpty(acc)
       ? {include: {[val]: {relation: val}}}
       : {include: {[val]: {relation: val, scope: acc}}},
   {},
 )
-const getPathFromTarget = R.addIndex(R.reduceRight)(
+const getPathFromTarget = addIndex(reduceRight)(
   (val, acc, idx, list) =>
     idx === list.length - 1
       ? ['include', val, ...acc]
@@ -21,115 +69,112 @@ const makeNonParameter = (filter) => ({
     : filter?.value,
 })
 
-const makeParameter = R.pipe(
-  R.of,
-  R.ap([
-    R.pipe(R.prop('unit'), R.objOf('unit')),
-    // R.evolve('unit'),
-    R.pipe(R.prop('name'), R.objOf('name')),
-    //objOfParameter = useWith(pipe, [prop, objOf])
-    R.ifElse(
-      R.has('operator'),
-      R.converge(R.objOf, [R.prop('operator'), R.prop('value')]),
-      R.pipe(R.prop('value'), R.objOf('value')),
+const makeParameter = pipe(
+  of,
+  ap([
+    pipe(prop('unit'), objOf('unit')),
+    pipe(prop('name'), objOf('name')),
+    ifElse(
+      has('operator'),
+      converge(objOf, [prop('operator'), prop('value')]),
+      pipe(prop('value'), objOf('value')),
     ),
   ]),
-  R.reject(R.both(R.has('unit'), R.pipe(R.prop('unit'), R.isNil))),
-  R.objOf('and'),
+  reject(both(has('unit'), pipe(prop('unit'), isNil))),
+  objOf('and'),
 )
 
-const isParameter = R.pipe(R.prop('target'), R.last, R.equals('parameters'))
+const isParameter = pipe(prop('target'), last, equals('parameters'))
 
-const makeConfig = R.pipe(
-  R.pick(['skip', 'limit', 'include']),
-  R.when(
-    R.has('include'),
-    R.over(
-      R.lensProp('include'),
-      R.pipe(
-        R.map(R.pipe(makePathFromTarget, R.prop('include'))),
-        R.reduce(R.mergeDeepRight, {}),
+const makeObjectFromConfig = pipe(
+  pick(['skip', 'limit', 'include']),
+  when(
+    has('include'),
+    over(
+      lensProp('include'),
+      pipe(
+        map(pipe(makePathFromTarget, prop('include'))),
+        reduce(mergeDeepRight, {}),
       ),
     ),
   ),
 )
-const makeFilter = R.pipe(
-  R.ifElse(
+const makeFilter = pipe(
+  ifElse(
     isParameter,
-    R.ifElse(
-      R.has('filters'),
-      R.converge(R.objOf, [
-        R.prop('operator'),
-        R.pipe(R.prop('filters'), R.map(makeParameter)),
+    ifElse(
+      has('filters'),
+      converge(objOf, [
+        prop('operator'),
+        pipe(prop('filters'), map(makeParameter)),
       ]),
       makeParameter,
     ),
-    R.ifElse(
-      R.has('filters'),
-      R.converge(R.objOf, [
-        R.prop('operator'),
-        R.pipe(R.prop('filters'), R.map(makeNonParameter)),
+    ifElse(
+      has('filters'),
+      converge(objOf, [
+        prop('operator'),
+        pipe(prop('filters'), map(makeNonParameter)),
       ]),
       makeNonParameter,
     ),
   ),
 )
 
-const makeFilters = R.pipe(
-  R.map(
-    R.ifElse(
-      R.has('target'),
-      R.converge(R.assocPath, [
-        R.pipe(R.prop('target'), getPathFromTarget),
+const makeObjectFromFilters = pipe(
+  map(
+    ifElse(
+      has('target'),
+      converge(assocPath, [
+        pipe(prop('target'), getPathFromTarget),
         makeFilter,
-        R.pipe(R.prop('target'), makePathFromTarget),
+        pipe(prop('target'), makePathFromTarget),
       ]),
-      R.pipe(makeNonParameter, R.objOf('where')),
+      pipe(makeNonParameter, objOf('where')),
     ),
   ),
 )
 
-const mapIndexed = R.addIndex(R.map)
+const mapIndexed = addIndex(map)
 
-const getPathsDueCleanup = R.useWith(
-  R.pipe(
-    R.concat,
-    R.map(
-      R.pipe(
-        mapIndexed((item, idx, list) => {
-          return R.when(
-            R.equals('include'),
-            R.always(R.slice(0, R.add(1, idx), list)),
-          )(item)
-        }),
-        R.filter(R.is(Array)),
-      ),
+const getPathsFromConfig = pipe(prop('include'), map(getPathFromTarget))
+const getPathsFromFilters = pipe(
+  filter(has('target')),
+  map(pipe(prop('target'), getPathFromTarget)),
+)
+const makeUniqueSortedPathsToIncludeKeys = pipe(
+  concat,
+  map(
+    pipe(
+      mapIndexed((item, idx, list) => {
+        return when(
+          equals('include'),
+          always(slice(0, add(1, idx), list)),
+        )(item)
+      }),
+      filter(is(Array)),
     ),
-    R.unnest,
-    R.uniq,
-    R.sort(R.descend(R.length)),
   ),
-  [
-    R.pipe(R.prop('include'), R.map(getPathFromTarget)),
-    R.pipe(
-      R.filter(R.has('target')),
-      R.map(R.pipe(R.prop('target'), getPathFromTarget)),
-    ),
-  ],
+  unnest,
+  uniq,
+  sort(descend(length)),
+  // log('paths'),
 )
-const cleanup = R.flip(
-  R.useWith(R.over(R.__, R.values, R.__), [R.lensPath, R.identity]),
-)
-const log = (marker) => (xs) => {
-  console.log(marker)
-  console.log(xs)
-  return xs
-}
 
-export default R.converge(
-  R.pipe(R.reduce(cleanup), JSON.stringify, encodeURIComponent),
+const getPathsDueCleanup = useWith(makeUniqueSortedPathsToIncludeKeys, [
+  getPathsFromConfig,
+  getPathsFromFilters,
+])
+
+const cleanup = flip(useWith(over(__, values, __), [lensPath, identity]))
+
+export default converge(
+  pipe(reduce(cleanup), JSON.stringify, encodeURIComponent),
   [
-    R.useWith(R.reduce(R.mergeDeepRight), [makeConfig, makeFilters]),
+    useWith(reduce(mergeDeepRight), [
+      makeObjectFromConfig,
+      makeObjectFromFilters,
+    ]),
     getPathsDueCleanup,
   ],
 )
