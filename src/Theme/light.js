@@ -1,7 +1,7 @@
 import breakpoints from './breakpoints'
 import {light, dark} from './colors'
 
-const theme = isDark => ({
+const theme = (isDark) => ({
   fonts: {
     body: 'Open Sans, system-ui, sans-serif',
     heading: 'inherit',

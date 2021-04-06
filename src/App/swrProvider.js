@@ -6,13 +6,13 @@ import {SWRConfig} from 'swr'
 //not happy with the state of data fetching at this point
 const SWRProvider = ({children}) => {
   const {keycloak} = useKeycloak()
-  const getUrlWithBase = url =>
+  const getUrlWithBase = (url) =>
     url.startsWith('/account') || url.startsWith('/plans')
       ? keycloak.authenticated
         ? process.env.REACT_APP_API + url
         : false
       : (process.env.REACT_APP_SEARCH ?? 'http://localhost:5000/api') + url
-  const fetcher = url => {
+  const fetcher = (url) => {
     const access_token = keycloak?.token ?? ''
     const method = url.endsWith('token') ? 'post' : 'get'
     return (
@@ -22,7 +22,7 @@ const SWRProvider = ({children}) => {
           access_token,
         },
         method,
-      }).then(r => r.json())
+      }).then((r) => r.json())
     )
   }
   return (

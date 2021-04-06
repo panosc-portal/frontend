@@ -10,6 +10,6 @@ const GlobalStyle = createGlobalStyle(
       fontFamily: 'body',
       fontSize: [0, 0, 1],
     },
-  })
+  }),
 )
 export default GlobalStyle

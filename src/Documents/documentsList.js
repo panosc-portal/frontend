@@ -1,6 +1,9 @@
-import React, {Suspense, useCallback, useEffect, useMemo} from 'react'
+import React, {Suspense, useCallback, useEffect} from 'react'
 
+import {pipe} from 'ramda'
+import {isEmpty} from 'ramda'
 import useInView from 'react-cool-inview'
+import parser from 'search-query-generator'
 import {useSWRInfinite} from 'swr'
 
 import ErrorBoundary from '../App/errorBoundary'
@@ -9,20 +12,14 @@ import {useDocumentsStore, useSearchStore} from '../App/stores'
 import useScrollPosition from '../App/useScrollPos'
 import Column from '../Layout/column'
 import {Box} from '../Primitives'
-import parser from '../Search/parser'
 import Document from './document'
-// const query = parser(config, filters)
-// console.log(query)
 
 const DocumentsList = ({isShowing, name}) => {
   const limit = 5
 
   const initialSize = useDocumentsStore((state) => state.page)
   const setInitialSize = useDocumentsStore((state) => state.setPage)
-  const queryObject = useSearchStore((state) => state.query)
-  // console.log('original query object')
-  // console.log(queryObject)
-  // const filters = useSearchStore(state => state.filters)
+  const filters = useSearchStore((state) => state.filters)
 
   const {data, setSize, error, size} = useSWRInfinite(
     (index) => {
@@ -36,7 +33,8 @@ const DocumentsList = ({isShowing, name}) => {
         limit,
         skip,
       }
-      const query = parser(config, [])
+      const query = parser(config, filters)
+      console.log(pipe(decodeURIComponent, JSON.parse)(query))
       return `/Documents?filter=${query}`
     },
     {initialSize},
@@ -81,9 +79,13 @@ const DocumentsList = ({isShowing, name}) => {
     <ErrorBoundary>
       <Suspense fallback={<Spinner />}>
         <Column>
-          {documents?.map((document) => (
-            <Document document={document} key={document.pid} />
-          ))}
+          {isEmpty(documents) ? (
+            <Box>Nothing to display.</Box>
+          ) : (
+            documents.map((document) => (
+              <Document document={document} key={document.pid} />
+            ))
+          )}
           {hasMore && <Box ref={ref}>Loading...</Box>}
         </Column>
       </Suspense>

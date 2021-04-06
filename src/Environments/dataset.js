@@ -18,6 +18,6 @@ export default Dataset
 
 const S = {}
 S.Card = styled(Card)`
-  margin-bottom: ${props => props.theme.space[2]}px;
+  margin-bottom: ${(props) => props.theme.space[2]}px;
 `
 S.Button = styled(Button)``

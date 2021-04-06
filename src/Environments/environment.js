@@ -13,7 +13,7 @@ import useSWR, {mutate} from 'swr'
 import useFetch from '../App/useFetch'
 import {Flex, Text, Link, Box, Card, Heading} from '../Primitives'
 
-const Icon = props => (
+const Icon = (props) => (
   <Link
     mx={2}
     size={28}
@@ -33,7 +33,7 @@ const Environment = ({environment}) => {
       `/account/instances/${environment.id}/token`,
     {
       refreshInterval: process.env.REACT_APP_TOKEN_VALID_DURATION_S * 1000,
-    }
+    },
   )
 
   const makeLink = () =>
@@ -41,27 +41,27 @@ const Environment = ({environment}) => {
       ? `http://${environment.hostname}:${environment.protocols[0].port}?token=""`
       : `${process.env.REACT_APP_DESKTOP_WEB}/${environment.id}?token=${data?.token}`
 
-  const action = async type => {
+  const action = async (type) => {
     mutate(
       '/account/instances',
-      produce(draft => {
-        const index = draft.findIndex(obj => obj.id === environment.id)
+      produce((draft) => {
+        const index = draft.findIndex((obj) => obj.id === environment.id)
         if (index !== -1) draft[index].state.status = 'PENDING'
       }),
-      false
+      false,
     )
     mutate(
       '/account/instances',
       await doFetch(`/account/instances/${environment.id}/actions`, 'post', {
         type,
-      })
+      }),
     )
   }
 
   const remove = async () => {
     mutate(
       '/account/instances',
-      await doFetch(`/account/instances/${environment.id}`, 'delete')
+      await doFetch(`/account/instances/${environment.id}`, 'delete'),
     )
   }
 

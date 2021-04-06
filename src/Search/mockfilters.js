@@ -1,7 +1,7 @@
-export default [
+const filters = [
   {
     target: ['datasets', 'parameters'],
-    operator: 'or',
+    operator: 'and',
     filters: [
       {
         name: 'wavelength',
@@ -20,13 +20,12 @@ export default [
   // {
   //   target: ['datasets', 'parameters'],
   //   name: 'wavelength',
-  //   value: [700, 900],
-  //   operator: 'between',
+  //   value: 700,
   //   unit: 'nm',
   // },
   {target: ['datasets', 'techniques'], value: 'x-ray absorption'},
   {
-    target: ['datasets', 'techniques', 'whatever'],
+    target: ['datasets', 'techniques'],
     operator: 'and',
     filters: [{value: 'x-ray absorption'}, {value: 'whatever'}],
   },
@@ -39,6 +38,8 @@ export default [
   {name: 'title', value: 'recoil', operator: 'ilike'},
   {name: 'type', value: 'proposal'},
 ]
+
+export default filters
 
 export const config = {
   skip: 10,

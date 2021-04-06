@@ -16,8 +16,8 @@ const useSections = (sections, main) => {
     index: mainComponent,
     name: sections[mainComponent].name,
   })
-  const setSections = useNavigationStore(state => state.setSections)
-  const isDesktop = useAppStore(state => state.isDesktop)
+  const setSections = useNavigationStore((state) => state.setSections)
+  const isDesktop = useAppStore((state) => state.isDesktop)
 
   const handlers = useSwipeable({
     onSwipedLeft: () => {
@@ -68,7 +68,7 @@ const useSections = (sections, main) => {
               </Suspense>
             </ErrorBoundary>
           </Box>
-        )
+        ),
     )
 
   return {Arrange, isShowing}

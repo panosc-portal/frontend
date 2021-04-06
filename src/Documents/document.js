@@ -24,7 +24,7 @@ const Member = ({data}) => (
 )
 const Members = ({members, className}) => (
   <Flex className={className}>
-    {members.map(member => (
+    {members.map((member) => (
       <Member key={member.id} data={member} />
     ))}
   </Flex>

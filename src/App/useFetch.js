@@ -32,7 +32,7 @@ const useFetch = () => {
         setError(e)
       }
     },
-    [keycloak.token]
+    [keycloak.token],
   )
   return [doFetch, data]
 }

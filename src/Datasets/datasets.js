@@ -10,9 +10,9 @@ import Spinner from '../App/spinner'
 import Dataset from '../Datasets/dataset'
 import Layout from '../Layout/column'
 
-const Datasets = props => {
+const Datasets = (props) => {
   const documentId = decodeURIComponent(
-    props.match?.params.documentId ?? props.documentId
+    props.match?.params.documentId ?? props.documentId,
   )
   const query = {
     where: {
@@ -26,7 +26,7 @@ const Datasets = props => {
     <SmallerGaps>
       <ErrorBoundary>
         <Suspense fallback={<Spinner />}>
-          {data.map(dataset => (
+          {data.map((dataset) => (
             <Dataset dataset={dataset} key={dataset.pid} />
           ))}
         </Suspense>
@@ -39,5 +39,5 @@ export default Datasets
 const SmallerGaps = styled(Layout)(
   css({
     gap: [1, 1, 2, 3],
-  })
+  }),
 )

@@ -2,7 +2,7 @@ import React from 'react'
 
 import {Flex} from '../Primitives'
 
-export default props => (
+export default (props) => (
   <Flex
     sx={{
       flexDirection: 'row',

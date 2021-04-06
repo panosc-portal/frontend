@@ -28,22 +28,22 @@ const preset =
     ? true
     : false
 
-export const useDocumentsStore = create(set => ({
+export const useDocumentsStore = create((set) => ({
   page: 1,
-  setPage: int => set(() => ({page: int})),
+  setPage: (int) => set(() => ({page: int})),
   scrollPosition: 0,
-  setScrollPosition: scrollPosition => set(() => ({scrollPosition})),
+  setScrollPosition: (scrollPosition) => set(() => ({scrollPosition})),
 }))
 
-export const useSearchStore = create(set => ({
+export const useSearchStore = create((set) => ({
   filters: [],
-  setFilters: arr => set(() => ({filters: arr})),
+  setFilters: (arr) => set(() => ({filters: arr})),
   resetFilters: () => set(() => ({filters: []})),
   query,
-  setQuery: obj => set(() => ({query: obj})),
+  setQuery: (obj) => set(() => ({query: obj})),
   resetQuery: () => set(() => ({query})),
   buttons: [],
-  setButtons: arr => set(() => ({buttons: arr})),
+  setButtons: (arr) => set(() => ({buttons: arr})),
 }))
 
 export const useAppStore = create((set, get) => ({
@@ -54,13 +54,13 @@ export const useAppStore = create((set, get) => ({
     set(() => ({isDark: newTheme}))
   },
   windowWidth: false,
-  setWindowWidth: n => set(() => ({windowWidth: n})),
+  setWindowWidth: (n) => set(() => ({windowWidth: n})),
   //should be determined from above once i learn how to middleware
   isDesktop: true,
-  setIsDesktop: bool => set(() => ({isDesktop: bool})),
+  setIsDesktop: (bool) => set(() => ({isDesktop: bool})),
 }))
 
-export const useNavigationStore = create(set => ({
+export const useNavigationStore = create((set) => ({
   sections: [],
-  setSections: arr => set(() => ({sections: arr})),
+  setSections: (arr) => set(() => ({sections: arr})),
 }))

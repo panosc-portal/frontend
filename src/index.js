@@ -1,31 +1,15 @@
 import React from 'react'
 
-import {KeycloakProvider} from '@react-keycloak/web'
 import ReactDOM from 'react-dom'
-import {BrowserRouter} from 'react-router-dom'
 
 import App from './App/app'
-import ErrorBoundary from './App/errorBoundary'
-import SWRProvider from './App/swrProvider'
-import keycloak from './keycloak'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
   <React.StrictMode>
-    <ErrorBoundary>
-      <KeycloakProvider
-        keycloak={keycloak}
-        initConfig={{pkceMethod: 'S256', onLoad: 'check-sso'}}
-      >
-        <SWRProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </SWRProvider>
-      </KeycloakProvider>
-    </ErrorBoundary>
+    <App />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 )
 
 // If you want your app to work offline and load faster, you can change

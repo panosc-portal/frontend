@@ -12,7 +12,7 @@ import Layout from '../Layout/row'
 import {Heading, Flex, Box, Image} from '../Primitives'
 import Document from './document'
 
-const DocumentPage = props => {
+const DocumentPage = (props) => {
   const documentId = props.match.params.documentId
   const query = baseQuery
   query.include[0].scope = {
@@ -20,7 +20,7 @@ const DocumentPage = props => {
   }
 
   const {data} = useSWR(
-    '/Documents/' + documentId + '?filter=' + parseObjectToUri(query)
+    '/Documents/' + documentId + '?filter=' + parseObjectToUri(query),
   )
 
   const DatasetsVisualisation = () => (

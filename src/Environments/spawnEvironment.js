@@ -16,7 +16,7 @@ const SpawnEnvironment = ({setFold}) => {
   const [doFetch] = useFetch()
   const {register, handleSubmit} = useForm()
 
-  const spawn = async formData => {
+  const spawn = async (formData) => {
     const payload = {
       planId: parseInt(formData.flavour),
       name: formData.name,
@@ -24,9 +24,9 @@ const SpawnEnvironment = ({setFold}) => {
     }
     mutate(
       '/account/instances',
-      produce(draft => {
+      produce((draft) => {
         const indexOfFlavour = data.findIndex(
-          flv => flv.id === parseInt(formData.flavour)
+          (flv) => flv.id === parseInt(formData.flavour),
         )
         draft.push({
           ...payload,
@@ -35,11 +35,11 @@ const SpawnEnvironment = ({setFold}) => {
           state: {status: 'PENDING'},
         })
       }),
-      false
+      false,
     )
     mutate(
       '/account/instances',
-      await doFetch('/account/instances', 'post', payload)
+      await doFetch('/account/instances', 'post', payload),
     )
     setFold(true)
   }
@@ -58,7 +58,7 @@ const SpawnEnvironment = ({setFold}) => {
           />
           <Label>Flavour</Label>
           <Select id="flavour" ref={register({required: true})} name="flavour">
-            {data.map(flavour => (
+            {data.map((flavour) => (
               <option key={flavour.id} value={flavour.id}>
                 {flavour.name}
               </option>

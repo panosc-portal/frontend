@@ -1,7 +1,7 @@
 import breakpoints from './breakpoints'
 import {light, dark} from './colors'
 
-const theme = isDark => {
+const theme = (isDark) => {
   return {
     colors: isDark ? dark : light,
     breakpoints,

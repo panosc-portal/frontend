@@ -11,18 +11,18 @@ import loginLogout from './loginLogoutButton'
 import BurgerIcon from './menu.svg'
 
 const Navigation = () => {
-  const [isDark, isDesktop] = useAppStore(state => [
+  const [isDark, isDesktop] = useAppStore((state) => [
     state.isDark,
     state.isDesktop,
   ])
-  const sections = useNavigationStore(state => state.sections)
+  const sections = useNavigationStore((state) => state.sections)
   const [showBurger, setShowBurger] = useState(false)
   const {keycloak} = useKeycloak()
 
   useEffect(() => sections && setShowBurger(false), [sections, setShowBurger])
 
   //Component refactor needed!
-  const SectionLink = props => (
+  const SectionLink = (props) => (
     <Flex
       sx={{
         height: '100%',
@@ -44,7 +44,7 @@ const Navigation = () => {
     />
   )
 
-  const Burger = props => (
+  const Burger = (props) => (
     <Button
       bg={showBurger ? ['foreground'] : ['nav']}
       sx={{
@@ -60,7 +60,7 @@ const Navigation = () => {
       <Image src={BurgerIcon} variant="navIcon" notWide />
     </Button>
   )
-  const BurgerContent = props =>
+  const BurgerContent = (props) =>
     props.show && (
       <Flex
         sx={{
@@ -77,7 +77,7 @@ const Navigation = () => {
         {props.children}
       </Flex>
     )
-  const BurgerLink = props => (
+  const BurgerLink = (props) => (
     <Flex
       sx={{
         height: 'nav',
@@ -98,8 +98,8 @@ const Navigation = () => {
     </Flex>
   )
 
-  const overrideHome = sections.find(s => s.overrideHome)
-  const mainComponent = sections.find(s => s.main)
+  const overrideHome = sections.find((s) => s.overrideHome)
+  const mainComponent = sections.find((s) => s.main)
 
   const Home = () => (
     <Box height={'navIcon'} p={[1, 0]} onClick={() => mainComponent?.onClick()}>
@@ -143,7 +143,7 @@ const Navigation = () => {
       )}
       <Breadcrumb />
 
-      {sections.map(section => {
+      {sections.map((section) => {
         return (
           isDesktop || (
             <SectionLink {...section}>

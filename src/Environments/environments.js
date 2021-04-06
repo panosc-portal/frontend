@@ -21,7 +21,7 @@ const Environments = () => {
         </Card>
       ) : data.length ? (
         <Column>
-          {data.map(environment => (
+          {data.map((environment) => (
             <Environment key={environment.id} environment={environment} />
           ))}
         </Column>

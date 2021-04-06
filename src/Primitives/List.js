@@ -5,8 +5,8 @@ import styled from 'styled-components'
 
 import {Text} from './'
 
-export const Ul = props => <S.ul {...props} />
-export const Li = props => (
+export const Ul = (props) => <S.ul {...props} />
+export const Li = (props) => (
   <S.li {...props}>
     <Text color="text">{props.children}</Text>
   </S.li>
@@ -19,10 +19,10 @@ S.ul = styled.ul(
     listStyle: 'square',
     pl: 3,
     my: 1,
-  })
+  }),
 )
 S.li = styled.li(
   css({
     color: 'pink',
-  })
+  }),
 )

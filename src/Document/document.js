@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import {Box, Card, Heading, Link, Text} from '../Primitives'
 
-const Detail = props => (
+const Detail = (props) => (
   <S.Detail>
     <S.Text fontWeight="bold">{props.caption}</S.Text>
     <S.Text>{props.children}</S.Text>
@@ -25,7 +25,7 @@ const Document = ({data}) => {
           </Link>
         </Detail>
         <Detail caption="Keywords">
-          {data.keywords.map(keyword => keyword + ', ')}
+          {data.keywords.map((keyword) => keyword + ', ')}
         </Detail>
         <Detail caption="Type">{data.type}</Detail>
         <Detail caption="Author">{data.members[0]?.person.fullName}</Detail>

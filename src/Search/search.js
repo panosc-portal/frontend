@@ -1,104 +1,219 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 
-import {Input} from '@rebass/forms'
-import produce from 'immer'
+import {Input, Switch, Checkbox, Label} from '@rebass/forms'
 import debounce from 'lodash.debounce'
-import {concat, compose, mergeDeepWith, isEmpty, dissocPath} from 'ramda'
+import {
+  evolve,
+  assoc,
+  is,
+  head,
+  always,
+  equals,
+  has,
+  propOr,
+  __,
+  cond,
+  concat,
+  compose,
+  map,
+  ifElse,
+  gt,
+  lt,
+  length,
+  prop,
+  F,
+  mergeDeepWith,
+  isEmpty,
+  dissocPath,
+  converge,
+  identity,
+  reduce,
+  mergeRight,
+  reject,
+  objOf,
+  pipe,
+  values,
+  filter,
+  pick,
+  when,
+  isNil,
+  unless,
+  T,
+} from 'ramda'
+import Slider from 'react-rangeslider'
 import styled from 'styled-components'
 
-import {baseQuery} from '../App/helpers'
-import {mockTechniques} from '../App/helpers'
 import {useSearchStore} from '../App/stores'
 import {Box, Card, Heading, Flex, Button} from '../Primitives'
+import filters from './mockTechniques'
 
 const Search = () => {
-  const [query, setQuery, resetQuery] = useSearchStore((state) => [
+  const [setFilters, query, setQuery, resetQuery] = useSearchStore((state) => [
+    state.setFilters,
     state.query,
     state.setQuery,
     state.resetQuery,
   ])
 
-  const techniques = query.where?.keywords?.inq ?? []
-  const [usedTechniques, setUsedTechniques] = useState(techniques)
+  const listOfParameters = pipe(
+    map(
+      pipe(
+        mergeRight(objOf('isActive', false)),
+        mergeRight(objOf('value', null)),
+        converge(objOf, [prop('name'), identity]),
+      ),
+    ),
+    reduce(mergeRight, {}),
+  )
 
-  const title = query.where?.title?.ilike ?? ''
+  const [parameters, setParameters] = useState(
+    listOfParameters(filters.parameters),
+  )
 
-  const addTechnique = (technique) =>
-    produce(techniques, (draftTechniques) => {
-      draftTechniques.push(technique)
+  const [techniques, setTechniques] = useState({})
+
+  const [otherFilters, setOtherFilters] = useState({})
+
+  const [activeFilters, setActiveFilters] = useState([])
+
+  const [operators, setOperators] = useState({
+    parameters: 'or',
+    techniques: 'and',
+  })
+
+  useEffect(() => {
+    const makeFilter = pipe(head, assoc('target', ['datasets', 'parameters']))
+    const makeFilters = pipe(
+      objOf('filters'),
+      assoc('operator', operators.parameters),
+      assoc('target', ['datasets', 'parameters']),
+    )
+    const toTextFilter = evolve({
+      value: converge(objOf, [propOr('like', 'operator'), identity]),
     })
+    const toRangeFilter = pipe(
+      unless(
+        has('unit'),
+        when(
+          has('defaultUnit'),
+          converge(assoc('unit'), [prop('defaultUnit'), identity]),
+        ),
+      ),
+      evolve({
+        value: converge(objOf, [propOr('between', 'operator'), identity]),
+      }),
+    )
+    const toFilters = pipe(
+      values,
+      filter(prop('isActive')),
+      reject(pipe(prop('value'), isNil)),
+      map(
+        cond([
+          [pipe(prop('type'), equals('range')), toRangeFilter],
+          [pipe(prop('type'), equals('text')), toTextFilter],
+          [T, identity],
+        ]),
+      ),
+      cond([
+        [pipe(length, equals(1)), makeFilter],
+        [pipe(length, lt(1)), makeFilters],
+        [T, always({})],
+      ]),
+    )
+    const activeParams = toFilters(parameters)
+    setFilters([activeParams])
+    console.log('active filters')
+    console.log([activeParams])
+  }, [parameters, operators, setFilters])
 
-  const removeTechnique = (technique) =>
-    produce(techniques, (draftTechniques) => {
-      draftTechniques.splice(
-        draftTechniques.findIndex((t) => t === technique),
-        1,
-      )
-    })
+  const debounced = (fn) => debounce(fn, 250)
 
-  const handleTechnique = (technique) => {
-    if (techniques.includes(technique)) {
-      const newTechniques = produce(usedTechniques, (draft) => {
-        return draft.filter((t) => t !== technique)
+  const Param = (p) => {
+    const inputParams = {
+      id: p.name + ' toggle',
+      name: p.name + ' toggle',
+    }
+    return (
+      <Box key={p.name}>
+        <Label>
+          {p.name}
+          <Checkbox
+            {...inputParams}
+            checked={parameters[p.name].isActive}
+            onChange={() => toggleFilterActive(p)}
+          />
+        </Label>
+        {p.type === 'range' && (
+          //react-rangeslider
+          <Slider
+            {...inputParams}
+            min={p.minValue}
+            max={p.maxValue}
+            onChangeComplete={debounced(updateFilterValue(p))}
+          />
+        )}
+        {p.type === 'text' && (
+          <Input {...inputParams} onChange={debounced(updateFilterValue(p))} />
+        )}
+        {p.type === 'bool' && (
+          <Switch onClick={debounced(updateFilterValue(p))} />
+        )}
+      </Box>
+    )
+  }
+
+  const Technique = (technique) => (
+    <S.Button key={technique} onClick={() => clickTechnique(technique)}>
+      {technique}
+    </S.Button>
+  )
+  const toggleFilterActive = ({name}) => {
+    if (parameters[name].isActive === false) {
+      setParameters({
+        ...parameters,
+        [name]: {...parameters[name], isActive: true},
       })
-      setUsedTechniques(newTechniques)
-      return removeTechnique(technique)
     } else {
-      const newTechniques = produce(usedTechniques, (draft) => {
-        draft.push(technique)
+      setParameters({
+        ...parameters,
+        [name]: {...parameters[name], isActive: false},
       })
-      setUsedTechniques(newTechniques)
-      return addTechnique(technique)
     }
   }
 
-  const debouncedTitleChange = debounce(
-    (title) => update(title, techniques),
-    500,
-  )
-
-  const handleTitle = (e) => debouncedTitleChange(e.target.value)
-
-  const stripTechniques = (obj) =>
-    isEmpty(obj.where?.keywords?.inq)
-      ? dissocPath(['where', 'keywords'], obj)
-      : obj
-  const stripTitle = (obj) =>
-    isEmpty(obj.where?.title?.ilike) ? dissocPath(['where', 'title'], obj) : obj
-  const stripWhere = (obj) =>
-    isEmpty(obj.where?.title?.ilike) && isEmpty(obj.where?.keywords?.inq)
-      ? dissocPath(['where'], obj)
-      : obj
-
-  const whereQuery = useCallback((title, techniques) => {
-    const newQuery = {
-      where: {
-        keywords: {
-          inq: techniques,
-        },
-        title: {
-          ilike: title,
-        },
+  const updateRange = (p) => (e) => {
+    setParameters({
+      ...parameters,
+      [p.name]: {
+        ...parameters[p.name],
+        value: [0, e.target.value * 10],
+        isActive: true,
       },
-    }
-    return newQuery
-  }, [])
+    })
+  }
+  const updateBool = (p) => (e) => {
+    setParameters({
+      ...parameters,
+      [p.name]: p,
+    })
+  }
+  const updateFilterValue = (p) => (e) => {
+    setParameters({
+      ...parameters,
+      [p.name]: {
+        ...parameters[p.name],
+        value: p.type === 'range' ? [0, e.target.value * 10] : e.target.value,
+        isActive: true,
+      },
+    })
+  }
 
-  const updateQuery = useCallback(
-    (newQuery) => {
-      const qq = mergeDeepWith(concat, newQuery, baseQuery)
-      setQuery(qq)
-    },
-    [setQuery],
-  )
+  const clickTechnique = (xs) => console.log(xs)
 
-  const update = compose(
-    updateQuery,
-    stripWhere,
-    stripTechniques,
-    stripTitle,
-    whereQuery,
-  )
+  const log = (label) => (xs) => {
+    console.log(label)
+    console.log(xs)
+  }
 
   return (
     <Card>
@@ -118,8 +233,7 @@ const Search = () => {
           id="title"
           placeholder="Search by title"
           name="title"
-          defaultValue={title}
-          onChange={handleTitle}
+          onChange={debounced(log('title'))}
         />
         <Box>
           <Heading variant="small">Techniques</Heading>
@@ -130,21 +244,24 @@ const Search = () => {
               pl: 3,
             }}
           >
-            {mockTechniques.map((technique, index) => (
-              <S.Button
-                key={index}
-                color={usedTechniques.includes(technique) ? 'pink' : 'text'}
-                fontWeight={usedTechniques.includes(technique) ? 700 : 400}
-                onClick={() => update(title, handleTechnique(technique))}
+            {map(pipe(prop('value'), Technique))(filters.techniques)}
+            <Flex>
+              <Button
+                onClick={() => setOperators({...operators, parameters: 'and'})}
               >
-                {technique}
-              </S.Button>
-            ))}
+                AND
+              </Button>
+              <Button
+                onClick={() => setOperators({...operators, parameters: 'or'})}
+              >
+                OR
+              </Button>
+            </Flex>
+            <Heading variant="small">Parameters</Heading>
+            {map(Param)(filters.parameters)}
           </Flex>
         </Box>
-        <S.Button onClick={() => resetQuery() || setUsedTechniques([])}>
-          Clear All
-        </S.Button>
+        <S.Button onClick={() => resetQuery()}>Clear All</S.Button>
       </Flex>
     </Card>
   )

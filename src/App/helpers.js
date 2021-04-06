@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-export const parseDate = date => moment(date).format('L')
+export const parseDate = (date) => moment(date).format('L')
 
 export const mockTechniques = [
   'Reflectometry',
@@ -61,10 +61,12 @@ export const baseQueryWhere = {
   where: {keywords: {inq: []}, title: {ilike: ''}},
 }
 
-export const parseObjectToUri = object =>
+export const parseObjectToUri = (object) =>
   encodeURIComponent(JSON.stringify(object))
 
-export const documentSize = datasets => {
-  const sum = datasets.map(item => item.size).reduce((acc, val) => acc + val, 0)
+export const documentSize = (datasets) => {
+  const sum = datasets
+    .map((item) => item.size)
+    .reduce((acc, val) => acc + val, 0)
   return `${sum} MB`
 }

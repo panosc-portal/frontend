@@ -4,7 +4,7 @@ import {ErrorBoundary} from 'react-error-boundary'
 
 import {Card} from '../Primitives'
 
-const ui = props => {
+const ui = (props) => {
   const ErrorFallback = ({error, componentStack, resetErrorBoundary}) => {
     return (
       <Card role="alert">

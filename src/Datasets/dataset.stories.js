@@ -12,7 +12,7 @@ export default {
   component: Dataset,
 }
 
-const Template = args => <Dataset {...args} />
+const Template = (args) => <Dataset {...args} />
 
 export const Basic = Template.bind({})
 Basic.args = {dataset: dataset}
