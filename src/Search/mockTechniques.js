@@ -31,11 +31,11 @@ const filters = {
       name: 'photon_energy',
       type: 'range',
       defaultUnit: 'eV',
-      minValue: 100,
-      maxValue: 1200,
+      minValue: 0,
+      maxValue: 1000,
     },
     {name: 'chemical_formula', type: 'text'},
-    {name: 'wasSomethingOn', type: 'bool'},
+    {name: 'wasSomethingTurnedOn', type: 'bool'},
   ],
 }
 

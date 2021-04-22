@@ -40,8 +40,9 @@ import {
   unless,
   T,
 } from 'ramda'
-import Slider from 'react-rangeslider'
+import {Range} from 'rc-slider'
 import styled from 'styled-components'
+import 'rc-slider/assets/index.css'
 
 import {useSearchStore} from '../App/stores'
 import {Box, Card, Heading, Flex, Button} from '../Primitives'
@@ -54,6 +55,9 @@ const Search = () => {
     state.setQuery,
     state.resetQuery,
   ])
+
+  const listOfTechniques = map(assoc('isActive', false))(filters.techniques)
+  console.log(listOfTechniques)
 
   const listOfParameters = pipe(
     map(
@@ -70,20 +74,14 @@ const Search = () => {
     listOfParameters(filters.parameters),
   )
 
-  const [techniques, setTechniques] = useState({})
-
-  const [otherFilters, setOtherFilters] = useState({})
-
-  const [activeFilters, setActiveFilters] = useState([])
-
   const [operators, setOperators] = useState({
     parameters: 'or',
     techniques: 'and',
   })
 
   useEffect(() => {
-    const makeFilter = pipe(head, assoc('target', ['datasets', 'parameters']))
-    const makeFilters = pipe(
+    const makeParam = pipe(head, assoc('target', ['datasets', 'parameters']))
+    const makeParams = pipe(
       objOf('filters'),
       assoc('operator', operators.parameters),
       assoc('target', ['datasets', 'parameters']),
@@ -115,8 +113,8 @@ const Search = () => {
         ]),
       ),
       cond([
-        [pipe(length, equals(1)), makeFilter],
-        [pipe(length, lt(1)), makeFilters],
+        [pipe(length, equals(1)), makeParams],
+        [pipe(length, lt(1)), makeParams],
         [T, always({})],
       ]),
     )
@@ -133,6 +131,7 @@ const Search = () => {
       id: p.name + ' toggle',
       name: p.name + ' toggle',
     }
+    const state = parameters[p.name]
     return (
       <Box key={p.name}>
         <Label>
@@ -144,19 +143,22 @@ const Search = () => {
           />
         </Label>
         {p.type === 'range' && (
-          //react-rangeslider
-          <Slider
+          <Range
             {...inputParams}
             min={p.minValue}
             max={p.maxValue}
-            onChangeComplete={debounced(updateFilterValue(p))}
+            defaultValue={[p.minValue, p.maxValue]}
+            onAfterChange={debounced(updateRange(p))}
           />
         )}
         {p.type === 'text' && (
-          <Input {...inputParams} onChange={debounced(updateFilterValue(p))} />
+          <Input {...inputParams} onChange={debounced(updateText(p))} />
         )}
         {p.type === 'bool' && (
-          <Switch onClick={debounced(updateFilterValue(p))} />
+          <Switch
+            checked={state?.value ?? false}
+            onClick={() => updateBool(p)(!state?.value)}
+          />
         )}
       </Box>
     )
@@ -186,18 +188,19 @@ const Search = () => {
       ...parameters,
       [p.name]: {
         ...parameters[p.name],
-        value: [0, e.target.value * 10],
+        value: e,
         isActive: true,
       },
     })
   }
   const updateBool = (p) => (e) => {
+    const value = e ?? true
     setParameters({
       ...parameters,
-      [p.name]: p,
+      [p.name]: {...p, value, isActive: true},
     })
   }
-  const updateFilterValue = (p) => (e) => {
+  const updateText = (p) => (e) => {
     setParameters({
       ...parameters,
       [p.name]: {
@@ -224,18 +227,40 @@ const Search = () => {
           gap: 3,
         }}
       >
-        <S.Input
-          sx={{
-            outline: 0,
-            border: 0,
-            fontSize: 2,
-          }}
-          id="title"
-          placeholder="Search by title"
-          name="title"
-          onChange={debounced(log('title'))}
-        />
         <Box>
+          <Heading variant="small">Parameters</Heading>
+          <Flex width="100%">
+            <Flex
+              sx={{flexDirection: 'column', justifyContent: 'center'}}
+              width={1 / 2}
+            >
+              Operator:
+            </Flex>
+            <Flex width={1 / 2} sx={{pl: 1, pt: -4}}>
+              <S.Button
+                onClick={() => setOperators({...operators, parameters: 'and'})}
+                color={operators.parameters === 'and' ? 'pink' : 'inherit'}
+              >
+                {console.log(operators.parameters)}
+                AND
+              </S.Button>
+              <S.Button
+                color={operators.parameters === 'or' ? 'pink' : 'inherit'}
+                onClick={() => setOperators({...operators, parameters: 'or'})}
+              >
+                OR
+              </S.Button>
+            </Flex>
+          </Flex>
+          <Flex
+            sx={{
+              flexDirection: 'column',
+              gap: 1,
+              pl: 3,
+            }}
+          >
+            {map(Param)(filters.parameters)}
+          </Flex>
           <Heading variant="small">Techniques</Heading>
           <Flex
             sx={{
@@ -245,23 +270,8 @@ const Search = () => {
             }}
           >
             {map(pipe(prop('value'), Technique))(filters.techniques)}
-            <Flex>
-              <Button
-                onClick={() => setOperators({...operators, parameters: 'and'})}
-              >
-                AND
-              </Button>
-              <Button
-                onClick={() => setOperators({...operators, parameters: 'or'})}
-              >
-                OR
-              </Button>
-            </Flex>
-            <Heading variant="small">Parameters</Heading>
-            {map(Param)(filters.parameters)}
           </Flex>
         </Box>
-        <S.Button onClick={() => resetQuery()}>Clear All</S.Button>
       </Flex>
     </Card>
   )
@@ -274,10 +284,6 @@ const S = {}
 S.Button = styled(Button).attrs({
   width: 1 / 1,
   sx: {
-    mx: 0,
-    px: 0,
-    my: 0,
-    py: 1,
     fontWeight: 400,
     outline: 'none',
     textAlign: 'left',
