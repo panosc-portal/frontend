@@ -1,3 +1,4 @@
+import {nanoid} from 'nanoid'
 import {addIndex, map, flip, assoc} from 'ramda'
 const filters = [
   {target: ['techniques'], value: 'technique 1'},
@@ -35,6 +36,6 @@ const filters = [
     values: ['fresh', 'science dog', 'plasma', 'anti-matter', 'earth is flat'],
   },
 ]
-const mockIds = (filters) => addIndex(map)(flip(assoc('id')))(filters)
+const mockIds = map((f) => ({...f, id: nanoid()}))
 const apiLike = mockIds(filters)
 export default apiLike

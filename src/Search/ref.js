@@ -1,4 +1,3 @@
-import {nanoid} from 'nanoid'
 import {
   evolve,
   set,
@@ -72,12 +71,8 @@ const toggleTargetOperator = (target, e) => {
   return over(lensPath([target, 'operator']), toggle)
 }
 
-const wrap = (set) => (action) => {
-  const execute = (...args) => {
-    return set((state) => action(...args)(state))
-  }
-  return curryN(action.length, execute)
-}
+const wrap = (set) => (action) =>
+  curryN(prop('length', action), pipe(action, set))
 
 export const actions = {
   toggleIsActive,
@@ -90,76 +85,42 @@ const log = (label) => (xs) => {
   console.log(xs)
   return xs
 }
+
 export const parseToExternal = (filters) =>
   map(over(lensProp('filters'), values))(filters)
 
-export const initFilterState = (set, filters) => {
-  const wrapSet = wrap(set)
-  const wrappedActions = map(wrapSet, actions)
+export const initFilterState = (filters) => {
   return pipe(
-    map((filter) =>
-      pipe(
-        mergeRight(objOf('actions', wrappedActions ?? actions)),
-        over(
-          lensProp('actions'),
-          pipe(
-            map(
-              pipe(
-                applyTo(prop('target', filter)),
-                applyTo(prop('id', filter)),
-              ),
-            ),
-            converge(assoc('updateValue'), [
-              pipe(prop('assign'), applyTo('value')),
-              identity,
-            ]),
-            converge(assoc('updateOperator'), [
-              pipe(prop('assign'), applyTo('operator')),
-              identity,
-            ]),
-            converge(assoc('updateUnit'), [
-              pipe(prop('assign'), applyTo('unit')),
-              identity,
-            ]),
-          ),
-        ),
-      )(filter),
-    ),
     groupBy(prop('target')),
-    map(objOf('filters')),
     map(
       pipe(
+        objOf('filters'),
         converge(assoc('target'), [
           view(lensPath(['filters', 0, 'target'])),
           identity,
         ]),
         over(
           lensProp('filters'),
-          pipe(
-            map(
-              pipe(
-                omit(['target']),
-                assoc('isActive', false),
-                converge(objOf, [prop('id'), identity]),
-              ),
+          map(
+            pipe(
+              omit(['target']),
+              assoc('isActive', false),
+              addIndex(map)(flip(assoc('idx'))),
             ),
-            reduce(mergeRight, {}),
           ),
         ),
-        unless(
+        ifElse(
           pipe(prop('target'), either(isNil, equals('undefined'))),
-          pipe(
-            assoc('operator', 'AND'),
-            converge(assoc('toggleOperator'), [
-              pipe(prop('target'), wrapSet(toggleTargetOperator)),
-              identity,
-            ]),
-          ),
+          assoc('target', 'root'),
+          pipe(assoc('operator', 'AND')),
         ),
       ),
     ),
   )(filters)
 }
+
+export const initActions = (actions, setter) =>
+  ifElse(isNil(setter), pipe(identity), pipe(map(setter)))(actions)
 
 export const generatorFilter = (filterState) =>
   pipe(
@@ -173,23 +134,3 @@ export const generatorFilter = (filterState) =>
     ),
     values,
   )(filterState)
-const assignActionsToFilters = curry((actions, filterState) => {
-  const {
-    toggleTargetOperator,
-    toggleValueInList,
-    toggleIsActive,
-    assign,
-  } = actions
-  const withOpToggle = filterState.map((target) => ({
-    ...target,
-    toggleOperator: toggleTargetOperator(target),
-  }))
-
-  const withFilterActions = withOpToggle.map((target) =>
-    target.filters.map((filter) => ({
-      ...filter,
-      updateValue: assign(target, filter.id, 'value'),
-    })),
-  )
-  return withFilterActions
-})

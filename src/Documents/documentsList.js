@@ -1,6 +1,6 @@
 import React, {Suspense, useCallback, useEffect} from 'react'
 
-import {pipe} from 'ramda'
+import {values, map, view, lensPath, pipe} from 'ramda'
 import {isEmpty} from 'ramda'
 import useInView from 'react-cool-inview'
 import parser from 'search-query-generator'
@@ -21,9 +21,9 @@ const DocumentsList = ({isShowing, name}) => {
 
   const initialSize = useDocumentsStore((state) => state.page)
   const setInitialSize = useDocumentsStore((state) => state.setPage)
-  const filters = useNew((state) => state.filters)
+  const filters = useNew()
   console.log(filters)
-  const extFilters = parseToExternal(filters)
+  // const extFilters = parseToExternal(filters)
 
   const {data, setSize, error, size} = useSWRInfinite(
     (index) => {
@@ -78,17 +78,18 @@ const DocumentsList = ({isShowing, name}) => {
 
   const notShowed = isShowing.name !== name
   // useScrollPosition(isLoadingInitialData || notShowed)
-
+  const pF = values(filters.parameters.filters)
   return (
     <ErrorBoundary>
       <Suspense fallback={<Spinner />}>
         <Column>
           <Box>
-            <Button
-              onClick={() =>
-                extFilters.parameters.filters[0].actions.updateValue(300)
-              }
-            >
+            {pF.map((f) => (
+              <Button key={f.id} onClick={(e) => f.actions.toggleIsActive(e)}>
+                Toggle 1
+              </Button>
+            ))}
+            <Button onClick={() => filters.parameters.toggleOperator(330)}>
               Toggle 2
             </Button>
             {/* <Button onClick={(e) => toggleIsActive('parameters')(3)(e)}> */}
